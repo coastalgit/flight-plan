@@ -145,6 +145,40 @@ Use files in `templates/` directory:
 
 Fill in project-specific details from the PRD.
 
+### Template Variables Reference
+
+Replace these placeholders with values from the PRD:
+
+| Variable | Source (PRD Section) | Example | If Missing |
+|----------|---------------------|---------|------------|
+| `{{PROJECT_NAME}}` | Section 3 - Project name | "portfolio-site" | Ask user |
+| `{{PROJECT_TYPE}}` | Section 3 - Type field | "Frontend (Static Site)" | "To be determined" |
+| `{{PRD_VERSION}}` | Filename version | "v1" | Use latest |
+| `{{SOLUTION_NAME}}` | Section 1 - Title | "Portfolio Website" | Use PRD title |
+| `{{CREATED_DATE}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
+| `{{LAST_UPDATED}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
+| `{{GENERATION_DATE}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
+| `{{PROJECT_PURPOSE}}` | Section 3 - Purpose | "Personal portfolio..." | Extract from PRD |
+| `{{TOOLS_LIST}}` | Section 6 - Development Tools | "VS Code, Git, Chrome DevTools" | "To be determined" |
+| `{{BLOCKERS_FROM_PRD}}` | Section 7 - Open Questions | "question-1: Layout approach" | "None currently" |
+| `{{RELATED_PROJECTS}}` | Section 3 - Dependencies | "backend, admin-ui" | "None (standalone)" |
+| `{{TECH_STACK_SUMMARY}}` | Section 3 - Technology | "HTML/CSS/JS on Netlify" | Extract or ask |
+| `{{LANGUAGE}}` | Section 3 - Language | "JavaScript" | Ask if missing |
+| `{{FRAMEWORK}}` | Section 3 - Framework | "None (vanilla)" | Ask if missing |
+| `{{DATABASE_TYPE}}` | Section 3 - Database | "Not applicable" | "To be determined" |
+| `{{DEPLOYMENT_PLATFORM}}` | Section 3 - Deployment | "Netlify" | Ask if missing |
+| `{{TARGET_USERS}}` | Section 2 or infer | "Potential clients, recruiters" | Infer from problem |
+| `{{PROBLEM_STATEMENT}}` | Section 1 | "Need online presence..." | Extract verbatim |
+| `{{USER_STORIES}}` | Infer from problem | "As a client, I want..." | Generate from problem |
+| `{{OPEN_QUESTIONS_FROM_PRD}}` | Section 7 | "- question-1: Layout..." | Copy directly |
+
+**If PRD is missing required info:**
+- Essential fields (PROJECT_NAME, TECH_STACK) → Ask user
+- Optional fields → Use "To be determined"
+- Never invent details → Mark as TBD or ask
+
+**Date Format:** Always UTC ISO 8601 (YYYY-MM-DD HH:MM UTC)
+
 ---
 
 ## WHAT TO GENERATE

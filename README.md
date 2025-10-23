@@ -183,6 +183,22 @@ your-project/
 
 ---
 
+## 🔌 Cursor Integration
+
+The `.cursor/rules/flight-plan.mdc` file automatically integrates Flight Plan with Cursor IDE:
+
+**What it does:**
+1. Auto-reads PRD on first interaction in each project
+2. Loads current phase and tasks from `.flight-plan/current.md`
+3. Checks requirements and implementation files
+4. Updates progress as you work
+
+**Setup:** None needed! Just open the project in Cursor.
+
+The `alwaysApply: true` setting means Cursor automatically uses these rules without you needing to do anything. It will know about your PRD, current phase, blockers, and requirements every time you work in the project.
+
+---
+
 ## 📖 Examples
 
 See `examples/` directory for:

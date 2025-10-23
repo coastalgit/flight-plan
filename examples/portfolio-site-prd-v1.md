@@ -2,8 +2,7 @@
 
 **Version:** v1  
 **Created:** 2025-10-22 14:00 UTC  
-**Author:** Alex Developer  
-**PRD ID:** prd-portfolio-v1-20251022140000
+**Author:** Alex Developer
 
 ---
 

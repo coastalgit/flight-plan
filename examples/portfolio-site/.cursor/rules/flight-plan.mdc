@@ -1,0 +1,145 @@
+---
+description: Flight Plan integration for portfolio-site
+alwaysApply: true
+---
+
+# Flight Plan Awareness
+
+## Context Loading
+
+On first interaction in this project:
+
+1. **Read Solution PRD:**
+   - Path: `../../../solution-prd-v1.md`
+   - Purpose: Understand overall solution and this project's role
+
+2. **Read Project Progress:**
+   - Path: `./.flight-plan/current.md`
+   - Purpose: Know current phase, tasks, blockers
+
+3. **Read Requirements (WHAT):**
+   - Path: `./.flight-plan/requirements.md`
+   - Purpose: Understand what to build (tech-agnostic)
+
+4. **Read Implementation (HOW):**
+   - Path: `./.flight-plan/implementation.md`
+   - Purpose: Know technology stack and architecture
+
+5. **Check Coordination:**
+   - Path: `../../../ai-refs/solution-overview.md`
+   - Purpose: See cross-project status and dependencies
+
+---
+
+## During Work
+
+### Track Progress
+- Update `.flight-plan/current.md` when completing tasks
+- Check off completed items
+- Add new blockers if encountered
+- Note when moving to next phase
+
+### Log Successful Patterns
+- Save working prompts to `.flight-plan/prompts/successful.md`
+- Note what worked well for future reference
+
+### Document Decisions
+- Major technical decisions → `.flight-plan/decisions/[title].md`
+- Include: what, why, alternatives, date
+
+### Reference Materials
+- Check `docs/third-party/` for API specs
+- Check `docs/snippets/` for code examples
+- Check `docs/research/` for background
+
+---
+
+## Requirements vs Implementation
+
+**When working on features:**
+1. Check `requirements.md` first (what user needs)
+2. Then check `implementation.md` (how to build it)
+3. Ensure code matches requirements
+4. Update both files if scope changes
+
+**When changing technology:**
+1. Update `implementation.md` only
+2. Requirements stay the same (WHAT doesn't change)
+3. Log decision in `.flight-plan/decisions/`
+
+---
+
+## Cross-Project Coordination
+
+### Before Making Breaking Changes
+1. Check `implementation.md` for internal dependencies
+2. Review `../../../ai-refs/solution-overview.md`
+3. Identify affected projects
+4. Update their specs if needed
+
+### When Blocked by Another Project
+1. Note in `.flight-plan/current.md` blockers
+2. Update `solution-overview.md` with dependency
+3. Consider stub/mock until unblocked
+
+---
+
+## Flight Plan Commands
+
+This project supports Flight Plan commands:
+
+- `flight-plan status` - Show progress
+- `flight-plan sync` - Sync with latest PRD
+- `flight-plan evaluate` - Check requirements vs code
+- `flight-plan review` - List blockers and TODOs
+- `flight-plan note` - Add log entry
+- `flight-plan deps` - Show dependencies
+
+See `../../../FLIGHT-PLAN-COMMANDS.md` for details.
+
+---
+
+## This Project
+
+**Name:** portfolio-site  
+**Type:** Frontend (Static Site)  
+**Stack:** HTML, CSS, JavaScript (vanilla), Netlify hosting
+
+**Related Projects:**
+None (standalone project)
+
+**Current Phase:** Phase 1 - Define Mission
+
+---
+
+## Code Organization
+
+**Expected Structure:**
+```
+portfolio-site/
+├── .flight-plan/           # Progress tracking (don't modify directly)
+├── docs/                   # Reference materials
+├── src/                    # Source code (index.html, styles.css, script.js)
+└── README.md              # Project overview
+```
+
+---
+
+## Safety Rules
+
+⚠️ **Never modify:**
+- `.flight-plan/` files without explicit user request
+- Other projects' directories
+- `solution-prd-v*.md` files
+
+✅ **Always:**
+- Read context files before making assumptions
+- Update progress when completing tasks
+- Log important decisions
+- Check for dependencies before breaking changes
+
+---
+
+**Cursor Rule Version:** 1.0  
+**Compatible with:** Flight Plan v1.0  
+**Generated:** 2025-10-22 14:00 UTC

@@ -27,7 +27,6 @@ Transform user's messy brainstorm → structured `solution-prd-v1.md`
 **Version:** v1
 **Created:** YYYY-MM-DD HH:MM UTC
 **Author:** [Extract if mentioned]
-**PRD ID:** prd-[slug]-v1-[timestamp]
 
 ---
 
@@ -154,12 +153,11 @@ Create: TODO item
 
 ---
 
-## IDs & TIMESTAMPS
+## IDS & TIMESTAMPS
 
 **Slug Rule:** lowercase, hyphen-separated, alphanumeric only (no spaces, no special chars)  
 Example: "Hotel Booking" → `hotel-booking`, "Admin UI" → `admin-ui`
 
-**PRD ID:** prd-[solution-slug]-v1-[YYYYMMDDHHMMSS]  
 **Project ID:** [solution-slug]-[project-slug]  
 **Question ID:** question-[N]  
 **TODO ID:** TODO-[NNN] (padded)
