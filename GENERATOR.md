@@ -1,32 +1,28 @@
-# 🧠 Flight Plan Generator — Local AI Instructions
+# 🧠 Flight Plan Generator — AI Instructions
 
-**Generator Spec Version:** 1.0  
-**Last Updated:** 2025-10-22
+**Generator Version:** 1.0  
+**Last Updated:** 2025-10-25
 
 ---
 
-**You are reading this in `MyApp/flight-plan-solution/` directory.**
+**Context:** You are reading this from `MyApp/flight-plan-solution/`.
 
-Your job: Read `solution-prd-v*.md` and generate the complete project structure.
+**Purpose:** Generate complete project structure from `solution-prd-v*.md`.
 
-**IMPORTANT:** Projects will be created in the **parent directory** (`MyApp/`), not inside `flight-plan-solution/`. This keeps your Flight Plan tooling separate from your actual projects.
+**Output Location:** Projects created in **parent directory** (`../`), keeping Flight Plan tooling separate from actual projects.
 
 ---
 
 ## ⚠️ BEFORE YOU START
 
-**Check if this is initial setup or an update:**
+**This tool is for initial setup only.**
 
-Look for existing project directories in the **parent directory** (one level up from `flight-plan-solution/`).
-
-Exclude these from your check:
-- `flight-plan-solution/` (this directory)
-- Any other support directories
+Check for existing projects in the parent directory (`../`):
 
 ### If Projects Already Exist:
 
 ```
-⚠️ Projects detected in this directory.
+⚠️ Projects detected.
 
 This appears to be an existing solution. For updates, use:
 
@@ -34,320 +30,403 @@ This appears to be an existing solution. For updates, use:
 
 See FLIGHT-PLAN-COMMANDS.md for ongoing operations.
 
-The GENERATOR is only for initial setup.
+GENERATOR is for initial setup only.
 ```
 
 **Stop here. Do not regenerate.**
 
 ### If No Projects Exist:
 
-Continue with initial generation below...
+Continue with generation below...
 
 ---
 
 ## STEP 1: READ THE PRD
 
-**Find and read the latest PRD version:**
-
-Look for files matching: `solution-prd-v*.md`
+Find and read the latest PRD version: `solution-prd-v*.md`
 
 Examples:
 - `solution-prd-v1.md` only → Read v1
-- `solution-prd-v1.md` and `solution-prd-v2.md` → Read v2 (latest)
-- `solution-prd-v1.md`, `v2.md`, `v3.md` → Read v3 (latest)
+- Both v1 and v2 → Read v2 (latest)
+- v1, v2, v3 → Read v3 (latest)
 
 **Always read the highest version number.**
 
-**⚠️ Do not invent missing projects or technologies. If unclear → ask user.**
+**Extract:**
+- Projects to create (Section 3)
+- Technology stack per project
+- Architecture (Section 4)
+- Technology decisions (Section 5)
+- Development tools (Section 6)
+- Open questions (Section 7)
+- MCP servers or shared tools (if mentioned)
 
-This contains:
-- Projects to create
-- Technology stack
-- Architecture
-- Open questions
-- Change history (if v2+)
+**⚠️ Do not invent. If essential info is missing → ask user.**
 
 ---
 
-## STEP 2: ASK CLARIFYING QUESTIONS
+## STEP 2: ASK CLARIFYING QUESTIONS (During Preview)
 
-**If essential information is missing, ASK THE USER:**
+**This happens during the preview/discussion phase, NOT after showing preview.**
 
-Essential = needed to generate working structure:
+**Ask ONLY if essential information is missing for the preview:**
+
+Essential = needed for working structure:
 - Project names
-- Basic tech stack per project  
-- Which projects depend on each other
+- Basic tech stack (language/framework)
+- Project relationships
 
 **Ask about:**
-- Missing technology choices (language, framework, database)
-- Unclear project relationships
+- Missing technology choices
+- Unclear project dependencies
 - Ambiguous architecture
-- Deployment targets if needed for config
+- Deployment platforms if critical
 
 **Don't ask about:**
 - Things clearly stated in PRD
-- Minor details that can be "To be determined"
+- Minor details (mark as "To be determined")
 - Non-essential configuration
+
+**Remember:** User will see full preview and can ask questions there too.
 
 ---
 
-## STEP 3: GENERATE STRUCTURE
+## STEP 3: EXTRACT SOLUTION-WIDE RULES
 
-For each project in the PRD, create in the **parent directory** (`../`):
+**Identify solution-level rules to go in `solution-rules.md`:**
+
+Look for in PRD:
+- MCP servers mentioned
+- Development tools (Git, testing, CI/CD)
+- Security standards
+- Quality standards (coverage, performance)
+- Shared services (auth, database)
+- Solution architecture
+
+**These apply to ALL projects.**
+
+---
+
+## STEP 4: GENERATE solution-rules.md
+
+Create `./solution-rules.md` (in flight-plan-solution directory):
+
+Use `templates/solution-rules.md.template`
+
+**Fill in:**
+- MCP servers (if mentioned in PRD Section 6)
+- Development tools (from PRD Section 6)
+- Security standards (from PRD)
+- Quality standards (test coverage, etc.)
+- Solution architecture (from PRD Section 4)
+- Git workflow
+- CI/CD approach
+
+**If not mentioned:** Use reasonable defaults or "To be determined"
+
+---
+
+## STEP 5: CREATE COORDINATION FILES
+
+In `./ai-refs/` (current directory):
+
+```
+ai-refs/
+├── solution-overview.md    # All projects, dependencies, status
+├── notes.md                # Empty (user's personal notes)
+└── cursor.md               # Empty (AI working reference)
+```
+
+**solution-overview.md:**
+```markdown
+# Solution Overview: [Solution Name]
+
+**PRD Version:** v[N]  
+**Last Updated:** [date]
+
+## Projects
+
+### [project-1-name]
+- Type: [from PRD]
+- Status: Phase 1 - Define Mission
+- Location: ../[project-1-name]/
+- Dependencies: [internal + external]
+
+### [project-2-name]
+- Type: [from PRD]
+- Status: Phase 1 - Define Mission
+- Location: ../[project-2-name]/
+- Dependencies: [internal + external]
+
+## Architecture
+
+[Diagram from PRD Section 4]
+
+## Shared Tools
+
+[List from solution-rules.md]
+```
+
+---
+
+## STEP 6: GENERATE PROJECTS
+
+For each project in the PRD, create in parent directory (`../`):
 
 ```
 ../[project-name]/
+├── project-prd.md          # Use templates/project-prd.md.template
+├── project-rules.md        # Use templates/project-rules.md.template
 ├── .flight-plan/
-│   ├── current.md              # Progress tracking
-│   ├── requirements.md         # WHAT (tech-agnostic, PM-friendly)
-│   ├── implementation.md       # HOW (tech-specific details)
-│   ├── history/                # Empty
-│   ├── prompts/
-│   │   ├── successful.md       # Empty template
-│   │   └── failed.md           # Empty template
-│   └── decisions/              # Empty
-│
-├── docs/
-│   ├── third-party/            # Empty
-│   ├── snippets/               # Empty
-│   ├── research/               # Empty
-│   └── logs/                   # Empty
-│
+│   ├── current.md          # Use templates/flight-plan-current.md.template
+│   └── history/            # Empty directory
 ├── .cursor/
 │   └── rules/
-│       └── flight-plan.mdc     # Copy from templates/
-│
-└── README.md                   # Generate from PRD
+│       └── flight-plan.mdc # Use templates/cursor-rule.mdc.template
+├── docs/                   # Empty directory
+├── src/                    # Empty directory
+└── README.md               # Generate from PRD
 ```
 
-**File Purposes:**
-- **requirements.md** - Business requirements, user stories, success criteria (no tech)
-- **implementation.md** - Technology stack, architecture, framework choices, deployment
+**Do NOT create:**
+- `memory/constitution.md` (only via `flight-plan enable-speckit`)
+- `specs/` (only via `flight-plan enable-speckit`)
+- `CLAUDE.md` (optional, user can add later)
 
 ---
 
-## STEP 4: CREATE COORDINATION FILES
+## STEP 7: FILL TEMPLATES
 
-In `flight-plan-solution/` directory (current directory):
+### project-prd.md (Single Source of Truth)
 
-```
-./ai-refs/
-├── solution-overview.md        # Cross-project status (include PRD version)
-├── notes.md                    # User's personal notes/thoughts
-└── [your-name].md              # Your working reference (e.g., cursor.md)
-```
+Use `templates/project-prd.md.template`
 
-**IMPORTANT:** Rebuild `solution-overview.md` whenever a new PRD version is adopted. Include PRD version and date at top. This ensures all AIs see current project relationships and dependencies.
+**Fill from PRD:**
 
----
+| Field | Source | Example |
+|-------|--------|---------|
+| PROJECT_NAME | Section 3 | "backend-api" |
+| SOLUTION_NAME | Section 1 title | "MyApp" |
+| SOLUTION_VERSION | PRD version | "v1" |
+| PROJECT_PURPOSE | Section 3 | "REST API for frontend" |
+| PROJECT_TYPE | Section 3 | "Backend API" |
+| TARGET_USERS | Section 2 or infer | "Frontend, mobile apps" |
+| PROBLEM_STATEMENT | Section 1 | Extract verbatim |
+| FUNCTIONAL_REQUIREMENTS | Section 3 | Extract per project |
+| USER_STORIES | Infer from requirements | "As a frontend, I want..." |
+| SUCCESS_CRITERIA | Section 3 | Extract metrics |
+| LANGUAGE | Section 3 | "Node.js" or "TBD" |
+| FRAMEWORK | Section 3 | "Express" or "TBD" |
+| DATABASE | Section 3 | "PostgreSQL" or "N/A" |
+| DEPLOYMENT | Section 3 | "Railway" or "TBD" |
+| ARCHITECTURE_DESCRIPTION | Section 4 | Project-specific part |
+| INTERNAL_DEPENDENCIES | Section 3 | Other projects |
+| EXTERNAL_DEPENDENCIES | Section 3 | Third-party services |
+| OPEN_QUESTIONS | Section 7 | Filter by project |
+| TECHNOLOGY_DECISIONS | Section 5 | Filter by project |
 
-## TEMPLATES
-
-Use files in `templates/` directory:
-- `flight-plan-current.md.template` → `.flight-plan/current.md`
-- `flight-plan-requirements.md.template` → `.flight-plan/requirements.md`
-- `flight-plan-implementation.md.template` → `.flight-plan/implementation.md`
-- `cursor-rule.mdc.template` → `.cursor/rules/flight-plan.mdc`
-
-Fill in project-specific details from the PRD.
-
-### Template Variables Reference
-
-Replace these placeholders with values from the PRD:
-
-| Variable | Source (PRD Section) | Example | If Missing |
-|----------|---------------------|---------|------------|
-| `{{PROJECT_NAME}}` | Section 3 - Project name | "portfolio-site" | Ask user |
-| `{{PROJECT_TYPE}}` | Section 3 - Type field | "Frontend (Static Site)" | "To be determined" |
-| `{{PRD_VERSION}}` | Filename version | "v1" | Use latest |
-| `{{SOLUTION_NAME}}` | Section 1 - Title | "Portfolio Website" | Use PRD title |
-| `{{CREATED_DATE}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
-| `{{LAST_UPDATED}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
-| `{{GENERATION_DATE}}` | Current date | "2025-10-22 14:00 UTC" | Generate now |
-| `{{PROJECT_PURPOSE}}` | Section 3 - Purpose | "Personal portfolio..." | Extract from PRD |
-| `{{TOOLS_LIST}}` | Section 6 - Development Tools | "VS Code, Git, Chrome DevTools" | "To be determined" |
-| `{{BLOCKERS_FROM_PRD}}` | Section 7 - Open Questions | "question-1: Layout approach" | "None currently" |
-| `{{RELATED_PROJECTS}}` | Section 3 - Dependencies | "backend, admin-ui" | "None (standalone)" |
-| `{{TECH_STACK_SUMMARY}}` | Section 3 - Technology | "HTML/CSS/JS on Netlify" | Extract or ask |
-| `{{LANGUAGE}}` | Section 3 - Language | "JavaScript" | Ask if missing |
-| `{{FRAMEWORK}}` | Section 3 - Framework | "None (vanilla)" | Ask if missing |
-| `{{DATABASE_TYPE}}` | Section 3 - Database | "Not applicable" | "To be determined" |
-| `{{DEPLOYMENT_PLATFORM}}` | Section 3 - Deployment | "Netlify" | Ask if missing |
-| `{{TARGET_USERS}}` | Section 2 or infer | "Potential clients, recruiters" | Infer from problem |
-| `{{PROBLEM_STATEMENT}}` | Section 1 | "Need online presence..." | Extract verbatim |
-| `{{USER_STORIES}}` | Infer from problem | "As a client, I want..." | Generate from problem |
-| `{{OPEN_QUESTIONS_FROM_PRD}}` | Section 7 | "- question-1: Layout..." | Copy directly |
-
-**If PRD is missing required info:**
-- Essential fields (PROJECT_NAME, TECH_STACK) → Ask user
-- Optional fields → Use "To be determined"
-- Never invent details → Mark as TBD or ask
-
-**Date Format:** Always UTC ISO 8601 (YYYY-MM-DD HH:MM UTC)
+**Open Questions:** Only include questions that affect THIS project (check "Blocks" field)
 
 ---
 
-## WHAT TO GENERATE
+### project-rules.md (AI Integration)
 
-### .flight-plan/current.md
+Use `templates/project-rules.md.template`
+
+**Fill:**
+- Inherited MCP servers (from solution-rules.md)
+- Project-specific MCP servers (if any)
+- Technical stack (from project-prd.md)
+- Quality standards (from PRD + solution-rules.md)
+- Project-specific rules (API conventions, error handling, etc.)
+
+**Default Spec-Kit:** `SPECKIT_ENABLED: No`
+
+---
+
+### .flight-plan/current.md (Status Tracking)
+
+Use `templates/flight-plan-current.md.template`
+
+**Fill:**
+- PROJECT_NAME
+- LAST_UPDATED (current date)
+- PRD_VERSION (from PRD filename)
+- SYNC_DATE (current date)
+- OPEN_ITEMS (from filtered Open Questions)
+- RECENT_NOTES (empty or "Initial setup")
+
+**Phase:** Always start at "1 - Define Mission"
+
+---
+
+### .cursor/rules/flight-plan.mdc (Cursor Pointer)
+
+Use `templates/cursor-rule.mdc.template`
+
+**Fill:**
+- PROJECT_NAME
+- GENERATION_DATE (current date)
+
+**No other changes needed** - template points to project-rules.md
+
+---
+
+### README.md (Project Overview)
+
+Generate from PRD:
+
 ```markdown
-# Flight Plan: [project-name]
+# [Project Name]
 
-**Status:** Phase 1 - Define Mission (STARTING)
-**Created:** [today's date]
-**Project Type:** [from PRD]
-
-## Current Phase: 1 - DEFINE THE MISSION
-
-### ✅ Completed Tasks
-- [ ] Problem statement defined
-- [ ] Requirements documented in spec.md
-- [ ] Success metrics established
-
-### 🛠 Tools Being Used
-[List from PRD]
-
-### 📋 Next Steps
-1. Complete requirements in spec.md
-2. Define success metrics
-3. Move to Phase 2
-
-### 🚧 Blockers
-[List from PRD Open Questions if they block this project]
-
----
-
-## Project Context
-
-**Solution:** [from PRD]
-**Related Projects:** [from PRD]
-**Tech Stack:** [from PRD]
-```
-
-### .flight-plan/requirements.md (WHAT - Tech Agnostic)
-Extract business requirements from PRD:
-```markdown
-# [project-name] - Requirements
-
-**Version:** 0.1
-**Status:** Draft
-**PRD Source:** solution-prd-v[N].md
+**Part of:** [Solution Name]  
+**Type:** [Project Type]  
+**Status:** Phase 1 - Define Mission
 
 ## Overview
-[From PRD project purpose - no tech mentioned]
 
-## User Stories
-[Extract from PRD]
+[Project purpose from PRD]
 
-## Functional Requirements
-[What the system must do - no implementation details]
+## Tech Stack
 
-## Success Criteria
-[How we know it works - measurable outcomes]
+- **Language:** [from PRD]
+- **Framework:** [from PRD]
+- **Database:** [from PRD]
+- **Deployment:** [from PRD]
 
-## Constraints
-[Business/regulatory/budget constraints]
+## Quick Start
 
-## Open Questions
-[From PRD - questions affecting this project]
-```
+[Add basic setup instructions]
 
-### .flight-plan/implementation.md (HOW - Tech Specific)
-Extract technical details from PRD:
-```markdown
-# [project-name] - Implementation
+## Documentation
 
-**Version:** 0.1
-**Status:** Draft
-**PRD Source:** solution-prd-v[N].md
+- **Project PRD:** `project-prd.md` - Complete specifications
+- **Status:** `.flight-plan/current.md` - Current phase and progress
+- **Rules:** `project-rules.md` - How AI should work in this project
 
-## Technology Stack
-[From PRD - language, framework, database, deployment]
+## Flight Plan Integration
+
+This project uses Flight Plan methodology (8 phases).
+
+**Commands:**
+- `flight-plan status` - Show current state
+- `flight-plan prd refresh` - Update tracking from PRD changes
+
+See: `../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md`
 
 ## Architecture
-[Technical architecture - APIs, data flow, integrations]
+
+[Include diagram from PRD if relevant to this project]
 
 ## Dependencies
-**Internal:** [Other projects from PRD]
-**External:** [Third-party services, libraries]
 
-## Deployment
-[Hosting, CI/CD, environments]
-
-## Technical Decisions
-[Key tech choices and reasoning from PRD]
+**Internal:** [Other projects from same solution]  
+**External:** [Third-party services]
 ```
 
-### .cursor/rules/flight-plan.mdc
-**Important:** Use the template from `templates/cursor-rule.mdc.template`.
+---
 
-The paths in the template are already configured correctly:
-- PRD path: `../../flight-plan-solution/solution-prd-v*.md`
-- Overview: `../../flight-plan-solution/ai-refs/solution-overview.md`
-- Commands: `../../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md`
+## TEMPLATE VARIABLES REFERENCE
 
-These paths navigate from:
-`MyApp/project-name/.cursor/rules/` → up 2 levels → `MyApp/flight-plan-solution/`
+All templates use `{{VARIABLE}}` placeholders:
+
+| Variable | Description | Default if Missing |
+|----------|-------------|--------------------|
+| PROJECT_NAME | Project folder name | Ask user |
+| SOLUTION_NAME | Solution title | From PRD Section 1 |
+| SOLUTION_VERSION | PRD version (v1, v2) | Use latest |
+| PROJECT_TYPE | Frontend/Backend/Functions | "TBD" |
+| PROJECT_PURPOSE | One-line description | Extract from PRD |
+| LANGUAGE | Programming language | "To be determined" |
+| FRAMEWORK | Web/app framework | "To be determined" |
+| DATABASE | Database system | "Not applicable" |
+| DEPLOYMENT | Hosting platform | "To be determined" |
+| CREATED_DATE | Generation timestamp | Now (UTC) |
+| LAST_UPDATED | Last modified | Now (UTC) |
+| GENERATION_DATE | Template fill date | Now (UTC) |
+| PRD_VERSION | Source PRD version | v1, v2, etc. |
+| OPEN_ITEMS | Filtered open questions | Per project |
+| INTERNAL_DEPENDENCIES | Same-solution projects | Extract from PRD |
+| EXTERNAL_DEPENDENCIES | Third-party services | Extract from PRD |
+
+**Date Format:** Always `YYYY-MM-DD HH:MM UTC`
 
 ---
 
 ## AFTER GENERATION
 
-Tell the user:
+**Display this message:**
 
 ```
-✅ Structure generated in parent directory!
+✅ Flight Plan Initialized
 
-Created projects in MyApp/:
-- [list projects with paths: ../project-a/, ../project-b/]
+Generated [N] projects in ../
 
-Each has:
-- .flight-plan/ (progress tracking)
-- docs/ (reference materials)
-- .cursor/rules/ (IDE integration pointing to flight-plan-solution/)
+📁 Structure:
+../[project-1]/
+../[project-2]/
+../[project-3]/
 
-Coordination files created in flight-plan-solution/:
-- ai-refs/solution-overview.md
-- ai-refs/notes.md
-- ai-refs/cursor.md
+📋 Solution Files:
+./solution-rules.md (shared rules)
+./ai-refs/ (coordination)
 
-To start working:
-cd ../[any-project]/
-Open .flight-plan/current.md
-Begin Phase 1: Define the Mission
+🚀 Next Steps:
 
-Or open MyApp/ folder in Cursor to see all projects.
-```
+1. Review generated projects:
+   cd ../[any-project]/
+   cat project-prd.md
 
----
+2. Start working on a project:
+   cd ../[project]/
+   "flight-plan status"
 
-## YOUR WORKING FILE
+3. Optional - Enable Spec-Kit:
+   cd ../[project]/
+   "flight-plan enable-speckit"
 
-Create `./ai-refs/[your-name].md` (in flight-plan-solution directory):
+4. See available commands:
+   cat ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
 
-```markdown
-# [Your Name] Working Reference
+All projects start in Phase 1 (Define Mission).
+The AI in each project will guide you through Flight Plan phases.
 
-**Created:** [date]
-**Solution:** [from PRD]
-**Projects Location:** ../[project-name]/ (parent directory)
-
-## Projects Status
-[List each project and current phase]
-
-## Last Actions
-- Generated projects in parent directory (MyApp/)
-- Created coordination files in flight-plan-solution/ai-refs/
-- Set up Cursor integration
-
-## Next Session
-When I return:
-1. Read this file
-2. Check solution-overview.md
-3. Navigate to ../ to see all projects
-4. Continue work
+Happy building! 🛫
 ```
 
 ---
 
-**That's it! Read PRD → Ask questions if needed → Generate structure → Done.**
+## IMPORTANT NOTES
+
+**Preview → Discuss → Confirm → Execute:**
+- ALWAYS triggered via FLIGHT-PLAN-INIT.md first (which shows preview)
+- DO NOT execute generation without explicit confirmation
+- Wait for user to say "generate our flight plan" or similar
+- Have natural conversation during preview phase
+- NO automatic "Proceed? (y/n)" prompts
+
+**Extraction, Not Invention:**
+- Do NOT invent details not in PRD
+- Mark unknowns as "To be determined"
+- Ask user if essential info is missing
+
+**File Locations:**
+- Projects: Parent directory (`../`)
+- Solution files: Current directory (`./`)
+- Templates: `./templates/`
+
+**Version Consistency:**
+- All projects reference same PRD version
+- solution-overview.md shows PRD version
+- Each project-prd.md notes source version
+
+**Minimal by Default:**
+- Don't create Spec-Kit files (memory/, specs/)
+- Don't create AI pointer files beyond .cursor
+- User can add CLAUDE.md, etc. later
+
+---
+
+**Generator Version:** 1.0  
+**Compatible with:** Flight Plan v1.0, solution-prd-v*.md format  
+**Last Updated:** 2025-10-25

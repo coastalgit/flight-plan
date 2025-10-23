@@ -1,47 +1,56 @@
-# Flight Plan: {{PROJECT_NAME}}
+# {{PROJECT_NAME}} Status
 
-**Status:** Phase 1 - Define Mission (STARTING)  
-**Created:** {{CREATED_DATE}}  
-**Last Updated:** {{LAST_UPDATED}}  
-**Project Type:** {{PROJECT_TYPE}}  
-**PRD Source:** solution-prd-v{{PRD_VERSION}}.md
+**Phase:** 1 - Define Mission  
+**Last Updated:** {{LAST_UPDATED}}
 
 ---
 
-## Current Phase: 1 - DEFINE THE MISSION
+## Current Activity
 
-### Phase Objective
-State why {{PROJECT_NAME}} exists and what success looks like.
-
-### ✅ Completed Tasks
-- [ ] Problem statement defined in requirements.md
-- [ ] Success metrics established
-- [ ] Stakeholders identified
-- [ ] Requirements documented
-
-### 🛠 Tools Being Used
-{{TOOLS_LIST}}
-
-### 📋 Next Steps
-1. Complete requirements.md with detailed user stories
-2. Define measurable success criteria
-3. Review with stakeholders
-4. Move to Phase 2: Build Context
-
-### 🚧 Blockers
-{{BLOCKERS_FROM_PRD}}
+Working on: Initial project setup  
+Framework: None (use `flight-plan enable-speckit` if desired)
 
 ---
 
-## Project Context
+## PRD Status
 
-**Solution:** {{SOLUTION_NAME}}  
-**Related Projects:** {{RELATED_PROJECTS}}  
-**Dependencies:** See implementation.md
+Version: v{{PRD_VERSION}} (synced {{SYNC_DATE}})  
+Source: solution-prd-v{{PRD_VERSION}}.md
 
 ---
 
 ## Phase Progress
+
+Phase 1 Activities:
+⏸️ Document problem statement
+⏸️ Define user stories
+⏸️ Establish success metrics
+⏸️ Identify stakeholders
+⏸️ Clarify scope
+
+**Move to Phase 2 when:** Problem and requirements are clear and documented.
+
+See: ../../flight-plan-solution/FLIGHT-PLAN-PHASES.md for phase details
+
+---
+
+## Open Items
+
+{{OPEN_ITEMS}}
+
+These are blockers or questions that need resolution.
+
+---
+
+## Recent Notes
+
+{{RECENT_NOTES}}
+
+Use `flight-plan note [text]` to add entries
+
+---
+
+## Phase Tracker
 
 ```
 Phase 1: Define Mission        [ In Progress ]
@@ -53,12 +62,6 @@ Phase 6: Automate & Integrate  [ Not Started ]
 Phase 7: Reflect & Capture     [ Not Started ]
 Phase 8: Meta Layer            [ Not Started ]
 ```
-
----
-
-## Notes
-
-{{INITIAL_NOTES}}
 
 ---
 

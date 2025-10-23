@@ -24,11 +24,15 @@ flight-plan-solution/
 ├── README.md                               # This file
 ├── BRIEF-BUILDER-v1.0.md                  # Formats brainstorm into PRD
 ├── GENERATOR.md                            # Generates project structure
+├── FLIGHT-PLAN-INIT.md                    # Initial setup command
 ├── FLIGHT-PLAN-COMMANDS.md                # Ongoing operations
+├── FLIGHT-PLAN-PHASES.md                  # 8 phases explained
 ├── templates/                              # Templates for generation
+│   ├── project-prd.md.template
+│   ├── solution-rules.md.template
+│   ├── project-rules.md.template
+│   ├── constitution.md.template (Spec-Kit)
 │   ├── flight-plan-current.md.template
-│   ├── flight-plan-requirements.md.template
-│   ├── flight-plan-implementation.md.template
 │   └── cursor-rule.mdc.template
 └── examples/
     ├── portfolio-site-brainstorm.md       # Raw brainstorm example
@@ -69,21 +73,16 @@ MyApp/                                  # Your solution root directory
 │       └── cursor.md                   # AI working memory
 │
 ├── project-a/                          # Generated project (sibling to flight-plan-solution)
+│   ├── project-prd.md                  # What to build (single source of truth)
+│   ├── project-rules.md                # How AI should work (inherits from solution-rules)
 │   ├── .flight-plan/
-│   │   ├── current.md                  # Progress tracking
-│   │   ├── requirements.md             # WHAT to build
-│   │   ├── implementation.md           # HOW to build
-│   │   ├── history/
-│   │   ├── prompts/
-│   │   └── decisions/
-│   ├── docs/
-│   │   ├── third-party/
-│   │   ├── snippets/
-│   │   ├── research/
-│   │   └── logs/
+│   │   ├── current.md                  # Progress tracking (phase, status)
+│   │   └── history/
 │   ├── .cursor/
 │   │   └── rules/
-│   │       └── flight-plan.mdc         # Points to ../flight-plan-solution/
+│   │       └── flight-plan.mdc         # Points to project-rules.md
+│   ├── CLAUDE.md (optional)            # Points to project-rules.md
+│   ├── docs/                           # Reference materials
 │   ├── src/                            # Your code
 │   └── README.md
 │
@@ -134,25 +133,29 @@ cp solution-prd-v1.md ./flight-plan-solution/
 
 ### 4. Generate Project Structure
 
-**In Cursor:**
+**In Cursor (or any AI):**
 ```
 Open MyApp/flight-plan-solution/ in Cursor
-Say: "Read GENERATOR.md and create the project structure"
+Say: "flight-plan init"
 ```
 
-**Or CLI:**
-```
-cd MyApp/flight-plan-solution/
-[Run your preferred AI CLI tool]
-"Read GENERATOR.md and generate structure"
-```
+**Flight Plan uses a Preview → Discuss → Confirm → Execute pattern:**
 
 AI will:
-- Ask clarifying questions if needed
-- Generate project directories in `MyApp/` (parent directory)
-- Create `.flight-plan/` tracking in each project
-- Set up Cursor integration
-- Create AI reference files in `flight-plan-solution/ai-refs/`
+1. **Preview** - Show detailed preview (tech stack, projects, structure, dependencies, open questions)
+2. **Discuss** - Let you ask questions, verify, refine understanding
+3. **Wait** - No automatic prompts, just natural conversation
+4. **Execute** - When you say "generate our flight plan", creates all projects
+
+**Example conversation:**
+```
+You: "flight-plan init"
+AI: [Shows detailed preview]
+You: "What database is the backend using?"
+AI: [Explains: PostgreSQL from PRD Section 3]
+You: "Looks good, generate our flight plan"
+AI: [Creates all projects]
+```
 
 **Done!** Your projects are now in `MyApp/` alongside `flight-plan-solution/`.
 
@@ -164,23 +167,23 @@ For each project in your PRD (created in parent directory `MyApp/`):
 
 ```
 MyApp/your-project/
-├── .flight-plan/               # Progress tracking
-│   ├── current.md              # Current phase & tasks
-│   ├── requirements.md         # WHAT to build (business requirements)
-│   ├── implementation.md       # HOW to build (technical details)
-│   ├── history/                # Milestones
-│   ├── prompts/                # What worked
-│   └── decisions/              # Key choices
+├── project-prd.md              # What to build (combines requirements + implementation)
+├── project-rules.md            # How AI should work (inherits solution-rules.md)
+├── .flight-plan/
+│   ├── current.md              # Current phase, status, activity
+│   └── history/                # Milestones
+├── .cursor/rules/
+│   └── flight-plan.mdc         # Points to project-rules.md
+├── CLAUDE.md (optional)        # Points to project-rules.md  
 ├── docs/                       # Reference materials
-│   ├── third-party/            # External specs
-│   ├── snippets/               # Code examples
-│   ├── research/               # Background
-│   └── logs/                   # Development logs
-├── .cursor/
-│   └── rules/
-│       └── flight-plan.mdc     # IDE integration (points to ../flight-plan-solution/)
 └── src/                        # Your code
 ```
+
+**Simplified structure:**
+- `project-prd.md` - Single source of truth (Git tracks history)
+- `project-rules.md` - AI integration layer (inherits from solution)
+- `.flight-plan/current.md` - Light status tracking (phase, blockers)
+- Minimal AI pointer files (just reference project-rules.md)
 
 ---
 
@@ -198,19 +201,52 @@ MyApp/your-project/
 
 ---
 
-## 🔌 Cursor Integration
+## 🔌 AI Integration
 
-The `.cursor/rules/flight-plan.mdc` file automatically integrates Flight Plan with Cursor IDE:
+**Works with any AI IDE/tool:**
 
-**What it does:**
-1. Auto-reads PRD on first interaction in each project
-2. Loads current phase and tasks from `.flight-plan/current.md`
-3. Checks requirements and implementation files
-4. Updates progress as you work
+Each project gets a `project-rules.md` that tells the AI:
+- Where to find project specs (project-prd.md)
+- What solution-wide tools are available (solution-rules.md)
+- Current phase and status (.flight-plan/current.md)
+- How to work in this project
 
-**Setup:** None needed! Just open the project in Cursor.
+**AI-specific pointer files:**
+- `.cursor/rules/flight-plan.mdc` → points to project-rules.md (auto-loaded)
+- `CLAUDE.md` → points to project-rules.md (for Claude Desktop)
+- `GEMINI.md` → points to project-rules.md (for Gemini)
 
-The `alwaysApply: true` setting means Cursor automatically uses these rules without you needing to do anything. It will know about your PRD, current phase, blockers, and requirements every time you work in the project.
+**Setup:** None needed! Just open the project. AI auto-reads project-rules.md.
+
+The AI will:
+1. Check your current phase
+2. Apply phase-appropriate standards
+3. Use available tools (MCP servers from solution-rules.md)
+4. Guide you through Flight Plan methodology naturally
+
+---
+
+## 🎯 Optional: Spec-Kit Integration
+
+Want to use Spec-Kit for feature-level development?
+
+**From any project:**
+```
+cd MyApp/your-project/
+"flight-plan enable-speckit"
+```
+
+This creates:
+- `memory/constitution.md` - References Flight Plan files
+- `specs/` - For Spec-Kit feature specs
+
+Spec-Kit will automatically:
+- Check your current phase
+- Apply phase-appropriate standards
+- Reference project-prd.md for constraints
+- Work with Flight Plan naturally
+
+**No Spec-Kit?** No problem. Flight Plan works standalone.
 
 ---
 

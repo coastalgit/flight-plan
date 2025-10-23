@@ -1,0 +1,123 @@
+# Solution Rules: {{SOLUTION_NAME}}
+
+**Version:** v{{VERSION}}  
+**Last Updated:** {{LAST_UPDATED}}
+
+---
+
+## Purpose
+
+This file defines solution-wide rules, tools, and standards that apply to all projects.
+
+All projects inherit these rules via their `project-rules.md` files.
+
+---
+
+## MCP Servers (All Projects)
+
+{{MCP_SERVERS}}
+
+Example:
+```json
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-firebase"]
+    }
+  }
+}
+```
+
+**Usage:** Describe how projects use this MCP server
+
+---
+
+## Development Tools (All Projects)
+
+**Version Control:**
+- Git workflow: {{GIT_WORKFLOW}}
+- Branch strategy: {{BRANCH_STRATEGY}}
+
+**Code Quality:**
+- Minimum test coverage: {{COVERAGE}}%
+- Code review: {{REVIEW_POLICY}}
+- Linting: {{LINTING_TOOLS}}
+
+**Documentation:**
+- README required: Yes
+- API documentation: {{API_DOCS_TOOL}}
+
+---
+
+## AI Integration
+
+**Flight Plan:** All projects use Flight Plan methodology (8 phases)
+
+**Context Files for Any AI:**
+1. Read this file first (solution-rules.md)
+2. Read project-rules.md (project-specific)
+3. Read project-prd.md (what to build)
+4. Read .flight-plan/current.md (status)
+
+---
+
+## Security Standards (All Projects)
+
+{{SECURITY_STANDARDS}}
+
+Example:
+- No secrets in code
+- Environment variables for config
+- HTTPS only
+- Input validation required
+- Authentication required
+
+---
+
+## Solution Architecture
+
+{{SOLUTION_ARCHITECTURE}}
+
+```
+Example:
+frontend → backend → database
+          ↓
+      notifications
+```
+
+**Shared Services:**
+{{SHARED_SERVICES}}
+
+---
+
+## Quality Standards (All Projects)
+
+**Performance:**
+{{PERFORMANCE_STANDARDS}}
+
+**Reliability:**
+{{RELIABILITY_STANDARDS}}
+
+**Monitoring:**
+{{MONITORING_APPROACH}}
+
+---
+
+## Deployment Standards
+
+**Environments:**
+- Development: {{DEV_ENV}}
+- Staging: {{STAGING_ENV}}
+- Production: {{PROD_ENV}}
+
+**CI/CD:**
+{{CICD_APPROACH}}
+
+---
+
+**Projects inherit these rules and add their own in project-rules.md**
+
+**Template Version:** 1.0  
+**Generated:** {{GENERATION_DATE}}
+

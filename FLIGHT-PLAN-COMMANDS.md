@@ -1,392 +1,615 @@
-# ⚡ Flight Plan Commands — Ongoing Operations
+# ⚡ Flight Plan Commands
 
-**Commands Version:** 1.0  
-**Last Updated:** 2025-10-22
-
----
-
-**Philosophy:** Commands describe intent, not syntax. Any AI or human following this document must prefer accuracy and traceability over speed.
+**Version:** 1.0  
+**Last Updated:** 2025-10-25
 
 ---
 
 ## Overview
 
-After initial setup with GENERATOR.md, use these commands for ongoing work.
+After initial setup (`flight-plan init`), use these commands for ongoing work.
 
-**Just say to your local AI (Cursor, Claude, etc):**
+**Just say to your AI (Cursor, Claude, etc):**
 ```
 "flight-plan status"
 "flight-plan sync"
-"flight-plan review"
-"flight-plan help"
+"flight-plan prd refresh"
 ```
 
-### TL;DR Command Reference
-
-| Command | Purpose | Reads | Writes |
-|---------|---------|-------|--------|
-| **help** | show all commands | this file | – |
-| **status** | show progress summary | current.md | – |
-| **sync** | apply latest PRD changes | solution-prd-v*.md | requirements.md, implementation.md |
-| **evaluate** | compare requirements vs implementation | requirements.md, implementation.md | – |
-| **review** | list blockers, TODOs, quality metrics | all current/specs | – |
-| **note** | add log / decision / milestone | – | logs/, decisions/, history/ |
-| **deps** | analyze dependencies & impacts | implementation.md | – |
-
-**Safety:**
-- 🟢 Read-only: `status`, `evaluate`, `review`, `deps`
-- 🟠 Write: `sync`, `note`
+AI interprets these naturally and performs the actions.
 
 ---
 
-## Commands
+## Command Reference
 
-### `flight-plan help`
+### Solution-Level Commands
+(Run from `flight-plan-solution/`)
 
-**Show all available commands with examples**
+| Command | Purpose |
+|---------|---------|
+| `flight-plan status` | Show all projects' progress |
+| `flight-plan sync` | Push PRD changes to projects |
 
-```
-Lists this command reference with:
-- Command syntax
-- Available options
-- Example usage
-- What each command does
-```
+### Project-Level Commands
+(Run from any project directory)
+
+| Command | Purpose |
+|---------|---------|
+| `flight-plan status` | Show this project's status |
+| `flight-plan prd refresh` | Update tracking from PRD edits |
+| `flight-plan note [text]` | Add activity note |
+| `flight-plan phase [N]` | Move to phase N |
+| `flight-plan enable-speckit` | Set up Spec-Kit integration |
 
 ---
+
+## Command Pattern: Preview → Discuss → Confirm → Execute
+
+**All major Flight Plan commands follow this pattern:**
+
+1. **Preview** - AI shows what it understands and what will change
+2. **Discuss** - Natural conversation, ask questions, clarify
+3. **Confirm** - You explicitly say "yes" / "apply" / "do it" when ready
+4. **Execute** - AI performs the actions
+5. **Report** - AI confirms what was done
+
+**No automatic prompts like "Proceed? (y/n)" - just natural conversation.**
+
+### Example Pattern
+
+```
+You: "flight-plan sync"
+
+AI: [Shows detailed preview with changes]
+    Ready to sync? Let me know if you want more details...
+
+You: "What will happen to the backend constitution?"
+
+AI: [Explains constitution will be updated with new tech stack]
+
+You: "Looks good, apply it"
+
+AI: [Executes]
+    ✅ Updated backend-api/project-prd.md
+    ✅ Updated backend-api/memory/constitution.md
+    ...
+```
+
+**This applies to:**
+- `flight-plan init` - Preview all projects before creation
+- `flight-plan sync` - Preview PRD changes before updating
+- `flight-plan prd refresh` - Preview tracking changes before applying
+
+---
+
+## Solution-Level Commands
 
 ### `flight-plan status`
 
-**Show solution-wide progress summary**
+**Location:** flight-plan-solution/
 
-**Syntax:**
-- `flight-plan status` (default: --brief)
-- `flight-plan status --brief` - High-level overview
-- `flight-plan status --full` - Detailed status with all tasks
-- `flight-plan status --report` - Comprehensive report (all details + metrics)
+**Purpose:** Show progress across all projects
 
 **What it does:**
 1. Reads all project `.flight-plan/current.md` files
-2. Shows current phase for each project
-3. Lists active tasks and blockers
-4. Indicates overall solution health
+2. Shows current phase per project
+3. Lists blockers
+4. Shows overall solution health
 
-**--brief output:**
+**Example:**
+```bash
+cd flight-plan-solution/
+
+"flight-plan status"
+
+📊 MyApp Status (solution-prd-v1)
+
+✅ backend-api      Phase 5 (Build Code)      - In progress
+⚠️  frontend        Phase 3 (Design)          - 2 blockers
+✅ notifications    Phase 1 (Define Mission)  - Starting
+
+Overall: 3 projects, 2 blockers
 ```
-📊 Solution Status (from solution-prd-v2.md)
-
-✅ guest-ui          Phase 3 (Design) - On track
-⚠️  backend          Phase 2 (Context) - 2 blockers
-🚀 admin-ui          Phase 5 (Build)   - In progress
-❌ notifications     Phase 1 (Define)  - Blocked (auth decision)
-
-Overall: 3/4 projects active, 1 blocked
-```
-
-**--full output:**
-Includes all tasks, completed items, next steps per project
-
-**--report output:**
-Comprehensive report with metrics, velocity, timeline projections
 
 ---
 
 ### `flight-plan sync`
 
-**Sync projects with latest PRD version**
+**Location:** flight-plan-solution/
 
-**Syntax:**
-- `flight-plan sync` - Sync all projects
-- `flight-plan sync [project-name]` - Sync specific project
-- `flight-plan sync --refresh` - Rebuild solution-overview.md only
+**Purpose:** Push solution PRD changes to project PRDs
 
 **What it does:**
-1. Finds latest `solution-prd-v*.md`
+1. Detects latest `solution-prd-v*.md` (v2, v3, etc.)
 2. Compares with previous version
-3. Shows what changed
-4. Asks what to update
-5. Updates `.flight-plan/requirements.md` and `implementation.md` in affected projects
-6. Logs changes in `.flight-plan/decisions/`
-7. Rebuilds `ai-refs/solution-overview.md`
+3. Shows preview of changes per project
+4. Updates `project-prd.md` files
+5. Updates `solution-rules.md` if needed
+6. Logs changes
 
-**Example workflow:**
+**Example:**
+```bash
+cd flight-plan-solution/
+vim solution-prd-v2.md       # Create new version
+
+"flight-plan sync"
+
+📋 Sync Preview (v1 → v2)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SOLUTION-LEVEL CHANGES:
+  + New MCP server: GitHub MCP (for issue tracking)
+  ~ Updated: Test coverage standard 70% → 80%
+
+PROJECT CHANGES:
+
+• backend-api:
+  ~ Database: PostgreSQL → MongoDB
+  ~ Updated quality standard (from solution)
+  → Spec-Kit: Detected (will update constitution.md)
+
+• frontend:
+  ✓ No changes
+
+• notifications:
+  + Added open question: "Email provider?"
+  + Updated quality standard (from solution)
+  → Spec-Kit: Not enabled
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Will update:
+✓ solution-rules.md (add GitHub MCP, update standards)
+✓ backend-api/project-prd.md
+✓ backend-api/project-rules.md
+✓ backend-api/memory/constitution.md (tech stack)
+✓ notifications/project-prd.md
+✓ notifications/project-rules.md
+✓ ai-refs/solution-overview.md
+
+Ready to sync? Let me know if you want to see detailed changes,
+or say "sync" / "apply" / "do it" when ready.
 ```
-User: "flight-plan sync"
 
-AI: "Latest PRD is v3 (previous was v2).
-Changes detected:
-- backend: Database changed PostgreSQL → MongoDB
-- notifications: New project added
-- admin-ui: No changes
+After user says "sync" or "apply":
+```
+✅ Updated: solution-rules.md
+✅ Updated: backend-api/project-prd.md
+✅ Updated: backend-api/project-rules.md
+✅ Updated: backend-api/memory/constitution.md
+✅ Updated: notifications/project-prd.md
+✅ Updated: notifications/project-rules.md
+✅ Updated: ai-refs/solution-overview.md
 
-Update backend? (y/n)"
+Sync complete. All projects now at v2.
+```
+
+**Important:** This command does NOT run Git commands. Git is the user's responsibility.
+
+---
+
+## Project-Level Commands
+
+### `flight-plan status`
+
+**Location:** Any project directory
+
+**Purpose:** Show this project's current status
+
+**What it does:**
+1. Reads `.flight-plan/current.md`
+2. Shows current phase, activity, blockers
+3. Shows PRD sync status
+
+**Example:**
+```bash
+cd backend-api/
+
+"flight-plan status"
+
+📊 backend-api Status
+
+Phase: 5 - Build Code
+Activity: Implementing user authentication
+PRD: v2 (synced 2025-10-25)
+
+Open Items:
+- Decide caching strategy
+- Review API contracts with frontend
+
+Recent Notes:
+- 2025-10-25: Started auth module
+- 2025-10-24: Database migration complete
 ```
 
 ---
 
-### `flight-plan evaluate`
+### `flight-plan prd refresh`
 
-**Evaluate project against requirements**
+**Location:** Any project directory
 
-**Syntax:**
-- `flight-plan evaluate [project-name]`
-
-**What it does:**
-1. Reads `.flight-plan/requirements.md` (what should be built)
-2. Reads `.flight-plan/implementation.md` (how it's built)
-3. Compares against actual code/structure
-4. Shows gaps, mismatches, or deviations
-5. Suggests next steps
-
-**Example output:**
-```
-📋 Evaluation: backend
-
-Requirements Coverage:
-✅ User authentication         Implemented
-✅ Booking CRUD operations     Implemented
-⚠️  Payment processing         Partial (Stripe integrated, webhooks pending)
-❌ Email notifications         Not started
-
-Implementation Status:
-✅ PostgreSQL schema defined
-✅ Express routes created
-⚠️  Tests at 45% coverage (target: 80%)
-❌ Error handling incomplete
-
-Recommendation: Focus on email notifications (Phase 5 task)
-```
-
----
-
-### `flight-plan review`
-
-**Review all blockers, TODOs, open questions, and quality metrics**
+**Purpose:** Update tracking after manual PRD edits
 
 **What it does:**
-1. Scans all projects for:
-   - Blockers in `current.md`
-   - TODO items from PRD
-   - Open questions
-   - Coverage gaps
-   - Quality gates
-2. Groups by priority
-3. Shows which projects affected
+1. Reads current `project-prd.md`
+2. Compares with `.flight-plan/current.md` state
+3. Detects Spec-Kit if enabled
+4. Shows preview of changes
+5. Updates tracking files after confirmation
 
-**Example output:**
+**Example:**
+```bash
+cd backend-api/
+vim project-prd.md           # Edit PRD manually
+
+"flight-plan prd refresh"
+
+📋 Refresh Preview
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Detected changes in project-prd.md:
+
+OPEN QUESTIONS:
+  + Added: "question-3: Caching strategy?"
+  - Removed: "question-1: Database choice" (RESOLVED)
+
+TECH STACK:
+  + Added: Redis (caching layer)
+  
+QUALITY STANDARDS:
+  ~ Changed: Test coverage 70% → 80%
+
+CONSTRAINTS:
+  + Added: Must support 1000 req/min
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SPEC-KIT: Detected
+  Features in specs/: 3
+  - specs/001-user-auth/
+  - specs/002-profile-mgmt/
+  - specs/003-payments/
+  → Will update memory/constitution.md (tech stack changed)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Will update:
+✓ .flight-plan/current.md (open items, notes)
+✓ memory/constitution.md (tech stack: Redis)
+
+Ready to refresh? Say "apply" / "refresh" / "do it" when ready,
+or ask questions if you need clarification.
 ```
-🔍 Solution Review
 
-HIGH PRIORITY (3):
-- [ ] TODO-001: Choose auth provider (blocks: backend, guest-ui, admin-ui)
-- [ ] Blocker: Database schema review pending (backend)
-- [ ] Question-5: Payment provider selection (backend)
-
-MEDIUM PRIORITY (4):
-- [ ] TODO-003: Email service provider (notifications)
-- [ ] Blocker: Design system not finalized (guest-ui)
-- [ ] Coverage: backend at 45% (target: 80%)
-...
-
-Total: 8 items requiring attention
-Quality gates: 2/4 passing
+After user says "apply" or "refresh":
 ```
+✅ Updated: .flight-plan/current.md
+   - Added open item: question-3
+   - Removed blocker: question-1 (resolved)
+   - Added note: "Redis added for caching"
+✅ Updated: memory/constitution.md
+   - Tech stack: Added Redis
+✅ Logged: PRD refresh at 2025-10-25 16:30 UTC
+
+Refresh complete.
+```
+
+**Use this after:**
+- Manually editing project-prd.md
+- Resolving open questions in PRD
+- Updating requirements or tech stack
+
+**Important:** This command does NOT run Git commands.
 
 ---
 
 ### `flight-plan note`
 
-**Add timestamped notes to project logs**
+**Location:** Any project directory
 
-**Syntax:**
-- `flight-plan note [message]` - General note
-- `flight-plan note --type decision [message]` - Decision log
-- `flight-plan note --type milestone [message]` - Milestone
+**Purpose:** Add timestamped activity note
 
 **What it does:**
-1. Adds timestamped entry to appropriate log
-2. Cross-references in `current.md` if relevant
-3. Updates solution-overview.md if significant
+1. Adds note to `.flight-plan/current.md`
+2. Timestamps entry
 
-**Examples:**
-```
-"flight-plan note Switched to React Query for data fetching"
-→ Adds to docs/logs/[date].md
+**Example:**
+```bash
+"flight-plan note Completed authentication module"
 
-"flight-plan note --type decision Using JWT for auth tokens"
-→ Creates .flight-plan/decisions/jwt-auth-decision.md
+✅ Added note to .flight-plan/current.md
 
-"flight-plan note --type milestone Phase 1 complete, moving to Phase 2"
-→ Adds to .flight-plan/history/[date]-phase-1-complete.md
+Recent Notes now shows:
+- 2025-10-25 16:30: Completed authentication module
+- 2025-10-25 10:00: Started auth module
 ```
 
 ---
 
-### `flight-plan deps`
+### `flight-plan phase`
 
-**Analyze project dependencies and impact**
+**Location:** Any project directory
 
-**Syntax:**
-- `flight-plan deps` - Show all dependencies
-- `flight-plan deps --impact [change]` - Impact analysis
+**Purpose:** Move to a new phase
 
 **What it does:**
-1. Reads all project `implementation.md` files
-2. Extracts internal/external dependencies
-3. Creates dependency graph
-4. Shows critical path
+1. Updates phase in `.flight-plan/current.md`
+2. Resets phase activities checklist
+3. Logs transition
 
-**Example output:**
-```
-📊 Project Dependencies
+**Example:**
+```bash
+"flight-plan phase 2"
 
-guest-ui → backend (API calls)
-admin-ui → backend (API calls)
-backend → notifications (triggers)
-backend → PostgreSQL (storage)
-notifications → SendGrid (email)
+📋 Moving to Phase 2: Build Context
 
-Critical path: guest-ui → backend → PostgreSQL
+Updated:
+✅ .flight-plan/current.md (Phase 1 → Phase 2)
+✅ Reset phase activities checklist
 
-"flight-plan deps --impact backend database change"
-→ Impact: guest-ui, admin-ui, notifications
-   Reason: All depend on backend schema
-   Action: Update API contracts, test integrations
-```
+Phase 2 Objectives:
+- Gather examples and patterns
+- Research technical approaches
+- Document findings
 
----
-
-## How Commands Work
-
-### File Locations Commands Read:
-
-```
-flight-plan-solution/
-├── solution-prd-v*.md          ← Latest version info
-├── ai-refs/
-│   ├── solution-overview.md    ← Cross-project status
-│   └── notes.md                ← Your notes
-└── [project]/
-    └── .flight-plan/
-        ├── current.md          ← Progress, blockers, tasks
-        ├── requirements.md     ← What to build
-        ├── implementation.md   ← How it's built
-        ├── decisions/          ← Decision logs
-        └── history/            ← Milestones
-```
-
-### What Commands Update:
-
-- **status** - Reads only, no updates
-- **sync** - Updates requirements.md, implementation.md, solution-overview.md
-- **evaluate** - Reads only, provides recommendations
-- **review** - Reads only, aggregates data
-- **note** - Writes to logs/, decisions/, history/
-- **deps** - Reads only, analyzes relationships
-
----
-
-## Context for AI
-
-**When user runs a command:**
-
-1. **Parse command** - Identify which command and options
-2. **Gather context** - Read relevant files
-3. **Process** - Perform analysis/updates
-4. **Present results** - Clear, actionable output
-5. **Offer next steps** - Suggest what to do next
-
-**Always:**
-- Include timestamps (UTC ISO 8601)
-- Cross-reference PRD version
-- Show file paths for verification
-- Provide actionable recommendations
-
----
-
-## 🧠 AI Prompt Style
-
-**When using these commands inside a chat or IDE, prefix them with natural language:**
-
-**Good examples:**
-- "Run flight-plan status and tell me what's blocking progress"
-- "Please execute flight-plan deps --impact backend change"
-- "Do a flight-plan review and highlight high-priority items"
-- "flight-plan sync backend and show me what changed"
-
-**Why this works:**
-- AI understands the command structure
-- Natural language provides context
-- Commands describe intent, AI figures out execution
-- You can ask follow-up questions naturally
-
----
-
-## Example Session
-
-```
-User: "flight-plan status --brief"
-AI: [Shows 4 projects, 2 blockers, 8 TODOs]
-
-User: "flight-plan review"
-AI: [Lists blockers, TODOs, and quality metrics by priority]
-
-User: "Tell me more about TODO-001"
-AI: [Explains auth provider decision needed]
-
-User: "We're going with Auth0"
-AI: "Great! Should I:"
-    1. Update backend implementation.md
-    2. Resolve TODO-001
-    3. Log this decision
-    4. Check if this unblocks other projects
-
-User: "Yes, all of that"
-AI: [Performs updates, shows summary]
-
-User: "flight-plan status"
-AI: [Updated status - 1 less blocker, notifications unblocked]
+See: ../flight-plan-solution/FLIGHT-PLAN-PHASES.md
 ```
 
 ---
 
-## Adding Custom Commands
+### `flight-plan enable-speckit`
 
-You can extend with project-specific commands:
+**Location:** Any project directory
 
+**Purpose:** Set up Spec-Kit integration
+
+**What it does:**
+1. Creates `memory/constitution.md` (references Flight Plan files)
+2. Creates `specs/` directory
+3. Shows how to use Spec-Kit with Flight Plan
+
+**Example:**
+```bash
+cd backend-api/
+
+"flight-plan enable-speckit"
+
+✅ Created memory/constitution.md
+✅ Created specs/
+✅ Spec-Kit integration ready
+
+constitution.md references:
+- project-prd.md (project specs)
+- .flight-plan/current.md (phase/status)
+- ../../flight-plan-solution/FLIGHT-PLAN-PHASES.md (phase standards)
+
+You can now use Spec-Kit commands. The AI will:
+- Know what phase you're in
+- Apply appropriate standards
+- Reference Flight Plan context
+
+Next steps:
+- Use Spec-Kit for feature development
+- AI will automatically apply phase-appropriate standards
 ```
-"flight-plan test-coverage"
-"flight-plan deploy-readiness"
-"flight-plan security-audit"
-```
-
-Just describe what you want analyzed and the AI will:
-1. Identify relevant files to read
-2. Perform analysis
-3. Present findings
-4. Suggest actions
 
 ---
 
-## ⚠️ Safety Clause
+## Advanced Usage
 
-**Never overwrite user code or delete files.**
+### Conversational Commands
 
-All write operations must:
-- Create new files (logs, decisions, milestones)
-- Update version-tracked files (requirements.md, implementation.md)
-- Create versioned copies when uncertain
-- Ask before any destructive operation
+You don't need exact syntax. AI interprets naturally:
 
-**Commands marked 🟠 (Write) will:**
-- Show what they'll change before writing
-- Create backups or versioned copies
-- Log all modifications
-- Never touch source code directories
+**Instead of:** `flight-plan status --full`  
+**Say:** "Show me the full status"
 
-**If uncertain, always ask the user first.**
+**Instead of:** `flight-plan sync backend-api`  
+**Say:** "Sync just the backend project"
+
+**Instead of:** `flight-plan note --type decision Using JWT`  
+**Say:** "Log a decision: we're using JWT for auth"
+
+AI understands intent and performs correct action.
 
 ---
 
-**Flight Plan Commands Version:** 1.0  
-**Compatible with:** GENERATOR.md v1.0, BRIEF-BUILDER v1.0
+### Working with Open Questions
+
+**Scenario:** PRD has an open question that's now resolved.
+
+**Project-level:**
+```bash
+cd backend-api/
+vim project-prd.md           # Remove resolved question
+
+"flight-plan prd refresh"
+```
+
+AI automatically:
+- Removes from blockers
+- Updates current.md
+- Logs resolution
+
+**No need to manually update multiple files.**
+
+---
+
+### Cross-Project Changes
+
+**Scenario:** You updated `solution-rules.md` to add a new MCP server.
+
+**Solution-level:**
+```bash
+cd flight-plan-solution/
+vim solution-rules.md        # Add MCP server
+
+"Sync solution rules to all projects"
+```
+
+AI will:
+- Update each project's `project-rules.md` if it inherits the change
+- Notify which projects are affected
+- Log the update
+
+---
+
+## Git Integration
+
+**Flight Plan does NOT run Git commands.**
+
+Your workflow:
+1. Make changes (via Flight Plan commands)
+2. Review changes (files updated)
+3. Commit manually:
+   ```bash
+   git add .
+   git commit -m "Updated project-prd.md: Added caching requirements"
+   ```
+
+**Why?** 
+- You control Git workflow
+- You write meaningful commit messages
+- You decide when to commit
+
+Flight Plan manages files. You manage Git.
+
+---
+
+## Command Philosophy
+
+**Intent over syntax:**
+- Say what you want in natural language
+- AI interprets and performs action
+- No need to memorize exact commands
+
+**Transparency:**
+- AI shows what it will do
+- User confirms
+- Changes are logged
+
+**No magic:**
+- Read from files
+- Write to files
+- That's it
+
+---
+
+## Troubleshooting
+
+**"Command not recognized"**
+
+The AI might not have loaded this file. Say:
+```
+"Read FLIGHT-PLAN-COMMANDS.md and then run flight-plan status"
+```
+
+**"Changes not syncing"**
+
+Check:
+1. Are you in the right directory?
+   - Solution commands: `flight-plan-solution/`
+   - Project commands: Project directory
+2. Is the file structure correct?
+3. Does the latest PRD exist?
+
+**"AI asks too many questions"**
+
+Flight Plan prefers confirmation over assumptions. This is by design.
+
+If you trust the AI's interpretation:
+```
+"Run flight-plan sync and auto-confirm all changes"
+```
+
+---
+
+## Examples
+
+### Example 1: New PRD Version
+
+```bash
+cd flight-plan-solution/
+
+# Create new PRD version
+vim solution-prd-v2.md       # Add new features
+
+# Sync to projects
+"flight-plan sync"
+
+AI: Shows preview of changes
+You: "yes"
+AI: Updates project PRDs, logs changes
+
+# Commit
+git add .
+git commit -m "PRD v2: Added notification features"
+```
+
+---
+
+### Example 2: Working on a Project
+
+```bash
+cd backend-api/
+
+# Check status
+"flight-plan status"
+
+# Work on code
+vim src/auth.js
+
+# Add note
+"flight-plan note Implemented JWT authentication"
+
+# Move to next phase when ready
+"flight-plan phase 6"
+```
+
+---
+
+### Example 3: Resolving Open Questions
+
+```bash
+cd backend-api/
+
+# Edit PRD to resolve question
+vim project-prd.md           # Remove "question-2: Caching?"
+                             # Add: Using Redis for caching
+
+# Refresh tracking
+"flight-plan prd refresh"
+
+AI: Detected change, removed from blockers
+```
+
+---
+
+### Example 4: Enabling Spec-Kit
+
+```bash
+cd frontend/
+
+# Enable Spec-Kit
+"flight-plan enable-speckit"
+
+# Now use Spec-Kit
+"/speckit.spec user-profile"
+
+AI: Creates spec, references Flight Plan phase and standards
+```
+
+---
+
+## See Also
+
+- **FLIGHT-PLAN-INIT.md** - Initial setup
+- **FLIGHT-PLAN-PHASES.md** - 8 phases explained
+- **GENERATOR.md** - How generation works
+- **README.md** - Overview
+
+---
+
+**Version:** 1.0  
+**Compatible with:** Flight Plan v1.0  
+**Last Updated:** 2025-10-25

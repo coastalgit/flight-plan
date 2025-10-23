@@ -1,0 +1,115 @@
+# Project Rules: {{PROJECT_NAME}}
+
+**Inherits from:** ../../flight-plan-solution/solution-rules.md  
+**Last Updated:** {{LAST_UPDATED}}
+
+---
+
+## For AI Agents
+
+**Read in order:**
+1. `../../flight-plan-solution/solution-rules.md` (solution-wide rules)
+2. This file (project-specific rules)
+3. `project-prd.md` (what to build)
+4. `.flight-plan/current.md` (current phase/status)
+5. `../../flight-plan-solution/FLIGHT-PLAN-PHASES.md` (phase standards)
+
+---
+
+## MCP Servers (This Project)
+
+**Inherits from solution:** [List inherited MCP servers from solution-rules.md]
+
+**Project-specific:**
+{{PROJECT_SPECIFIC_MCP}}
+
+If none additional, state: None
+
+---
+
+## Technical Stack
+
+**From project-prd.md:**
+- Language: {{LANGUAGE}}
+- Framework: {{FRAMEWORK}}
+- Database: {{DATABASE}}
+- Deployment: {{DEPLOYMENT}}
+
+---
+
+## Quality Standards (This Project)
+
+**Inherits solution minimum:** {{SOLUTION_STANDARDS}}
+
+**Project-specific:**
+{{PROJECT_STANDARDS}}
+
+Example:
+- API response time: <200ms
+- All endpoints require auth
+- Rate limiting: 100 req/min
+
+---
+
+## Project-Specific Rules
+
+{{PROJECT_RULES}}
+
+Example sections:
+- Database conventions
+- API conventions  
+- Error handling approach
+- Logging standards
+- File organization
+
+---
+
+## Flight Plan Integration
+
+**Current Phase:** See `.flight-plan/current.md`
+
+**Phase Standards:** See `../../flight-plan-solution/FLIGHT-PLAN-PHASES.md`
+
+When working:
+- AI should check current phase
+- Apply phase-appropriate standards:
+  - Phase 1-3: Design/planning
+  - Phase 4: POC/validation  
+  - Phase 5-8: Production standards
+
+---
+
+## Optional: Spec-Kit Integration
+
+**Spec-Kit enabled:** {{SPECKIT_ENABLED}}
+
+If No: Use `flight-plan enable-speckit` to set up Spec-Kit integration
+
+If Yes: Spec-Kit will read:
+- This file for context
+- FLIGHT-PLAN-PHASES.md for phase standards
+- solution-rules.md for shared tools
+
+---
+
+## Development Workflow
+
+**Getting Started:**
+1. Read this file for complete context
+2. Check `.flight-plan/current.md` for current status
+3. Review `project-prd.md` for project specs
+4. Use Flight Plan commands as needed
+
+**Flight Plan Commands:**
+- `flight-plan status` - Show current phase/blockers
+- `flight-plan prd refresh` - Update tracking from PRD edits
+- `flight-plan note [text]` - Add status note
+- `flight-plan enable-speckit` - Set up Spec-Kit (if desired)
+
+---
+
+**This file is the main reference for AI agents working in this project.**
+
+**Template Version:** 1.0  
+**Generated:** {{GENERATION_DATE}}
+

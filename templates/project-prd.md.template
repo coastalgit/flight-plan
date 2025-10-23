@@ -1,0 +1,162 @@
+# {{PROJECT_NAME}} - Project PRD
+
+**Source:** solution-prd-v{{SOLUTION_VERSION}} ({{SOLUTION_NAME}})  
+**Created:** {{CREATED_DATE}}  
+**Last Updated:** {{LAST_UPDATED}}
+
+---
+
+## Overview
+
+{{PROJECT_PURPOSE}}
+
+**Project Type:** {{PROJECT_TYPE}}  
+**Target Users:** {{TARGET_USERS}}
+
+---
+
+## Problem Statement
+
+{{PROBLEM_STATEMENT}}
+
+---
+
+## Requirements
+
+### Functional Requirements
+
+{{FUNCTIONAL_REQUIREMENTS}}
+
+### User Stories
+
+{{USER_STORIES}}
+
+Example format:
+- As a {{USER_TYPE}}, I want to {{ACTION}}, so I can {{BENEFIT}}
+
+### Success Criteria
+
+{{SUCCESS_CRITERIA}}
+
+How we know this is successful:
+- Measurable outcome 1
+- Measurable outcome 2
+
+---
+
+## Implementation
+
+### Technology Stack
+
+**Language:** {{LANGUAGE}}  
+**Framework:** {{FRAMEWORK}}  
+**Database:** {{DATABASE}}  
+**Deployment:** {{DEPLOYMENT}}
+
+**Additional Technologies:**
+{{ADDITIONAL_TECH}}
+
+### Architecture
+
+{{ARCHITECTURE_DESCRIPTION}}
+
+```
+{{ARCHITECTURE_DIAGRAM}}
+
+Example:
+User → Frontend → Backend API → Database
+                       ↓
+                  Background Jobs
+```
+
+### Data Flow
+
+{{DATA_FLOW}}
+
+### API Design
+
+{{API_DESIGN}}
+
+---
+
+## Dependencies
+
+### Internal Dependencies
+{{INTERNAL_DEPENDENCIES}}
+
+Projects this depends on:
+- {{PROJECT_A}}: {{DEPENDENCY_REASON}}
+
+### External Dependencies
+{{EXTERNAL_DEPENDENCIES}}
+
+Third-party services:
+- {{SERVICE_A}}: {{SERVICE_PURPOSE}}
+
+---
+
+## Quality Standards
+
+**Testing:**
+- Target coverage: {{TEST_COVERAGE}}%
+- Test types: {{TEST_TYPES}}
+
+**Performance:**
+- Response time: {{PERFORMANCE_TARGET}}
+- Throughput: {{THROUGHPUT_TARGET}}
+
+**Security:**
+{{SECURITY_REQUIREMENTS}}
+
+---
+
+## Constraints
+
+### Business Constraints
+{{BUSINESS_CONSTRAINTS}}
+
+### Technical Constraints
+{{TECHNICAL_CONSTRAINTS}}
+
+### Timeline
+{{TIMELINE}}
+
+---
+
+## Open Questions
+
+{{OPEN_QUESTIONS}}
+
+Format:
+- **question-ID:** Question text
+  - Priority: High/Medium/Low
+  - Blocks: This project/other projects
+  - Context: Additional context
+
+---
+
+## Out of Scope
+
+{{OUT_OF_SCOPE}}
+
+Things explicitly NOT included in this project.
+
+---
+
+## Technology Decisions
+
+{{TECHNOLOGY_DECISIONS}}
+
+### Decision: {{DECISION_TITLE}}
+- **Choice:** {{CHOICE}}
+- **Reason:** {{REASON}}
+- **Date:** {{DECISION_DATE}}
+- **Alternatives Considered:** {{ALTERNATIVES}}
+
+---
+
+**Template Version:** 1.0  
+**Generated:** {{GENERATION_DATE}}
+
+*This PRD is Git-tracked. See commit history for changes.*
+
