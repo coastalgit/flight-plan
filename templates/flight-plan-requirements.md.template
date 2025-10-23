@@ -1,0 +1,121 @@
+# {{PROJECT_NAME}} - Requirements
+
+**Version:** 0.1  
+**Status:** Draft  
+**PRD Source:** solution-prd-v{{PRD_VERSION}}.md  
+**Last Updated:** {{LAST_UPDATED}}
+
+---
+
+## Overview
+
+{{PROJECT_PURPOSE}}
+
+**Target Users:** {{TARGET_USERS}}
+
+---
+
+## Problem Statement
+
+{{PROBLEM_STATEMENT}}
+
+---
+
+## User Stories
+
+### As a {{USER_TYPE}}...
+
+{{USER_STORIES}}
+
+Example format:
+- As a guest, I want to search for available rooms, so I can find accommodation
+- As a hotel manager, I want to see booking requests, so I can approve reservations
+
+---
+
+## Functional Requirements
+
+### Core Features
+
+{{CORE_FEATURES}}
+
+### User Interactions
+
+{{USER_INTERACTIONS}}
+
+### Business Logic
+
+{{BUSINESS_LOGIC}}
+
+---
+
+## Success Criteria
+
+### Measurable Outcomes
+
+{{SUCCESS_METRICS}}
+
+Example:
+- Users can complete booking in under 3 minutes
+- 95% uptime during business hours
+- Zero payment processing errors
+
+---
+
+## Constraints
+
+### Business Constraints
+
+{{BUSINESS_CONSTRAINTS}}
+
+### Regulatory Requirements
+
+{{REGULATORY_REQUIREMENTS}}
+
+### Budget/Timeline
+
+{{BUDGET_TIMELINE}}
+
+---
+
+## Out of Scope
+
+{{OUT_OF_SCOPE}}
+
+Things we explicitly are NOT building in this phase.
+
+---
+
+## Open Questions
+
+{{OPEN_QUESTIONS_FROM_PRD}}
+
+---
+
+## Dependencies
+
+### Depends On (Blocked By)
+
+{{INTERNAL_DEPENDENCIES}}
+
+### Enables (Blocks)
+
+{{PROJECTS_WAITING_ON_THIS}}
+
+---
+
+## Acceptance Criteria
+
+{{ACCEPTANCE_CRITERIA}}
+
+How we know this requirement is "done":
+- [ ] All user stories implemented
+- [ ] Success metrics measurable
+- [ ] Stakeholder approval received
+
+---
+
+**Template Version:** 1.0  
+**Generated:** {{GENERATION_DATE}}
+
+*This file describes WHAT to build (no technology mentioned)*

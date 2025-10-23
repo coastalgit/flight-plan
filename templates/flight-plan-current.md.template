@@ -1,0 +1,66 @@
+# Flight Plan: {{PROJECT_NAME}}
+
+**Status:** Phase 1 - Define Mission (STARTING)  
+**Created:** {{CREATED_DATE}}  
+**Last Updated:** {{LAST_UPDATED}}  
+**Project Type:** {{PROJECT_TYPE}}  
+**PRD Source:** solution-prd-v{{PRD_VERSION}}.md
+
+---
+
+## Current Phase: 1 - DEFINE THE MISSION
+
+### Phase Objective
+State why {{PROJECT_NAME}} exists and what success looks like.
+
+### ✅ Completed Tasks
+- [ ] Problem statement defined in requirements.md
+- [ ] Success metrics established
+- [ ] Stakeholders identified
+- [ ] Requirements documented
+
+### 🛠 Tools Being Used
+{{TOOLS_LIST}}
+
+### 📋 Next Steps
+1. Complete requirements.md with detailed user stories
+2. Define measurable success criteria
+3. Review with stakeholders
+4. Move to Phase 2: Build Context
+
+### 🚧 Blockers
+{{BLOCKERS_FROM_PRD}}
+
+---
+
+## Project Context
+
+**Solution:** {{SOLUTION_NAME}}  
+**Related Projects:** {{RELATED_PROJECTS}}  
+**Dependencies:** See implementation.md
+
+---
+
+## Phase Progress
+
+```
+Phase 1: Define Mission        [ In Progress ]
+Phase 2: Build Context         [ Not Started ]
+Phase 3: Design System         [ Not Started ]
+Phase 4: Validate Design       [ Not Started ]
+Phase 5: Build Code            [ Not Started ]
+Phase 6: Automate & Integrate  [ Not Started ]
+Phase 7: Reflect & Capture     [ Not Started ]
+Phase 8: Meta Layer            [ Not Started ]
+```
+
+---
+
+## Notes
+
+{{INITIAL_NOTES}}
+
+---
+
+**Template Version:** 1.0  
+**Generated:** {{GENERATION_DATE}}

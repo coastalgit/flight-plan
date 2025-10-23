@@ -1,0 +1,335 @@
+# 🧠 Flight Plan Generator — Local AI Instructions
+
+**Generator Spec Version:** 1.0  
+**Last Updated:** 2025-10-22
+
+---
+
+**You are reading this in `flight-plan-solution/` directory.**
+
+Your job: Read `solution-prd-v1.md` and generate the complete project structure.
+
+---
+
+## STEP 1: READ THE PRD
+
+**Find and read the latest PRD version:**
+
+Look for files matching: `solution-prd-v*.md`
+
+Examples:
+- `solution-prd-v1.md` only → Read v1
+- `solution-prd-v1.md` and `solution-prd-v2.md` → Read v2 (latest)
+- `solution-prd-v1.md`, `v2.md`, `v3.md` → Read v3 (latest)
+
+**Always read the highest version number.**
+
+**⚠️ Do not invent missing projects or technologies. If unclear → ask user.**
+
+This contains:
+- Projects to create
+- Technology stack
+- Architecture
+- Open questions
+- Change history (if v2+)
+
+---
+
+## STEP 2: ASK CLARIFYING QUESTIONS
+
+**If essential information is missing, ASK THE USER:**
+
+Essential = needed to generate working structure:
+- Project names
+- Basic tech stack per project  
+- Which projects depend on each other
+
+**Ask about:**
+- Missing technology choices (language, framework, database)
+- Unclear project relationships
+- Ambiguous architecture
+- Deployment targets if needed for config
+
+**Don't ask about:**
+- Things clearly stated in PRD
+- Minor details that can be "To be determined"
+- Non-essential configuration
+
+---
+
+## HANDLING PRD UPDATES
+
+**If you see multiple PRD versions (v1, v2, v3...):**
+
+You're working with an updated PRD. The user has refined their thinking.
+
+**What to do:**
+
+1. **Read latest version** (highest number)
+
+2. **Check if projects already exist:**
+   - If NO projects exist → Generate from scratch (Step 3)
+   - If projects DO exist → Compare versions
+
+3. **Compare versions:**
+   ```
+   "I see solution-prd-v2.md is the latest.
+   Projects already exist from v1.
+   
+   Let me compare v1 and v2 to see what changed..."
+   ```
+
+4. **Show user the differences:**
+   - New projects added
+   - Changed technology choices
+   - Modified architecture
+   - Resolved open questions
+
+5. **Ask what to update:**
+   ```
+   "Changes detected:
+   - project-b: Database changed MongoDB → PostgreSQL
+   - project-d: New project added
+   
+   Would you like me to:
+   A) Update project-b's spec with new database
+   B) Generate new project-d
+   C) Both
+   D) Review specific changes first"
+   ```
+
+6. **Update selectively:**
+   - Update `.flight-plan/spec.md` in affected projects
+   - Log changes in `.flight-plan/decisions/prd-v2-changes.md`
+   - Generate any NEW projects
+   - **Never regenerate existing projects** (preserves work)
+
+---
+
+## STEP 3: GENERATE STRUCTURE
+
+For each project in the PRD, create:
+
+```
+[project-name]/
+├── .flight-plan/
+│   ├── current.md              # Progress tracking
+│   ├── requirements.md         # WHAT (tech-agnostic, PM-friendly)
+│   ├── implementation.md       # HOW (tech-specific details)
+│   ├── history/                # Empty
+│   ├── prompts/
+│   │   ├── successful.md       # Empty template
+│   │   └── failed.md           # Empty template
+│   └── decisions/              # Empty
+│
+├── docs/
+│   ├── third-party/            # Empty
+│   ├── snippets/               # Empty
+│   ├── research/               # Empty
+│   └── logs/                   # Empty
+│
+├── .cursor/
+│   └── rules/
+│       └── flight-plan.mdc     # Copy from templates/
+│
+└── README.md                   # Generate from PRD
+```
+
+**File Purposes:**
+- **requirements.md** - Business requirements, user stories, success criteria (no tech)
+- **implementation.md** - Technology stack, architecture, framework choices, deployment
+
+---
+
+## STEP 4: CREATE COORDINATION FILES
+
+In `flight-plan-solution/` root:
+
+```
+ai-refs/
+├── solution-overview.md        # Cross-project status (include PRD version)
+├── notes.md                    # User's personal notes/thoughts
+└── [your-name].md              # Your working reference (e.g., cursor.md)
+```
+
+**IMPORTANT:** Rebuild `solution-overview.md` whenever a new PRD version is adopted. Include PRD version and date at top. This ensures all AIs see current project relationships and dependencies.
+
+---
+
+## TEMPLATES
+
+Use files in `templates/` directory:
+- `flight-plan-current.md.template` → `.flight-plan/current.md`
+- `flight-plan-requirements.md.template` → `.flight-plan/requirements.md`
+- `flight-plan-implementation.md.template` → `.flight-plan/implementation.md`
+- `cursor-rule.mdc.template` → `.cursor/rules/flight-plan.mdc`
+
+Fill in project-specific details from the PRD.
+
+---
+
+## WHAT TO GENERATE
+
+### .flight-plan/current.md
+```markdown
+# Flight Plan: [project-name]
+
+**Status:** Phase 1 - Define Mission (STARTING)
+**Created:** [today's date]
+**Project Type:** [from PRD]
+
+## Current Phase: 1 - DEFINE THE MISSION
+
+### ✅ Completed Tasks
+- [ ] Problem statement defined
+- [ ] Requirements documented in spec.md
+- [ ] Success metrics established
+
+### 🛠 Tools Being Used
+[List from PRD]
+
+### 📋 Next Steps
+1. Complete requirements in spec.md
+2. Define success metrics
+3. Move to Phase 2
+
+### 🚧 Blockers
+[List from PRD Open Questions if they block this project]
+
+---
+
+## Project Context
+
+**Solution:** [from PRD]
+**Related Projects:** [from PRD]
+**Tech Stack:** [from PRD]
+```
+
+### .flight-plan/requirements.md (WHAT - Tech Agnostic)
+Extract business requirements from PRD:
+```markdown
+# [project-name] - Requirements
+
+**Version:** 0.1
+**Status:** Draft
+**PRD Source:** solution-prd-v[N].md
+
+## Overview
+[From PRD project purpose - no tech mentioned]
+
+## User Stories
+[Extract from PRD]
+
+## Functional Requirements
+[What the system must do - no implementation details]
+
+## Success Criteria
+[How we know it works - measurable outcomes]
+
+## Constraints
+[Business/regulatory/budget constraints]
+
+## Open Questions
+[From PRD - questions affecting this project]
+```
+
+### .flight-plan/implementation.md (HOW - Tech Specific)
+Extract technical details from PRD:
+```markdown
+# [project-name] - Implementation
+
+**Version:** 0.1
+**Status:** Draft
+**PRD Source:** solution-prd-v[N].md
+
+## Technology Stack
+[From PRD - language, framework, database, deployment]
+
+## Architecture
+[Technical architecture - APIs, data flow, integrations]
+
+## Dependencies
+**Internal:** [Other projects from PRD]
+**External:** [Third-party services, libraries]
+
+## Deployment
+[Hosting, CI/CD, environments]
+
+## Technical Decisions
+[Key tech choices and reasoning from PRD]
+```
+
+### .cursor/rules/flight-plan.mdc
+```markdown
+---
+description: Flight Plan integration
+alwaysApply: true
+---
+
+# Flight Plan Awareness
+
+On first interaction:
+1. Read ../../flight-plan-solution/solution-prd-v[latest].md
+2. Read ./.flight-plan/current.md (progress)
+3. Read ./.flight-plan/requirements.md (what to build)
+4. Read ./.flight-plan/implementation.md (how to build)
+
+When working:
+- Update .flight-plan/current.md
+- Update implementation.md for tech changes
+- Update requirements.md for scope changes
+- Log successful prompts
+- Note decisions
+```
+
+---
+
+## AFTER GENERATION
+
+Tell the user:
+
+```
+✅ Structure generated!
+
+Created projects:
+- [list projects]
+
+Each has:
+- .flight-plan/ (progress tracking)
+- docs/ (reference materials)
+- .cursor/rules/ (IDE integration)
+
+To start:
+cd [any-project]/
+Open .flight-plan/current.md
+Begin Phase 1: Define the Mission
+```
+
+---
+
+## YOUR WORKING FILE
+
+Create `flight-plan-solution/ai-refs/[your-name].md`:
+
+```markdown
+# [Your Name] Working Reference
+
+**Created:** [date]
+**Solution:** [from PRD]
+
+## Projects Status
+[List each project and current phase]
+
+## Last Actions
+[What you just generated]
+
+## Next Session
+When I return:
+1. Read this file
+2. Check solution-overview.md
+3. Continue work
+```
+
+---
+
+**That's it! Read PRD → Ask questions if needed → Generate structure → Done.**
