@@ -153,7 +153,8 @@ For each project in your PRD:
 your-project/
 ├── .flight-plan/               # Progress tracking
 │   ├── current.md              # Current phase & tasks
-│   ├── spec.md                 # Requirements
+│   ├── requirements.md         # WHAT to build (tech-agnostic)
+│   ├── implementation.md       # HOW to build (tech-specific)
 │   ├── history/                # Milestones
 │   ├── prompts/                # What worked
 │   └── decisions/              # Key choices
@@ -293,7 +294,9 @@ This solution initializer is part of the broader Flight Plan methodology for AI-
 
 ## 📄 License
 
-[Your license choice]
+MIT License - See [LICENSE](LICENSE) file for details.
+
+Free to use, modify, and distribute. Attribution appreciated but not required.
 
 ---
 

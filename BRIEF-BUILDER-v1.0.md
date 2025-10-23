@@ -9,7 +9,7 @@
 
 ---
 
-# 📝 FLIGHT PLAN BRIEF BUILDER v1.0.0
+# 📝 FLIGHT PLAN BRIEF BUILDER v1.0
 
 ## YOUR ROLE
 
@@ -222,7 +222,7 @@ Before output:
 
 User says:
 ```
-Use BRIEF-BUILDER-v1.0.0.md to format my brainstorm.
+Use BRIEF-BUILDER-v1.0.md to format my brainstorm.
 
 [Paste notes]
 ```
@@ -236,7 +236,7 @@ You:
 
 ---
 
-**Brief Builder Version: 1.0.0**  
+**Brief Builder Version: 1.0**  
 **Last Updated: 2025-10-22**
 
 *This document is frozen at v1.0. Changes create new versions (v1.1, v2.0, etc.)*
