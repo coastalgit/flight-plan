@@ -39,55 +39,56 @@ flight-plan-solution/
 
 ## 📁 Complete Directory Structure
 
-**After cloning and initial generation:**
+**Your intended workflow:**
 
 ```
-your-workspace/
-└── flight-plan-solution/              # Cloned from GitHub
-    ├── README.md                      # This file
-    ├── BRIEF-BUILDER-v1.0.md         # Format brainstorm → PRD
-    ├── GENERATOR.md                   # Initial project generation
-    ├── FLIGHT-PLAN-COMMANDS.md       # Ongoing operations
-    │
-    ├── templates/                     # Templates for generation
-    │   ├── flight-plan-current.md.template
-    │   ├── flight-plan-requirements.md.template
-    │   ├── flight-plan-implementation.md.template
-    │   └── cursor-rule.mdc.template
-    │
-    ├── examples/                      # Reference examples
-    │   └── portfolio-site-prd-v1.md
-    │
-    ├── solution-prd-v1.md            # YOUR formatted PRD (you add this)
-    │
-    ├── ai-refs/                       # Cross-project coordination (generated)
-    │   ├── solution-overview.md       # All projects status
-    │   ├── notes.md                   # Your personal notes
-    │   └── cursor.md                  # AI working memory
-    │
-    └── [generated projects]/          # Your projects (generated)
-        │
-        ├── project-a/
-        │   ├── .flight-plan/
-        │   │   ├── current.md         # Progress tracking
-        │   │   ├── requirements.md    # WHAT to build
-        │   │   ├── implementation.md  # HOW to build
-        │   │   ├── history/
-        │   │   ├── prompts/
-        │   │   └── decisions/
-        │   ├── docs/
-        │   │   ├── third-party/
-        │   │   ├── snippets/
-        │   │   ├── research/
-        │   │   └── logs/
-        │   ├── .cursor/
-        │   │   └── rules/
-        │   │       └── flight-plan.mdc
-        │   ├── src/                   # Your code
-        │   └── README.md
-        │
-        └── project-b/
-            └── [same structure]
+MyApp/                                  # Your solution root directory
+│
+├── flight-plan-solution/               # Flight Plan tooling (copy from repo)
+│   ├── README.md                       # This file
+│   ├── BRIEF-BUILDER-v1.0.md          # Format brainstorm → PRD
+│   ├── GENERATOR.md                    # Initial project generation
+│   ├── FLIGHT-PLAN-COMMANDS.md        # Ongoing operations
+│   ├── FLIGHT-PLAN-PHASES.md          # 8 phases explained
+│   │
+│   ├── templates/                      # Templates for generation
+│   │   ├── flight-plan-current.md.template
+│   │   ├── flight-plan-requirements.md.template
+│   │   ├── flight-plan-implementation.md.template
+│   │   └── cursor-rule.mdc.template
+│   │
+│   ├── examples/                       # Reference examples
+│   │   ├── portfolio-site-brainstorm.md
+│   │   └── portfolio-site-prd-v1.md
+│   │
+│   ├── solution-prd-v1.md             # YOUR formatted PRD (you add this)
+│   │
+│   └── ai-refs/                        # Cross-project coordination (generated)
+│       ├── solution-overview.md        # All projects status
+│       ├── notes.md                    # Your personal notes
+│       └── cursor.md                   # AI working memory
+│
+├── project-a/                          # Generated project (sibling to flight-plan-solution)
+│   ├── .flight-plan/
+│   │   ├── current.md                  # Progress tracking
+│   │   ├── requirements.md             # WHAT to build
+│   │   ├── implementation.md           # HOW to build
+│   │   ├── history/
+│   │   ├── prompts/
+│   │   └── decisions/
+│   ├── docs/
+│   │   ├── third-party/
+│   │   ├── snippets/
+│   │   ├── research/
+│   │   └── logs/
+│   ├── .cursor/
+│   │   └── rules/
+│   │       └── flight-plan.mdc         # Points to ../flight-plan-solution/
+│   ├── src/                            # Your code
+│   └── README.md
+│
+└── project-b/                          # Another generated project
+    └── [same structure as project-a]
 ```
 
 ---
@@ -117,54 +118,67 @@ Here are my notes:
 
 AI generates: `solution-prd-v1.md` (structured, versioned, with TODOs)
 
-### 3. Generate Project Structure
+### 3. Set Up Your Solution Directory
 
-Drop `solution-prd-v1.md` into this directory, then:
+```bash
+# Create your solution root directory
+mkdir MyApp
+cd MyApp
+
+# Copy Flight Plan tooling into a subdirectory
+cp -r /path/to/flight-plan-repo/ ./flight-plan-solution/
+
+# Copy your PRD into the flight-plan-solution directory
+cp solution-prd-v1.md ./flight-plan-solution/
+```
+
+### 4. Generate Project Structure
 
 **In Cursor:**
 ```
-Open flight-plan-solution/ in Cursor
+Open MyApp/flight-plan-solution/ in Cursor
 Say: "Read GENERATOR.md and create the project structure"
 ```
 
 **Or CLI:**
 ```
-cd flight-plan-solution/
+cd MyApp/flight-plan-solution/
 [Run your preferred AI CLI tool]
 "Read GENERATOR.md and generate structure"
 ```
 
 AI will:
 - Ask clarifying questions if needed
-- Generate all project directories
-- Create `.flight-plan/` tracking in each
+- Generate project directories in `MyApp/` (parent directory)
+- Create `.flight-plan/` tracking in each project
 - Set up Cursor integration
-- Create AI reference files
+- Create AI reference files in `flight-plan-solution/ai-refs/`
 
-**Done!** Start building.
+**Done!** Your projects are now in `MyApp/` alongside `flight-plan-solution/`.
 
 ---
 
 ## 📋 What Gets Generated
 
-For each project in your PRD:
+For each project in your PRD (created in parent directory `MyApp/`):
 
 ```
-your-project/
+MyApp/your-project/
 ├── .flight-plan/               # Progress tracking
 │   ├── current.md              # Current phase & tasks
-│   ├── requirements.md         # WHAT to build (tech-agnostic)
-│   ├── implementation.md       # HOW to build (tech-specific)
+│   ├── requirements.md         # WHAT to build (business requirements)
+│   ├── implementation.md       # HOW to build (technical details)
 │   ├── history/                # Milestones
 │   ├── prompts/                # What worked
 │   └── decisions/              # Key choices
 ├── docs/                       # Reference materials
 │   ├── third-party/            # External specs
 │   ├── snippets/               # Code examples
-│   └── research/               # Background
+│   ├── research/               # Background
+│   └── logs/                   # Development logs
 ├── .cursor/
 │   └── rules/
-│       └── flight-plan.mdc     # IDE integration
+│       └── flight-plan.mdc     # IDE integration (points to ../flight-plan-solution/)
 └── src/                        # Your code
 ```
 

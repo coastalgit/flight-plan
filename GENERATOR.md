@@ -5,9 +5,11 @@
 
 ---
 
-**You are reading this in `flight-plan-solution/` directory.**
+**You are reading this in `MyApp/flight-plan-solution/` directory.**
 
 Your job: Read `solution-prd-v*.md` and generate the complete project structure.
+
+**IMPORTANT:** Projects will be created in the **parent directory** (`MyApp/`), not inside `flight-plan-solution/`. This keeps your Flight Plan tooling separate from your actual projects.
 
 ---
 
@@ -15,7 +17,11 @@ Your job: Read `solution-prd-v*.md` and generate the complete project structure.
 
 **Check if this is initial setup or an update:**
 
-Look for existing project directories (excluding `flight-plan-solution/`, `templates/`, `examples/`, `ai-refs/`).
+Look for existing project directories in the **parent directory** (one level up from `flight-plan-solution/`).
+
+Exclude these from your check:
+- `flight-plan-solution/` (this directory)
+- Any other support directories
 
 ### If Projects Already Exist:
 
@@ -87,10 +93,10 @@ Essential = needed to generate working structure:
 
 ## STEP 3: GENERATE STRUCTURE
 
-For each project in the PRD, create:
+For each project in the PRD, create in the **parent directory** (`../`):
 
 ```
-[project-name]/
+../[project-name]/
 ├── .flight-plan/
 │   ├── current.md              # Progress tracking
 │   ├── requirements.md         # WHAT (tech-agnostic, PM-friendly)
@@ -122,10 +128,10 @@ For each project in the PRD, create:
 
 ## STEP 4: CREATE COORDINATION FILES
 
-In `flight-plan-solution/` root:
+In `flight-plan-solution/` directory (current directory):
 
 ```
-ai-refs/
+./ai-refs/
 ├── solution-overview.md        # Cross-project status (include PRD version)
 ├── notes.md                    # User's personal notes/thoughts
 └── [your-name].md              # Your working reference (e.g., cursor.md)
@@ -273,27 +279,15 @@ Extract technical details from PRD:
 ```
 
 ### .cursor/rules/flight-plan.mdc
-```markdown
----
-description: Flight Plan integration
-alwaysApply: true
----
+**Important:** Use the template from `templates/cursor-rule.mdc.template`.
 
-# Flight Plan Awareness
+The paths in the template are already configured correctly:
+- PRD path: `../../flight-plan-solution/solution-prd-v*.md`
+- Overview: `../../flight-plan-solution/ai-refs/solution-overview.md`
+- Commands: `../../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md`
 
-On first interaction:
-1. Read ../../flight-plan-solution/solution-prd-v[latest].md
-2. Read ./.flight-plan/current.md (progress)
-3. Read ./.flight-plan/requirements.md (what to build)
-4. Read ./.flight-plan/implementation.md (how to build)
-
-When working:
-- Update .flight-plan/current.md
-- Update implementation.md for tech changes
-- Update requirements.md for scope changes
-- Log successful prompts
-- Note decisions
-```
+These paths navigate from:
+`MyApp/project-name/.cursor/rules/` → up 2 levels → `MyApp/flight-plan-solution/`
 
 ---
 
@@ -302,45 +296,56 @@ When working:
 Tell the user:
 
 ```
-✅ Structure generated!
+✅ Structure generated in parent directory!
 
-Created projects:
-- [list projects]
+Created projects in MyApp/:
+- [list projects with paths: ../project-a/, ../project-b/]
 
 Each has:
 - .flight-plan/ (progress tracking)
 - docs/ (reference materials)
-- .cursor/rules/ (IDE integration)
+- .cursor/rules/ (IDE integration pointing to flight-plan-solution/)
 
-To start:
-cd [any-project]/
+Coordination files created in flight-plan-solution/:
+- ai-refs/solution-overview.md
+- ai-refs/notes.md
+- ai-refs/cursor.md
+
+To start working:
+cd ../[any-project]/
 Open .flight-plan/current.md
 Begin Phase 1: Define the Mission
+
+Or open MyApp/ folder in Cursor to see all projects.
 ```
 
 ---
 
 ## YOUR WORKING FILE
 
-Create `flight-plan-solution/ai-refs/[your-name].md`:
+Create `./ai-refs/[your-name].md` (in flight-plan-solution directory):
 
 ```markdown
 # [Your Name] Working Reference
 
 **Created:** [date]
 **Solution:** [from PRD]
+**Projects Location:** ../[project-name]/ (parent directory)
 
 ## Projects Status
 [List each project and current phase]
 
 ## Last Actions
-[What you just generated]
+- Generated projects in parent directory (MyApp/)
+- Created coordination files in flight-plan-solution/ai-refs/
+- Set up Cursor integration
 
 ## Next Session
 When I return:
 1. Read this file
 2. Check solution-overview.md
-3. Continue work
+3. Navigate to ../ to see all projects
+4. Continue work
 ```
 
 ---
