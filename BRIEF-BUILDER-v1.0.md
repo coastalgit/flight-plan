@@ -185,6 +185,8 @@ Format:
       Phase: [Recommend Flight Plan phase]
 ```
 
+**Note:** TODO tracking and management is handled by SpecKit during the development process. The PRD captures initial TODOs; ongoing task management happens in SpecKit.
+
 ---
 
 ## EXAMPLE INPUT → OUTPUT

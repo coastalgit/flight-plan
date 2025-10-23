@@ -21,16 +21,73 @@ A 3-phase workflow for taking messy brainstorms and turning them into organized,
 
 ```
 flight-plan-solution/
-├── README.md                    # This file
-├── BRIEF-BUILDER-v1.0.md       # Formats brainstorm into PRD
-├── GENERATOR.md                 # Generates project structure
-├── templates/                   # Templates for generation
+├── README.md                               # This file
+├── BRIEF-BUILDER-v1.0.md                  # Formats brainstorm into PRD
+├── GENERATOR.md                            # Generates project structure
+├── FLIGHT-PLAN-COMMANDS.md                # Ongoing operations
+├── templates/                              # Templates for generation
 │   ├── flight-plan-current.md.template
-│   ├── flight-plan-spec.md.template
-│   ├── cursor-rule.mdc.template
-│   └── ai-reference.md.template
+│   ├── flight-plan-requirements.md.template
+│   ├── flight-plan-implementation.md.template
+│   └── cursor-rule.mdc.template
 └── examples/
-    └── hotel-booking-prd-v1.md # Example PRD
+    ├── portfolio-site-brainstorm.md       # Raw brainstorm example
+    └── portfolio-site-prd-v1.md           # Generated PRD example
+```
+
+---
+
+## 📁 Complete Directory Structure
+
+**After cloning and initial generation:**
+
+```
+your-workspace/
+└── flight-plan-solution/              # Cloned from GitHub
+    ├── README.md                      # This file
+    ├── BRIEF-BUILDER-v1.0.md         # Format brainstorm → PRD
+    ├── GENERATOR.md                   # Initial project generation
+    ├── FLIGHT-PLAN-COMMANDS.md       # Ongoing operations
+    │
+    ├── templates/                     # Templates for generation
+    │   ├── flight-plan-current.md.template
+    │   ├── flight-plan-requirements.md.template
+    │   ├── flight-plan-implementation.md.template
+    │   └── cursor-rule.mdc.template
+    │
+    ├── examples/                      # Reference examples
+    │   └── portfolio-site-prd-v1.md
+    │
+    ├── solution-prd-v1.md            # YOUR formatted PRD (you add this)
+    │
+    ├── ai-refs/                       # Cross-project coordination (generated)
+    │   ├── solution-overview.md       # All projects status
+    │   ├── notes.md                   # Your personal notes
+    │   └── cursor.md                  # AI working memory
+    │
+    └── [generated projects]/          # Your projects (generated)
+        │
+        ├── project-a/
+        │   ├── .flight-plan/
+        │   │   ├── current.md         # Progress tracking
+        │   │   ├── requirements.md    # WHAT to build
+        │   │   ├── implementation.md  # HOW to build
+        │   │   ├── history/
+        │   │   ├── prompts/
+        │   │   └── decisions/
+        │   ├── docs/
+        │   │   ├── third-party/
+        │   │   ├── snippets/
+        │   │   ├── research/
+        │   │   └── logs/
+        │   ├── .cursor/
+        │   │   └── rules/
+        │   │       └── flight-plan.mdc
+        │   ├── src/                   # Your code
+        │   └── README.md
+        │
+        └── project-b/
+            └── [same structure]
 ```
 
 ---
@@ -129,8 +186,10 @@ your-project/
 ## 📖 Examples
 
 See `examples/` directory for:
-- `hotel-booking-prd-v1.md` - Complete example PRD
-- Reference of what Brief Builder produces
+- `portfolio-site-brainstorm.md` - Raw brainstorm notes
+- `portfolio-site-prd-v1.md` - Complete PRD after Brief Builder formatting
+
+Shows the complete flow: messy notes → structured PRD → ready for generation
 
 ---
 

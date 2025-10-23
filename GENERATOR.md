@@ -7,7 +7,35 @@
 
 **You are reading this in `flight-plan-solution/` directory.**
 
-Your job: Read `solution-prd-v1.md` and generate the complete project structure.
+Your job: Read `solution-prd-v*.md` and generate the complete project structure.
+
+---
+
+## ⚠️ BEFORE YOU START
+
+**Check if this is initial setup or an update:**
+
+Look for existing project directories (excluding `flight-plan-solution/`, `templates/`, `examples/`, `ai-refs/`).
+
+### If Projects Already Exist:
+
+```
+⚠️ Projects detected in this directory.
+
+This appears to be an existing solution. For updates, use:
+
+  flight-plan sync
+
+See FLIGHT-PLAN-COMMANDS.md for ongoing operations.
+
+The GENERATOR is only for initial setup.
+```
+
+**Stop here. Do not regenerate.**
+
+### If No Projects Exist:
+
+Continue with initial generation below...
 
 ---
 
@@ -54,55 +82,6 @@ Essential = needed to generate working structure:
 - Things clearly stated in PRD
 - Minor details that can be "To be determined"
 - Non-essential configuration
-
----
-
-## HANDLING PRD UPDATES
-
-**If you see multiple PRD versions (v1, v2, v3...):**
-
-You're working with an updated PRD. The user has refined their thinking.
-
-**What to do:**
-
-1. **Read latest version** (highest number)
-
-2. **Check if projects already exist:**
-   - If NO projects exist → Generate from scratch (Step 3)
-   - If projects DO exist → Compare versions
-
-3. **Compare versions:**
-   ```
-   "I see solution-prd-v2.md is the latest.
-   Projects already exist from v1.
-   
-   Let me compare v1 and v2 to see what changed..."
-   ```
-
-4. **Show user the differences:**
-   - New projects added
-   - Changed technology choices
-   - Modified architecture
-   - Resolved open questions
-
-5. **Ask what to update:**
-   ```
-   "Changes detected:
-   - project-b: Database changed MongoDB → PostgreSQL
-   - project-d: New project added
-   
-   Would you like me to:
-   A) Update project-b's spec with new database
-   B) Generate new project-d
-   C) Both
-   D) Review specific changes first"
-   ```
-
-6. **Update selectively:**
-   - Update `.flight-plan/spec.md` in affected projects
-   - Log changes in `.flight-plan/decisions/prd-v2-changes.md`
-   - Generate any NEW projects
-   - **Never regenerate existing projects** (preserves work)
 
 ---
 
