@@ -35,9 +35,9 @@
 
 **Files Created:**
 - portfolio-site/.flight-plan/current.md
-- portfolio-site/.flight-plan/requirements.md
-- portfolio-site/.flight-plan/implementation.md
-- portfolio-site/.cursor/rules/flight-plan.mdc
+- portfolio-site/project-prd.md
+- portfolio-site/project-rules.md
+- portfolio-site/.cursor/rules/ (pointer to project-rules.md)
 
 ---
 
@@ -74,10 +74,10 @@ When work resumes:
 **Dependencies:** None (standalone)
 
 **Key Files to Read:**
-- solution-prd-v1.md - Overall requirements
-- .flight-plan/current.md - Current progress
-- .flight-plan/requirements.md - What to build
-- .flight-plan/implementation.md - How to build
+- solution-prd-v1.md - Overall solution requirements
+- project-rules.md - How to work in this project
+- .flight-plan/current.md - Current phase and progress
+- project-prd.md - Project requirements and implementation
 
 ---
 

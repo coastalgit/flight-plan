@@ -65,7 +65,7 @@ None
 
 ## Next Actions
 
-1. Complete requirements.md with detailed user stories
+1. Complete project-prd.md Section 2 (Requirements) with detailed user stories
 2. Resolve open questions (Grid/Flexbox, blog timing)
 3. Move to Phase 2: Build Context
 4. Begin gathering reference materials (design inspiration, code snippets)

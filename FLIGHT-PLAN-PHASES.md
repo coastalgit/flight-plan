@@ -23,7 +23,7 @@ The Flight Plan methodology structures AI-assisted development into 8 progressiv
 - Clarify scope (what's in, what's out)
 
 **Outputs:**
-- requirements.md completed
+- project-prd.md Section 2 (Requirements) completed
 - Success criteria defined
 - Open questions identified
 
@@ -47,7 +47,7 @@ The Flight Plan methodology structures AI-assisted development into 8 progressiv
 - docs/third-party/ populated with API specs
 - docs/research/ contains background materials
 - docs/snippets/ has relevant code examples
-- implementation.md updated with research findings
+- project-prd.md Section 3 (Implementation) updated with research findings
 
 **Move to Phase 3 when:** All necessary context and reference materials are gathered.
 
@@ -71,7 +71,7 @@ The Flight Plan methodology structures AI-assisted development into 8 progressiv
 - API specifications
 - Database schema
 - Technology decisions documented
-- implementation.md fully detailed
+- project-prd.md Section 3 (Implementation) fully detailed
 
 **Move to Phase 4 when:** Design is complete and ready for validation.
 
@@ -229,7 +229,7 @@ Portfolio Website Project:
 
 Week 1:
 Day 1-2: Phase 1 (Define Mission)
-         → requirements.md completed
+         → project-prd.md Section 2 completed
          
 Day 3:   Phase 2 (Build Context)
          → Gathered design inspiration, API docs
