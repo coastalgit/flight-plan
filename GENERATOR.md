@@ -226,6 +226,7 @@ For each project in the PRD, create in parent directory (`../`):
 ├── project-rules.md        # Use templates/project-rules.md.template
 ├── .flight-plan/
 │   ├── current.md          # Use templates/flight-plan-current.md.template
+│   ├── config.json         # Use templates/config.json.template
 │   └── history/            # Empty directory
 ├── .cursor/
 │   └── rules/
@@ -235,9 +236,9 @@ For each project in the PRD, create in parent directory (`../`):
 └── README.md               # Generate from PRD
 ```
 
-**Do NOT create:**
-- `memory/constitution.md` (only via `flight-plan enable-speckit`)
-- `specs/` (only via `flight-plan enable-speckit`)
+**Do NOT create yet (created by setup-speckit command):**
+- `memory/constitution.md` (only via `flight-plan setup-speckit`)
+- `specs/` (only via `flight-plan setup-speckit`)
 - `CLAUDE.md` (optional, user can add later)
 
 ---
@@ -319,6 +320,27 @@ Use `templates/cursor-rule.mdc.template`
 
 ---
 
+### .flight-plan/config.json (Project Configuration)
+
+Use `templates/config.json.template`
+
+**Fill with:**
+```json
+{
+  "project_name": "[project-name from PRD]",
+  "generated_date": "[current date in YYYY-MM-DD HH:MM UTC]",
+  "prd_version": "v1",
+  "speckit_enabled": false,
+  "speckit_prompted": false,
+  "current_phase": 1,
+  "last_updated": "[current date in YYYY-MM-DD HH:MM UTC]"
+}
+```
+
+**Note:** SpecKit status will be updated after user responds to SpecKit prompt in STEP 2.
+
+---
+
 ### README.md (Project Overview)
 
 Generate from PRD:
@@ -349,6 +371,7 @@ Generate from PRD:
 
 - **Project PRD:** `project-prd.md` - Complete specifications
 - **Status:** `.flight-plan/current.md` - Current phase and progress
+- **Configuration:** `.flight-plan/config.json` - Project settings
 - **Rules:** `project-rules.md` - How AI should work in this project
 
 ## Flight Plan Integration
@@ -356,7 +379,9 @@ Generate from PRD:
 This project uses Flight Plan methodology (8 phases).
 
 **Commands:**
+- `flight-plan next` - Get guidance on what to do next
 - `flight-plan status` - Show current state
+- `flight-plan setup-speckit` - Enable SpecKit integration (optional)
 - `flight-plan prd refresh` - Update tracking from PRD changes
 
 See: `../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md`
@@ -402,7 +427,7 @@ All templates use `{{VARIABLE}}` placeholders:
 
 ## AFTER GENERATION
 
-**Display this message:**
+**Show Completion Summary:**
 
 ```
 ✅ Flight Plan Initialized
@@ -418,28 +443,34 @@ Generated [N] projects in ../
 ./solution-rules.md (shared rules)
 ./ai-refs/ (coordination)
 
+All projects start in Phase 1 (Define Mission).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 🚀 Next Steps:
 
-1. Review generated projects:
-   cd ../[any-project]/
-   cat project-prd.md
+1. Navigate to any project:
+   cd ../[project-name]/
 
-2. Start working on a project:
-   cd ../[project]/
+2. Get guidance on what to do next:
    "flight-plan status"
 
-3. Optional - Enable Spec-Kit:
-   cd ../[project]/
-   "flight-plan enable-speckit"
+The AI will guide you through:
+- Reviewing your project requirements
+- Resolving any open questions
+- Test results (automatically shown in build phases)
+- Optional SpecKit setup (if you want feature-level development)
+- Moving through Flight Plan phases naturally
 
-4. See available commands:
-   cat ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
-
-All projects start in Phase 1 (Define Mission).
-The AI in each project will guide you through Flight Plan phases.
+See all commands:
+  cat ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
 
 Happy building! 🛫
 ```
+
+**That's it! Generation is complete.**
+
+**SpecKit prompting happens INSIDE each project when user runs `flight-plan next`.**
 
 ---
 

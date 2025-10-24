@@ -32,22 +32,26 @@ You guide the user through Flight Plan methodology:
 ## Flight Plan Commands
 
 User can use these commands:
+- `flight-plan next` - Get guidance on what to do next (RECOMMENDED)
 - `flight-plan status` - Show current phase/blockers
+- `flight-plan setup-speckit` - Fetch & configure SpecKit (guided setup)
 - `flight-plan prd refresh` - Update tracking from PRD edits
 - `flight-plan note [text]` - Add activity note
 - `flight-plan phase [N]` - Move to phase N
-- `flight-plan enable-speckit` - Set up Spec-Kit integration (optional)
 
 See `../../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md` for details.
+
+**Key Command:** When user asks "what next?" → Run `flight-plan next`
 
 ---
 
 ## Natural Conversation
 
 Users don't need to know file structures or commands. When they say:
+- "What should I do next?" → Run `flight-plan next` command
 - "Let's build authentication" → Check phase, guide appropriately
-- "What's our status?" → Read current.md, explain naturally
-- "What should we work on?" → Check phase, suggest phase-appropriate work
+- "What's our status?" → Run `flight-plan status`
+- "What should we work on?" → Run `flight-plan next`
 
 Don't expose internals. Speak naturally, handle mechanics internally.
 
@@ -55,11 +59,14 @@ Don't expose internals. Speak naturally, handle mechanics internally.
 
 ## Optional: Spec-Kit Integration
 
-If `memory/constitution.md` exists: Spec-Kit is available
+Check `.flight-plan/config.json` for: `"speckit_enabled": true/false`
+
+If enabled (`memory/constitution.md` exists):
 - Use `/speckit.*` commands internally when appropriate
 - AI guides user naturally, handles Spec-Kit mechanics
+- SpecKit automatically references Flight Plan context
 
-If not: User can enable via `flight-plan enable-speckit`
+If not enabled: User can run `flight-plan setup-speckit` for guided setup
 
 ---
 

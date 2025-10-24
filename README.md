@@ -166,6 +166,19 @@ AI: ✅ Generated 3 projects in ../
 
 **Done!** Your projects are now in `MyApp/` alongside `flight-plan-solution/`.
 
+**Next steps:**
+```bash
+cd MyApp/backend-api/
+"flight-plan status"
+```
+
+The AI will guide you through:
+- Reviewing project requirements
+- Resolving open questions  
+- Test results (automatically shown in Phase 5-6)
+- Optional SpecKit setup (for feature-level development)
+- Moving through Flight Plan phases naturally
+
 ---
 
 ## 📋 What Gets Generated
@@ -174,22 +187,27 @@ For each project in your PRD (created in parent directory `MyApp/`):
 
 ```
 MyApp/your-project/
-├── project-prd.md              # What to build (combines requirements + implementation)
+├── project-prd.md              # What to build (single source of truth)
 ├── project-rules.md            # How AI should work (inherits solution-rules.md)
 ├── .flight-plan/
 │   ├── current.md              # Current phase, status, activity
+│   ├── config.json             # Project configuration (SpecKit, etc.)
 │   └── history/                # Milestones
 ├── .cursor/rules/
 │   └── flight-plan.mdc         # Points to project-rules.md
-├── CLAUDE.md (optional)        # Points to project-rules.md  
+├── memory/                     # SpecKit constitution (if enabled)
+│   └── constitution.md         # References Flight Plan files
+├── specs/                      # SpecKit feature specs (if enabled)
 ├── docs/                       # Reference materials
 └── src/                        # Your code
 ```
 
-**Simplified structure:**
+**Structure highlights:**
 - `project-prd.md` - Single source of truth (Git tracks history)
 - `project-rules.md` - AI integration layer (inherits from solution)
 - `.flight-plan/current.md` - Light status tracking (phase, blockers)
+- `.flight-plan/config.json` - Project configuration (decisions remembered)
+- `memory/constitution.md` - SpecKit integration (optional, references Flight Plan)
 - Minimal AI pointer files (just reference project-rules.md)
 
 ---
@@ -258,21 +276,37 @@ Spec-Kit:    "Let's implement user authentication feature"
 
 ### Enable Spec-Kit in Your Project
 
-**From any project:**
+**When working in a project:**
+Navigate to your project:
 ```
 cd MyApp/your-project/
-"flight-plan enable-speckit"
+"flight-plan status"
 ```
 
-This creates:
-- `memory/constitution.md` - References Flight Plan context
-- `specs/` - For Spec-Kit feature specs
+AI will show your status and ask if you want SpecKit. If yes, it guides you through setup.
+
+**What this does:**
+1. ✅ Fetches **actual SpecKit README** from `github.com/github/spec-kit`
+   - Installation instructions are at the TOP of the README
+   - Shows you the REAL, current installation commands (uses `uv`/`uvx`)
+2. 🔧 Checks prerequisites:
+   - Asks you to check: `uv --version`
+   - Provides uv install/upgrade commands if needed
+3. 📖 Displays actual installation steps from SpecKit README (not assumed!)
+4. ⏸️ Waits for you to install SpecKit
+5. 🔧 Then creates `memory/constitution.md` with Flight Plan references:
+   - PRD location: `project-prd.md`
+   - Current phase: `.flight-plan/current.md`
+   - Phase standards: `../flight-plan-solution/FLIGHT-PLAN-PHASES.md`
+6. 📁 Creates `specs/` directory for feature specs
+7. 💾 Saves decision to `.flight-plan/config.json`
 
 Spec-Kit will automatically:
 - Check your current Flight Plan phase
 - Apply phase-appropriate standards
 - Reference project-prd.md for constraints
-- Use Flight Plan context naturally
+- Use quality gates from your PRD
+- Always work with latest SpecKit practices
 
 **Learn more:** [github.com/github/spec-kit](https://github.com/github/spec-kit)
 

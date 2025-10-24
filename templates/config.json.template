@@ -1,0 +1,10 @@
+{
+  "project_name": "{{PROJECT_NAME}}",
+  "generated_date": "{{GENERATION_DATE}}",
+  "prd_version": "{{PRD_VERSION}}",
+  "speckit_enabled": false,
+  "speckit_prompted": false,
+  "current_phase": 1,
+  "last_updated": "{{GENERATION_DATE}}"
+}
+
