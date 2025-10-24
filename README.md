@@ -22,7 +22,7 @@ A 3-phase workflow for taking messy brainstorms and turning them into organized,
 ```
 flight-plan-solution/
 ├── README.md                               # This file
-├── BRIEF-BUILDER-v1.0.md                  # Formats brainstorm into PRD
+├── BRIEF-BUILDER-v1.1.md                  # Formats brainstorm into PRD
 ├── GENERATOR.md                            # Generates project structure
 ├── FLIGHT-PLAN-INIT.md                    # Initial setup command
 ├── FLIGHT-PLAN-COMMANDS.md                # Ongoing operations
@@ -50,7 +50,7 @@ MyApp/                                  # Your solution root directory
 │
 ├── flight-plan-solution/               # Flight Plan tooling (copy from repo)
 │   ├── README.md                       # This file
-│   ├── BRIEF-BUILDER-v1.0.md          # Format brainstorm → PRD
+│   ├── BRIEF-BUILDER-v1.1.md          # Format brainstorm → PRD
 │   ├── GENERATOR.md                    # Initial project generation
 │   ├── FLIGHT-PLAN-COMMANDS.md        # Ongoing operations
 │   ├── FLIGHT-PLAN-PHASES.md          # 8 phases explained
@@ -106,16 +106,51 @@ Use any AI (Claude, Gemini, ChatGPT, etc.) to explore ideas freely:
 
 ### 2. Format into PRD
 
-Give any AI your brainstorm notes + `BRIEF-BUILDER-v1.0.md`:
+Give any AI your brainstorm notes + `BRIEF-BUILDER-v1.1.md`:
 
 ```
-Use BRIEF-BUILDER-v1.0.md to format my brainstorm.
+Use BRIEF-BUILDER-v1.1.md to format my brainstorm.
 
 Here are my notes:
 [paste your brainstorm]
 ```
 
 AI generates: `solution-prd-v1.md` (structured, versioned, with TODOs)
+
+**💡 Tip: Rich PRDs for Better AI Handover**
+
+Brief Builder v1.1 includes **Section 11: Design Rationale & Context**, which is critical for IDE AI handover.
+
+**Why it matters:**
+- ✅ AI understands WHY decisions were made (not just WHAT)
+- ✅ AI knows alternatives considered and rejected
+- ✅ AI has context from your conversation
+- ✅ No "cold start" when AI opens your project
+
+**During brainstorming, capture:**
+- "We chose X **because** [reason]"
+- "Considered Y but rejected due to [concern]"
+- "Realized [insight] which changed our approach"
+- Technical concepts that needed explanation
+
+**Example:**
+```markdown
+## 11. DESIGN RATIONALE & CONTEXT
+
+### Decision Context
+- Chose PostgreSQL because ACID transactions critical for payments
+- React selected for team expertise (3 devs, 2+ years experience)
+
+### Alternatives Considered
+- MongoDB: Rejected due to financial data requirements
+- Vue: Training time would delay launch
+
+### Key Insights
+- Realized admin tools need separate UI after discussing user types
+- Payments are core feature → drove database decision early
+```
+
+**Result:** IDE AI reads Section 11 and immediately understands your reasoning.
 
 ### 3. Set Up Your Solution Directory
 

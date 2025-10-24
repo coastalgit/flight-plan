@@ -50,11 +50,84 @@ Each solution needs its own PRD based on YOUR requirements.
 
 **STOP HERE. Do not proceed. Do not show preview. Do not use examples.**
 
-**If PRD exists:** Continue to Step 1...
+2. **Check directory structure (verify not running from repo)**
+
+**Check parent directory contents:**
+```bash
+ls ../ 
+```
+
+**If parent contains Flight Plan repo files (LICENSE, examples/, templates/ at same level):**
+```
+❌ STOP: You're running from the Flight Plan repository itself!
+
+This will create projects in the wrong location.
+
+Correct setup:
+1. Create your solution directory:
+   mkdir MyApp
+   cd MyApp
+
+2. Copy Flight Plan tools here:
+   cp -r /path/to/FlightPlan/ ./flight-plan-solution/
+
+3. Copy your PRD:
+   cp solution-prd-v1.md ./flight-plan-solution/
+
+4. Open MyApp/flight-plan-solution/ in Cursor
+
+5. Run "flight-plan init" again
+
+This ensures projects are created in MyApp/, not in the repo's parent directory.
+
+See README.md section "Set Up Your Solution Directory" for details.
+```
+
+**STOP HERE. Do not proceed until user has correct structure.**
+
+**If PRD exists AND directory structure is correct:** Continue to Step 1...
 
 ---
 
-### STEP 1: LOAD CONTEXT
+### STEP 1: DETECT CONTEXT & NAVIGATE
+
+**User might open parent directory in Cursor, so check where we are:**
+
+**Check current directory:**
+```bash
+pwd  # or cd on Windows
+ls   # What's here?
+```
+
+**Scenario A: Already in flight-plan-solution/**
+```
+Current: MyApp/flight-plan-solution/
+Files here: solution-prd-v1.md, templates/, GENERATOR.md
+Action: Continue (already in correct location)
+Project target: ../ (MyApp/)
+```
+
+**Scenario B: In parent directory (MyApp/)**
+```
+Current: MyApp/
+Files here: flight-plan-solution/ (subdirectory)
+Action: Navigate to flight-plan-solution/ first
+Project target: Current directory (.)
+```
+
+**Determine project creation path:**
+- If in `flight-plan-solution/`: Create projects in `../`
+- If in parent with `flight-plan-solution/` subdir: Create projects in `./`
+
+**Navigate if needed:**
+```bash
+# If in parent directory:
+cd flight-plan-solution/
+```
+
+---
+
+### STEP 2: LOAD CONTEXT
 
 Read these files in order to understand the system:
 
@@ -66,7 +139,7 @@ Read these files in order to understand the system:
 
 ---
 
-### STEP 2: SHOW PREVIEW
+### STEP 3: SHOW PREVIEW
 
 Present a clear preview of what will be generated:
 

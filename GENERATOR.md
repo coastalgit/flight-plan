@@ -20,17 +20,88 @@ Preview Phase (FLIGHT-PLAN-INIT.md)  →  Execution Phase (THIS FILE)
 
 ## Context Detection
 
-**How to know you're in the right place:**
-1. Check for `solution-prd-v*.md` in current directory
-2. Check for `templates/` subdirectory
-3. Check for this file (`GENERATOR.md`)
-4. If all present: You're in `flight-plan-solution/` context
+**Users may open parent directory in Cursor, so we must detect context:**
+
+**Check current working directory:**
+```bash
+pwd  # or cd on Windows
+ls   # What files/folders are here?
+```
+
+**Scenario A: In flight-plan-solution/ directory**
+```
+Current: MyApp/flight-plan-solution/
+Files here: solution-prd-v*.md, templates/, GENERATOR.md
+Project target: ../ (parent directory = MyApp/)
+```
+
+**Scenario B: In parent directory (MyApp/)**
+```
+Current: MyApp/
+Files here: flight-plan-solution/ (subdirectory visible)
+Project target: ./ (current directory = MyApp/)
+Need to: cd flight-plan-solution/ to read templates
+```
 
 **Purpose:** Generate complete project structure from `solution-prd-v*.md`.
 
-**Output Location:** Projects created in **parent directory** (`../`), keeping Flight Plan tooling separate from actual projects.
+**Output Location:** Projects created **alongside** flight-plan-solution/ directory.
 
 **Trigger:** This is ONLY called from `flight-plan init apply` (via FLIGHT-PLAN-INIT.md)
+
+---
+
+## ⚠️ CRITICAL: Correct Directory Structure
+
+**Before running, verify the user has set up correctly:**
+
+❌ **WRONG - Running from the Flight Plan repo:**
+```
+D:\#R&D\FlightPlan/              # The repo itself
+├── templates/
+├── GENERATOR.md
+└── solution-prd-v1.md           # ← User put PRD here
+```
+**Problem:** Projects will be created in `D:\#R&D/` (wrong!)
+
+✅ **CORRECT - Running from a copy in solution directory:**
+```
+MyApp/                           # User's solution root
+├── flight-plan-solution/        # Copy of repo
+│   ├── templates/
+│   ├── GENERATOR.md
+│   └── solution-prd-v1.md       # ← PRD here
+```
+**Result:** Projects created in `MyApp/` (correct!)
+
+**Check before proceeding:**
+```
+Current directory: [show pwd]
+Parent directory: [show ls ../]
+
+If parent directory contains:
+- LICENSE, README.md for Flight Plan repo → WRONG LOCATION
+- Other Flight Plan repo files → WRONG LOCATION
+
+Expected parent:
+- Empty or your solution files → CORRECT
+```
+
+**If wrong location detected:**
+```
+❌ STOP: You're running from the Flight Plan repo itself!
+
+You need to:
+1. Create your solution directory (e.g., mkdir MyApp)
+2. Copy Flight Plan tools there: cp -r FlightPlan/ MyApp/flight-plan-solution/
+3. Put your PRD in: MyApp/flight-plan-solution/solution-prd-v1.md
+4. Open MyApp/flight-plan-solution/ in Cursor
+5. Run "flight-plan init apply"
+
+This ensures projects are created in MyApp/, not in the repo parent directory.
+
+See README.md section "Set Up Your Solution Directory" for details.
+```
 
 ---
 
@@ -218,10 +289,20 @@ ai-refs/
 
 ## STEP 6: GENERATE PROJECTS
 
-For each project in the PRD, create in parent directory (`../`):
+**Determine project creation path based on context (from Step 1):**
+
+**If currently in flight-plan-solution/ directory:**
+- Template path: `./templates/`
+- Project path: `../[project-name]/`
+
+**If currently in parent directory (MyApp/):**
+- Template path: `./flight-plan-solution/templates/`
+- Project path: `./[project-name]/`
+
+**Project structure to create:**
 
 ```
-../[project-name]/
+[project-path]/[project-name]/
 ├── project-prd.md          # Use templates/project-prd.md.template
 ├── project-rules.md        # Use templates/project-rules.md.template
 ├── .flight-plan/
@@ -235,6 +316,8 @@ For each project in the PRD, create in parent directory (`../`):
 ├── src/                    # Empty directory
 └── README.md               # Generate from PRD
 ```
+
+**Result:** Projects created alongside flight-plan-solution/ directory.
 
 **Do NOT create yet (created by setup-speckit command):**
 - `memory/constitution.md` (only via `flight-plan setup-speckit`)
@@ -432,16 +515,13 @@ All templates use `{{VARIABLE}}` placeholders:
 ```
 ✅ Flight Plan Initialized
 
-Generated [N] projects in ../
+Generated [N] projects
 
-📁 Structure:
-../[project-1]/
-../[project-2]/
-../[project-3]/
+📁 Structure (adjust paths based on where you ran command):
+- If in flight-plan-solution/: Projects at ../[project-name]/
+- If in parent directory: Projects at ./[project-name]/
 
-📋 Solution Files:
-./solution-rules.md (shared rules)
-./ai-refs/ (coordination)
+All projects are alongside flight-plan-solution/ directory
 
 All projects start in Phase 1 (Define Mission).
 
@@ -450,7 +530,8 @@ All projects start in Phase 1 (Define Mission).
 🚀 Next Steps:
 
 1. Navigate to any project:
-   cd ../[project-name]/
+   - If in flight-plan-solution/: cd ../[project-name]/
+   - If in parent directory: cd [project-name]/
 
 2. Get guidance on what to do next:
    "flight-plan status"
@@ -463,7 +544,8 @@ The AI will guide you through:
 - Moving through Flight Plan phases naturally
 
 See all commands:
-  cat ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+  - If in flight-plan-solution/: cat ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+  - If in parent directory: cat flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
 
 Happy building! 🛫
 ```
