@@ -19,6 +19,37 @@ Transform user's messy brainstorm → structured `solution-prd-v1.md`
 
 ---
 
+## ⚠️ PREREQUISITES CHECK
+
+**Before processing, verify you have:**
+
+1. **User's brainstorm/brief content** - Actual text describing their project
+2. **Problem statement** - At minimum, what they're trying to build
+3. **Some project details** - At least rough ideas about components
+
+**If user hasn't provided their brainstorm:**
+```
+❌ Cannot proceed: No brainstorm content provided
+
+I need your project brainstorm/brief to create the PRD.
+
+Please paste:
+- What problem you're solving
+- What you want to build
+- Rough technical ideas (if any)
+- Any constraints or requirements
+
+Can be messy notes, bullet points, or paragraphs.
+I'll extract and structure it into solution-prd-v1.md.
+
+IMPORTANT: Do NOT ask me to create ideas for you.
+I format YOUR ideas, not invent new ones.
+```
+
+**STOP if no content provided. Request user's brainstorm first.**
+
+---
+
 ## OUTPUT: solution-prd-v1.md
 
 ```markdown

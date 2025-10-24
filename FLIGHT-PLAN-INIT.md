@@ -23,6 +23,37 @@
 
 When user says **"flight-plan init"**, show preview. When they say **"flight-plan init apply"**, generate structure.
 
+### STEP 0: PREREQUISITES CHECK ⚠️
+
+**BEFORE doing anything, verify required files exist:**
+
+1. **Check for solution-prd-v*.md in current directory**
+   - Look for: `solution-prd-v1.md`, `solution-prd-v2.md`, etc.
+   - Need: At least ONE version file
+
+**If PRD file is missing:**
+```
+❌ Cannot proceed: No solution PRD found
+
+Required: solution-prd-v1.md (or higher version)
+Location: This directory (flight-plan-solution/)
+
+To create the PRD:
+1. Prepare your brainstorm/brief
+2. Use BRIEF-BUILDER-v1.0.md to generate the PRD
+3. Copy the generated PRD to this directory as solution-prd-v1.md
+4. Then run "flight-plan init" again
+
+IMPORTANT: Do NOT use examples/ folder as a template!
+Each solution needs its own PRD based on YOUR requirements.
+```
+
+**STOP HERE. Do not proceed. Do not show preview. Do not use examples.**
+
+**If PRD exists:** Continue to Step 1...
+
+---
+
 ### STEP 1: LOAD CONTEXT
 
 Read these files in order to understand the system:
@@ -30,6 +61,8 @@ Read these files in order to understand the system:
 1. **README.md** - Understand the Flight Plan system and workflow
 2. **solution-prd-v*.md** - The user's specific project requirements (latest version)
 3. **GENERATOR.md** - How generation works (don't execute yet, just understand)
+
+**⚠️ NEVER read examples/ folder for project content - only read user's PRD**
 
 ---
 

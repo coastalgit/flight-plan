@@ -38,7 +38,28 @@ Preview Phase (FLIGHT-PLAN-INIT.md)  →  Execution Phase (THIS FILE)
 
 **This tool is for initial setup only.**
 
-Check for existing projects in the parent directory (`../`):
+### Prerequisites Check
+
+**1. Verify solution-prd-v*.md exists in current directory:**
+   - Must find at least one: `solution-prd-v1.md`, `solution-prd-v2.md`, etc.
+   - If missing: **STOP and tell user (see FLIGHT-PLAN-INIT.md Step 0)**
+
+**2. Check for existing projects in parent directory (`../`):**
+
+### If PRD Missing:
+
+```
+❌ FATAL: No solution PRD found
+
+Cannot generate without solution-prd-v*.md file.
+See FLIGHT-PLAN-INIT.md for proper workflow.
+
+NEVER use examples/ folder as source material!
+```
+
+**STOP. Do not proceed.**
+
+---
 
 ### If Projects Already Exist:
 
@@ -56,7 +77,9 @@ GENERATOR is for initial setup only.
 
 **Stop here. Do not regenerate.**
 
-### If No Projects Exist:
+---
+
+### If PRD Exists AND No Projects Exist:
 
 Continue with generation below...
 
@@ -64,7 +87,7 @@ Continue with generation below...
 
 ## STEP 1: READ THE PRD
 
-Find and read the latest PRD version: `solution-prd-v*.md`
+Find and read the latest PRD version in **current directory only**: `solution-prd-v*.md`
 
 Examples:
 - `solution-prd-v1.md` only → Read v1
@@ -73,7 +96,13 @@ Examples:
 
 **Always read the highest version number.**
 
-**Extract:**
+**🚨 CRITICAL - Read ONLY user's PRD:**
+- ✅ Read: `solution-prd-v*.md` in current directory
+- ❌ NEVER read: `examples/` folder
+- ❌ NEVER read: Example PRDs from templates
+- ❌ NEVER use: portfolio-site or any example as template
+
+**Extract from user's PRD:**
 - Projects to create (Section 3)
 - Technology stack per project
 - Architecture (Section 4)

@@ -37,6 +37,37 @@ Flight Plan provides context (phase, standards) → Spec-Kit uses it for feature
 
 ---
 
+## 🛡️ Safety & Validation
+
+**Every Flight Plan command validates prerequisites BEFORE proceeding.**
+
+### The Problem
+Without validation, AI might:
+- ❌ Use examples/ folder as your project template
+- ❌ Invent content when files are missing
+- ❌ Generate structure based on assumptions
+
+### The Solution
+**All commands follow this pattern:**
+
+```
+1. Check prerequisites (files exist, context valid)
+2. If missing → STOP and tell user what's needed
+3. If present → Proceed with command
+```
+
+**NEVER:**
+- Use examples/ as source material
+- Generate without required files
+- Assume or invent missing information
+
+**ALWAYS:**
+- Validate files exist first
+- Read ONLY user's files (not examples)
+- Ask user if essential information missing
+
+---
+
 ## Command Reference
 
 ### Solution-Level Commands
@@ -168,6 +199,24 @@ Overall: 3 projects, 2 blockers
 - `flight-plan sync` - Preview changes only
 - `flight-plan sync apply` - Apply changes to projects
 
+**Prerequisites Check:**
+Before proceeding, verify:
+1. ✅ Multiple PRD versions exist (`solution-prd-v1.md`, `solution-prd-v2.md`, etc.)
+2. ✅ At least one project exists in parent directory (`../`)
+
+If missing:
+```
+❌ Cannot sync: Need at least 2 PRD versions
+
+Current: solution-prd-v1.md only
+Needed: solution-prd-v2.md (or higher)
+
+To sync:
+1. Create new PRD version (e.g., solution-prd-v2.md)
+2. Run "flight-plan sync" to preview changes
+3. Run "flight-plan sync apply" to update projects
+```
+
 **What preview does:**
 1. Detects latest `solution-prd-v*.md` (v2, v3, etc.)
 2. Compares with previous version
@@ -298,6 +347,24 @@ Recent Notes:
 **Usage:**
 - `flight-plan prd refresh` - Preview changes only
 - `flight-plan prd refresh apply` - Apply tracking updates
+
+**Prerequisites Check:**
+Before proceeding, verify:
+1. ✅ `project-prd.md` exists in current directory
+2. ✅ `.flight-plan/current.md` exists
+
+If missing:
+```
+❌ Cannot refresh: Missing project files
+
+This command works in a project directory.
+
+Expected files:
+- project-prd.md (project requirements)
+- .flight-plan/current.md (progress tracking)
+
+If starting fresh, use "flight-plan init" from flight-plan-solution/ first.
+```
 
 **What preview does:**
 1. Reads current `project-prd.md`
