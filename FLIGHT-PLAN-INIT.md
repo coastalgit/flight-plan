@@ -1,12 +1,27 @@
 # 🚀 Flight Plan Initialization
 
-**Trigger phrase:** "flight-plan init" or "initialize flight-plan"
+**Command:** `flight-plan init` or `flight-plan init apply`
+
+**Usage:**
+- `flight-plan init` - Preview project structure only
+- `flight-plan init apply` - Generate projects
+
+---
+
+## Quick Reference
+
+**Two-Step Process:**
+1. `flight-plan init` → Preview structure (read-only)
+2. `flight-plan init apply` → Generate projects (creates files)
+
+**During preview:** Ask questions, verify understanding  
+**After preview:** Say "flight-plan init apply" to proceed
 
 ---
 
 ## YOUR ROLE
 
-When user says **"flight-plan init"**, follow this sequence:
+When user says **"flight-plan init"**, show preview. When they say **"flight-plan init apply"**, generate structure.
 
 ### STEP 1: LOAD CONTEXT
 
@@ -132,58 +147,51 @@ Constraints: [from PRD]
 
 ### STEP 3: DISCUSS & REFINE
 
-**DO NOT generate yet. DO NOT prompt "Proceed? (y/n)"**
+After showing preview, end with separator and **wait silently**.
 
-Instead, have a natural conversation:
+**Do not add any prompt:**
+❌ "Ready to proceed?"
+❌ "Shall I generate this?"
+❌ "Does this look correct?"
+❌ "Would you like me to create this structure?"
+✅ Just stop after the separator line
 
+End preview like this:
 ```
-This is what I understand from your PRD. 
-
-Let me know if:
-- Tech stack looks correct for each project
-- Project names and structure make sense  
-- Dependencies are captured correctly
-- Anything needs clarification
-
-When you're ready to create this structure, just say:
-"generate our flight plan" or "create the structure" or "build it"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-**Natural discussion - NOT a menu.**
+**Then STOP. Say nothing more.**
 
-The user might:
+The preview shows everything. User can:
 - Ask questions about the structure
 - Verify tech stack extraction
 - Clarify dependencies
 - Question technology decisions
-- Want to resolve open questions before generating
+- Want to resolve open questions
 - Request changes to the preview
+- Say "flight-plan init apply" to proceed
 
 **Answer their questions using context from README, PRD, and GENERATOR.**
 
-**Wait for explicit confirmation phrases like:**
-- "generate our flight plan"
-- "create the structure"
-- "build it"
-- "make it happen"
-- "let's do it"
-
 ---
 
-### STEP 4: WAIT FOR GENERATION TRIGGER
+### STEP 4: WAIT FOR APPLY COMMAND
 
-Only when user says one of these phrases:
+Only when user says **"flight-plan init apply"**:
 
-- "generate our flight plan"
-- "create the structure"  
-- "build it"
-- "make it happen"
-
-Then and ONLY then:
 1. Read **GENERATOR.md** in full
 2. Follow all instructions in GENERATOR.md
 3. Create the structure
 4. Report what was created
+
+**Do NOT execute on:**
+- "generate our flight plan" (old pattern)
+- "create the structure" (old pattern)
+- "build it" (old pattern)
+- Any other phrases
+
+**ONLY on:** `flight-plan init apply`
 
 ---
 

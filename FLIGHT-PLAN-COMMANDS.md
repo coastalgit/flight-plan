@@ -20,73 +20,118 @@ AI interprets these naturally and performs the actions.
 
 ---
 
+## What is Spec-Kit?
+
+**[Spec-Kit](https://github.com/github/spec-kit)** is GitHub's toolkit for Spec-Driven Development.
+
+**Flight Plan vs Spec-Kit:**
+- **Flight Plan** → Project-level (8 phases, PRDs, overall progress)
+- **Spec-Kit** → Feature-level (individual features, `/speckit.spec`, `/speckit.implement`)
+
+**Integration:**
+Flight Plan provides context (phase, standards) → Spec-Kit uses it for feature development.
+
+**Optional:** Use `flight-plan enable-speckit` to set up integration.
+
+**Learn more:** [github.com/github/spec-kit](https://github.com/github/spec-kit)
+
+---
+
 ## Command Reference
 
 ### Solution-Level Commands
-(Run from `flight-plan-solution/`)
+(Context: directory with `solution-prd-v*.md`)
 
 | Command | Purpose |
 |---------|---------|
 | `flight-plan status` | Show all projects' progress |
-| `flight-plan sync` | Push PRD changes to projects |
+| `flight-plan sync` | Preview PRD changes |
+| `flight-plan sync apply` | Apply PRD changes to projects |
 
 ### Project-Level Commands
-(Run from any project directory)
+(Context: directory with `project-prd.md`)
 
 | Command | Purpose |
 |---------|---------|
 | `flight-plan status` | Show this project's status |
-| `flight-plan prd refresh` | Update tracking from PRD edits |
+| `flight-plan prd refresh` | Preview tracking changes |
+| `flight-plan prd refresh apply` | Apply tracking updates |
 | `flight-plan note [text]` | Add activity note |
 | `flight-plan phase [N]` | Move to phase N |
 | `flight-plan enable-speckit` | Set up Spec-Kit integration |
 
 ---
 
-## Command Pattern: Preview → Discuss → Confirm → Execute
+## Command Pattern: Preview → Apply
 
-**All major Flight Plan commands follow this pattern:**
+**Major Flight Plan commands use explicit `apply` subcommand:**
 
-1. **Preview** - AI shows what it understands and what will change
-2. **Discuss** - Natural conversation, ask questions, clarify
-3. **Confirm** - You explicitly say "yes" / "apply" / "do it" when ready
-4. **Execute** - AI performs the actions
-5. **Report** - AI confirms what was done
+**Preview (default):**
+- `flight-plan sync` - Shows what will change
+- `flight-plan prd refresh` - Shows tracking updates
+- `flight-plan init` - Shows project structure
 
-**No automatic prompts like "Proceed? (y/n)" - just natural conversation.**
+**Apply (execute):**
+- `flight-plan sync apply` - Actually updates files
+- `flight-plan prd refresh apply` - Actually updates tracking
+- `flight-plan init apply` - Actually creates projects
 
-### Example Pattern
+**Why this pattern?**
+- ✅ Preview is safe by default (no changes)
+- ✅ No ambiguity about when changes happen
+- ✅ No prompts or waiting - you decide next command
+- ✅ Natural conversation between preview and apply
+
+### Example
 
 ```
 You: "flight-plan sync"
 
 AI: [Shows detailed preview with changes]
-    Ready to sync? Let me know if you want more details...
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    SOLUTION-LEVEL CHANGES:
+      + New MCP server: GitHub MCP
+    
+    PROJECT CHANGES:
+    • backend-api:
+      ~ Database: PostgreSQL → MongoDB
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-You: "What will happen to the backend constitution?"
+# User can discuss, ask questions in separate messages
 
-AI: [Explains constitution will be updated with new tech stack]
+You: "What will happen to existing database data?"
 
-You: "Looks good, apply it"
+AI: [Explains migration considerations]
 
-AI: [Executes]
-    ✅ Updated backend-api/project-prd.md
+You: "flight-plan sync apply"
+
+AI: ✅ Updated backend-api/project-prd.md
     ✅ Updated backend-api/memory/constitution.md
     ...
 ```
 
 **This applies to:**
-- `flight-plan init` - Preview all projects before creation
-- `flight-plan sync` - Preview PRD changes before updating
-- `flight-plan prd refresh` - Preview tracking changes before applying
+- `flight-plan init` / `flight-plan init apply`
+- `flight-plan sync` / `flight-plan sync apply`
+- `flight-plan prd refresh` / `flight-plan prd refresh apply`
 
 ---
 
 ## Solution-Level Commands
 
+### Context Detection
+
+**How AI knows this is solution-level:**
+1. Check current directory for `solution-prd-v*.md`
+2. Check for `templates/` subdirectory
+3. Check for `ai-refs/` directory
+4. If found: Solution-level context
+
+---
+
 ### `flight-plan status`
 
-**Location:** flight-plan-solution/
+**Context:** Solution-level (has `solution-prd-v*.md`)
 
 **Purpose:** Show progress across all projects
 
@@ -115,17 +160,27 @@ Overall: 3 projects, 2 blockers
 
 ### `flight-plan sync`
 
-**Location:** flight-plan-solution/
+**Context:** Solution-level (has `solution-prd-v*.md`)
 
-**Purpose:** Push solution PRD changes to project PRDs
+**Purpose:** Sync solution PRD changes to project PRDs
 
-**What it does:**
+**Usage:**
+- `flight-plan sync` - Preview changes only
+- `flight-plan sync apply` - Apply changes to projects
+
+**What preview does:**
 1. Detects latest `solution-prd-v*.md` (v2, v3, etc.)
 2. Compares with previous version
-3. Shows preview of changes per project
-4. Updates `project-prd.md` files
-5. Updates `solution-rules.md` if needed
-6. Logs changes
+3. Shows changes per project
+4. Detects Spec-Kit per project
+5. Lists files that will be updated
+
+**What apply does:**
+1. Updates `project-prd.md` files
+2. Updates `project-rules.md` if solution rules changed
+3. Updates `memory/constitution.md` if Spec-Kit enabled
+4. Updates `solution-rules.md` if needed
+5. Logs all changes
 
 **Example:**
 ```bash
@@ -167,12 +222,12 @@ Will update:
 ✓ notifications/project-rules.md
 ✓ ai-refs/solution-overview.md
 
-Ready to sync? Let me know if you want to see detailed changes,
-or say "sync" / "apply" / "do it" when ready.
-```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After user says "sync" or "apply":
-```
+# User can discuss, ask questions
+
+"flight-plan sync apply"
+
 ✅ Updated: solution-rules.md
 ✅ Updated: backend-api/project-prd.md
 ✅ Updated: backend-api/project-rules.md
@@ -190,9 +245,19 @@ Sync complete. All projects now at v2.
 
 ## Project-Level Commands
 
+### Context Detection
+
+**How AI knows this is project-level:**
+1. Check current directory for `project-prd.md`
+2. Check for `.flight-plan/` subdirectory
+3. Check for `project-rules.md`
+4. If found: Project-level context
+
+---
+
 ### `flight-plan status`
 
-**Location:** Any project directory
+**Context:** Project-level (has `project-prd.md`)
 
 **Purpose:** Show this project's current status
 
@@ -226,16 +291,25 @@ Recent Notes:
 
 ### `flight-plan prd refresh`
 
-**Location:** Any project directory
+**Context:** Project-level (has `project-prd.md`)
 
 **Purpose:** Update tracking after manual PRD edits
 
-**What it does:**
+**Usage:**
+- `flight-plan prd refresh` - Preview changes only
+- `flight-plan prd refresh apply` - Apply tracking updates
+
+**What preview does:**
 1. Reads current `project-prd.md`
 2. Compares with `.flight-plan/current.md` state
-3. Detects Spec-Kit if enabled
-4. Shows preview of changes
-5. Updates tracking files after confirmation
+3. Detects Spec-Kit if enabled (checks for `memory/constitution.md`)
+4. Shows what changed
+5. Lists files that will be updated
+
+**What apply does:**
+1. Updates `.flight-plan/current.md` (open items, notes)
+2. Updates `memory/constitution.md` if Spec-Kit enabled and tech stack changed
+3. Logs changes with timestamp
 
 **Example:**
 ```bash
@@ -277,12 +351,12 @@ Will update:
 ✓ .flight-plan/current.md (open items, notes)
 ✓ memory/constitution.md (tech stack: Redis)
 
-Ready to refresh? Say "apply" / "refresh" / "do it" when ready,
-or ask questions if you need clarification.
-```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-After user says "apply" or "refresh":
-```
+# User can discuss, ask questions
+
+"flight-plan prd refresh apply"
+
 ✅ Updated: .flight-plan/current.md
    - Added open item: question-3
    - Removed blocker: question-1 (resolved)

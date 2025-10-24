@@ -136,26 +136,33 @@ cp solution-prd-v1.md ./flight-plan-solution/
 **In Cursor (or any AI):**
 ```
 Open MyApp/flight-plan-solution/ in Cursor
-Say: "flight-plan init"
+
+# Step 1: Preview (see what will be created)
+"flight-plan init"
+
+AI: [Shows detailed preview with tech stack, projects, dependencies, etc.]
+
+# Step 2: Ask questions (optional)
+"What database is the backend using?"
+
+AI: "PostgreSQL from PRD Section 3..."
+
+# Step 3: Apply (actually create the projects)
+"flight-plan init apply"
+
+AI: ✅ Generated 3 projects in ../
+    ✅ Created solution-rules.md
+    ✅ Created ai-refs/
 ```
 
-**Flight Plan uses a Preview → Discuss → Confirm → Execute pattern:**
+**Two-step pattern:**
+1. **Preview** - `flight-plan init` shows what will be created (read-only)
+2. **Apply** - `flight-plan init apply` actually creates projects (writes files)
 
-AI will:
-1. **Preview** - Show detailed preview (tech stack, projects, structure, dependencies, open questions)
-2. **Discuss** - Let you ask questions, verify, refine understanding
-3. **Wait** - No automatic prompts, just natural conversation
-4. **Execute** - When you say "generate our flight plan", creates all projects
-
-**Example conversation:**
-```
-You: "flight-plan init"
-AI: [Shows detailed preview]
-You: "What database is the backend using?"
-AI: [Explains: PostgreSQL from PRD Section 3]
-You: "Looks good, generate our flight plan"
-AI: [Creates all projects]
-```
+**Why two steps?**
+- Preview is safe - explore without commitment
+- Discuss and refine before generating
+- Clear separation between planning and execution
 
 **Done!** Your projects are now in `MyApp/` alongside `flight-plan-solution/`.
 
@@ -228,7 +235,28 @@ The AI will:
 
 ## 🎯 Optional: Spec-Kit Integration
 
-Want to use Spec-Kit for feature-level development?
+### What is Spec-Kit?
+
+**[Spec-Kit](https://github.com/github/spec-kit)** is GitHub's toolkit for **Spec-Driven Development** - a structured approach to building individual features with AI agents.
+
+**Key Differences:**
+- **Flight Plan** → Project-level methodology (8 phases, PRDs, overall progress)
+- **Spec-Kit** → Feature-level framework (individual feature specs, tasks, implementation)
+
+**How They Work Together:**
+```
+Flight Plan: "We're in Phase 5, building the backend API"
+              ↓ (provides context)
+Spec-Kit:    "Let's implement user authentication feature"
+              → /speckit.spec, /speckit.plan, /speckit.implement
+```
+
+**Spec-Kit Components:**
+- `memory/constitution.md` - Project rules (references Flight Plan files)
+- `specs/` - Feature specifications
+- Commands: `/speckit.spec`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`
+
+### Enable Spec-Kit in Your Project
 
 **From any project:**
 ```
@@ -237,14 +265,16 @@ cd MyApp/your-project/
 ```
 
 This creates:
-- `memory/constitution.md` - References Flight Plan files
+- `memory/constitution.md` - References Flight Plan context
 - `specs/` - For Spec-Kit feature specs
 
 Spec-Kit will automatically:
-- Check your current phase
+- Check your current Flight Plan phase
 - Apply phase-appropriate standards
 - Reference project-prd.md for constraints
-- Work with Flight Plan naturally
+- Use Flight Plan context naturally
+
+**Learn more:** [github.com/github/spec-kit](https://github.com/github/spec-kit)
 
 **No Spec-Kit?** No problem. Flight Plan works standalone.
 

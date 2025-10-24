@@ -5,11 +5,32 @@
 
 ---
 
-**Context:** You are reading this from `MyApp/flight-plan-solution/`.
+## Execution Flow
+
+This file is called by FLIGHT-PLAN-INIT.md when user says "flight-plan init apply"
+
+```
+Preview Phase (FLIGHT-PLAN-INIT.md)  →  Execution Phase (THIS FILE)
+     ↓ User sees preview                    ↓ Actually creates files
+     ↓ Asks questions                       ↓ Follows these instructions
+     ↓ Says "flight-plan init apply"        ↓ Reports completion
+```
+
+---
+
+## Context Detection
+
+**How to know you're in the right place:**
+1. Check for `solution-prd-v*.md` in current directory
+2. Check for `templates/` subdirectory
+3. Check for this file (`GENERATOR.md`)
+4. If all present: You're in `flight-plan-solution/` context
 
 **Purpose:** Generate complete project structure from `solution-prd-v*.md`.
 
 **Output Location:** Projects created in **parent directory** (`../`), keeping Flight Plan tooling separate from actual projects.
+
+**Trigger:** This is ONLY called from `flight-plan init apply` (via FLIGHT-PLAN-INIT.md)
 
 ---
 
@@ -61,33 +82,30 @@ Examples:
 - Open questions (Section 7)
 - MCP servers or shared tools (if mentioned)
 
-**⚠️ Do not invent. If essential info is missing → ask user.**
+**⚠️ Do not invent.** Use defaults or "To be determined" for missing info.
 
 ---
 
-## STEP 2: ASK CLARIFYING QUESTIONS (During Preview)
+## STEP 2: EXTRACT INFORMATION
 
-**This happens during the preview/discussion phase, NOT after showing preview.**
+Read the latest PRD version: `solution-prd-v*.md`
 
-**Ask ONLY if essential information is missing for the preview:**
+Extract all required information using template variables table (bottom of this file).
 
-Essential = needed for working structure:
-- Project names
-- Basic tech stack (language/framework)
-- Project relationships
+**If information is missing:**
+- Use "To be determined" for technology choices
+- Use "Not applicable" for optional items (e.g., database if not needed)
+- Use reasonable defaults for development standards
+- Trust that preview phase resolved critical questions
 
-**Ask about:**
-- Missing technology choices
-- Unclear project dependencies
-- Ambiguous architecture
-- Deployment platforms if critical
+**Do NOT ask questions at this stage** - you're in execution mode.
 
-**Don't ask about:**
-- Things clearly stated in PRD
-- Minor details (mark as "To be determined")
-- Non-essential configuration
+The preview phase (FLIGHT-PLAN-INIT.md) handled clarifications.
 
-**Remember:** User will see full preview and can ask questions there too.
+**This is silent execution:**
+- No confirmations needed
+- No "Should I...?" prompts
+- Just create the structure as extracted from PRD
 
 ---
 
@@ -398,12 +416,12 @@ Happy building! 🛫
 
 ## IMPORTANT NOTES
 
-**Preview → Discuss → Confirm → Execute:**
-- ALWAYS triggered via FLIGHT-PLAN-INIT.md first (which shows preview)
-- DO NOT execute generation without explicit confirmation
-- Wait for user to say "generate our flight plan" or similar
-- Have natural conversation during preview phase
-- NO automatic "Proceed? (y/n)" prompts
+**Apply Pattern:**
+- ALWAYS triggered via `flight-plan init apply` command
+- FLIGHT-PLAN-INIT.md handles preview with `flight-plan init`
+- This file (GENERATOR) is ONLY called when user says "flight-plan init apply"
+- DO NOT execute generation without "apply" in the command
+- Preview happens in FLIGHT-PLAN-INIT.md, execution happens here
 
 **Extraction, Not Invention:**
 - Do NOT invent details not in PRD
