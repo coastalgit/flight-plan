@@ -7,13 +7,17 @@
 
 ## Overview
 
-After initial setup (`flight-plan init`), use these commands for ongoing work.
-
-**Just say to your AI (Cursor, Claude, etc):**
+**Initial Setup (First Time):**
 ```
-"flight-plan status"
-"flight-plan sync"
-"flight-plan prd refresh"
+"flight-plan init"         ← Preview project structure
+"flight-plan init apply"   ← Generate projects
+```
+
+**Ongoing Work:**
+```
+"flight-plan status"       ← Check progress, get guidance
+"flight-plan sync"         ← Sync solution PRD changes to projects
+"flight-plan prd refresh"  ← Update tracking after manual PRD edits
 ```
 
 AI interprets these naturally and performs the actions.
@@ -31,7 +35,7 @@ AI interprets these naturally and performs the actions.
 **Integration:**
 Flight Plan provides context (phase, standards) → Spec-Kit uses it for feature development.
 
-**Optional:** Use `flight-plan enable-speckit` to set up integration.
+**Optional:** Run `flight-plan status` in any project and AI will ask if you want SpecKit.
 
 **Learn more:** [github.com/github/spec-kit](https://github.com/github/spec-kit)
 
@@ -75,21 +79,27 @@ Without validation, AI might:
 
 | Command | Purpose |
 |---------|---------|
+| `flight-plan init` | Preview project structure from PRD |
+| `flight-plan init apply` | Generate projects and tracking |
 | `flight-plan status` | Show all projects' progress |
 | `flight-plan sync` | Preview PRD changes |
 | `flight-plan sync apply` | Apply PRD changes to projects |
+
+**Note:** `init` is the first command you run. Others are for ongoing work.
 
 ### Project-Level Commands
 (Context: directory with `project-prd.md`)
 
 | Command | Purpose |
 |---------|---------|
-| `flight-plan status` | Show this project's status |
+| `flight-plan status` | Show status + guidance on what to do next |
 | `flight-plan prd refresh` | Preview tracking changes |
 | `flight-plan prd refresh apply` | Apply tracking updates |
 | `flight-plan note [text]` | Add activity note |
-| `flight-plan phase [N]` | Move to phase N |
-| `flight-plan enable-speckit` | Set up Spec-Kit integration |
+
+**Note:** 
+- Phase transitions happen naturally via conversation, not commands
+- Tests run automatically during `flight-plan status` in build phases (5-6)
 
 ---
 
@@ -98,14 +108,14 @@ Without validation, AI might:
 **Major Flight Plan commands use explicit `apply` subcommand:**
 
 **Preview (default):**
+- `flight-plan init` - Shows project structure
 - `flight-plan sync` - Shows what will change
 - `flight-plan prd refresh` - Shows tracking updates
-- `flight-plan init` - Shows project structure
 
 **Apply (execute):**
+- `flight-plan init apply` - Actually creates projects
 - `flight-plan sync apply` - Actually updates files
 - `flight-plan prd refresh apply` - Actually updates tracking
-- `flight-plan init apply` - Actually creates projects
 
 **Why this pattern?**
 - ✅ Preview is safe by default (no changes)
@@ -444,6 +454,34 @@ Refresh complete.
 
 ---
 
+### Phase Transitions (Natural, via `flight-plan next`)
+
+**Users don't manually manage phases.** The AI guides phase transitions naturally.
+
+**How it works:**
+
+1. **User runs `flight-plan next` regularly**
+2. **AI checks if current phase objectives are complete**
+3. **When phase is complete, AI says:**
+   ```
+   ✅ Phase 1 (Define Mission) Complete!
+   
+   You've resolved all blockers and defined requirements.
+   
+   Ready to move to Phase 2: Build Context?
+   This phase focuses on gathering examples and research.
+   
+   Say 'yes' to proceed to Phase 2.
+   ```
+
+4. **User says "yes"**
+5. **AI updates `.flight-plan/current.md` automatically**
+6. **AI shows Phase 2 objectives**
+
+**Phase transition is conversational, not command-based.**
+
+---
+
 ### `flight-plan note`
 
 **Location:** Any project directory
@@ -467,72 +505,169 @@ Recent Notes now shows:
 
 ---
 
-### `flight-plan phase`
+### `flight-plan next`
 
-**Location:** Any project directory
+**Location:** Any project directory OR solution directory
 
-**Purpose:** Move to a new phase
+**Purpose:** Get contextual guidance on what to do next
+
+**Prerequisites Check:**
+Before proceeding, verify context:
+- Project-level: Check for `project-prd.md` and `.flight-plan/current.md`
+- Solution-level: Check for `solution-prd-v*.md` and `ai-refs/`
 
 **What it does:**
-1. Updates phase in `.flight-plan/current.md`
-2. Resets phase activities checklist
-3. Logs transition
+1. Detects context (project or solution level)
+2. Reads current phase and status from `.flight-plan/current.md`
+3. Checks blockers and open items
+4. **If SpecKit not yet offered:** Asks "Would you like SpecKit? (yes/no)"
+   - If yes: Guides through SpecKit setup (reads FLIGHT-PLAN-SPECKIT-SETUP.md)
+   - If no: Marks as prompted in config.json
+5. **In build phases (5-6):** Automatically runs tests and shows results
+   - Detects test framework (Jest, pytest, etc.)
+   - Runs tests in background
+   - Shows pass/fail summary in status output
+6. **If phase objectives complete:** Offers to move to next phase
+7. **If not complete:** Provides specific next steps for current phase
 
-**Example:**
+**Project-Level Example (Phase 1):**
 ```bash
-"flight-plan phase 2"
+cd backend-api/
 
-📋 Moving to Phase 2: Build Context
+"flight-plan status"
 
-Updated:
-✅ .flight-plan/current.md (Phase 1 → Phase 2)
-✅ Reset phase activities checklist
+📍 You are here: Phase 1 (Define Mission)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Phase 2 Objectives:
-- Gather examples and patterns
-- Research technical approaches
-- Document findings
+Current Focus: Understanding requirements
 
-See: ../flight-plan-solution/FLIGHT-PLAN-PHASES.md
+✅ Completed:
+- Initial project setup
+- PRD generated
+
+⚠️ Blockers (2):
+- question-1: Database choice?
+- question-2: Authentication strategy?
+
+🎯 What to do next:
+
+1. Review your project requirements:
+   cat project-prd.md
+
+2. Resolve blockers by editing project-prd.md
+   Then run: "flight-plan prd refresh apply"
+
+3. Once blockers are resolved, I'll guide you to Phase 2
+
+📚 Learn more about Phase 1:
+   cat ../flight-plan-solution/FLIGHT-PLAN-PHASES.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Project-Level Example (Phase 5 - with tests):**
+```bash
+cd backend-api/
+
+"flight-plan status"
+
+📍 You are here: Phase 5 (Build Code)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Current Focus: Implementing features
+
+✅ Completed:
+- User authentication module
+- Database models
+
+🧪 Tests: 45 passing, 3 failing
+   
+   Failures:
+   - profile.test.js: should update user profile
+   - profile.test.js: should validate email format
+   - settings.test.js: should save preferences
+
+🎯 What to do next:
+
+1. Fix failing tests (details above)
+
+2. Implement remaining features:
+   - Profile management
+   - Settings API
+
+3. Once all tests pass and features complete,
+   I'll guide you to Phase 6 (Automate & Integrate)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Phase transition example:**
+When phase objectives are met, AI proactively says:
+```
+✅ Phase 1 (Define Mission) Complete!
+
+All requirements documented, blockers resolved.
+
+Ready to move to Phase 2: Build Context?
+This phase focuses on gathering research and reference materials.
+
+Say 'yes' to move to Phase 2, or 'not yet' to stay in Phase 1.
+```
+
+**Solution-Level Example:**
+```bash
+cd flight-plan-solution/
+
+"flight-plan status"
+
+📊 Solution Overview
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Projects: 3
+Blockers: 2 across projects
+
+Project Status:
+✅ frontend      Phase 5 (Build)      - 85% tests passing
+⚠️  backend-api  Phase 1 (Define)     - 2 blockers
+📝 notifications Phase 2 (Context)    - Gathering APIs
+
+🎯 Recommended Actions:
+
+1. Resolve backend-api blockers:
+   cd ../backend-api/
+   "flight-plan status"
+
+2. Fix frontend failing tests:
+   cd ../frontend/
+   "flight-plan test"
+
+3. Continue notifications research:
+   cd ../notifications/
+   "flight-plan status"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ---
 
-### `flight-plan enable-speckit`
+### SpecKit Integration (via `flight-plan status`)
 
-**Location:** Any project directory
+**SpecKit setup is integrated into `flight-plan status` command - not a separate command.**
 
-**Purpose:** Set up Spec-Kit integration
+**How it works:**
 
-**What it does:**
-1. Creates `memory/constitution.md` (references Flight Plan files)
-2. Creates `specs/` directory
-3. Shows how to use Spec-Kit with Flight Plan
+When user first runs `flight-plan status` in a project:
+1. AI checks `.flight-plan/config.json` for `speckit_prompted` field
+2. If not prompted: AI asks "Would you like SpecKit? (yes/no)"
+3. If yes: AI reads FLIGHT-PLAN-SPECKIT-SETUP.md and guides through setup
+4. If no: Updates config.json, never asks again
 
-**Example:**
-```bash
-cd backend-api/
+**For AI Implementers:**
+- SpecKit prompting happens IN `flight-plan status`, not as separate command
+- Read `FLIGHT-PLAN-SPECKIT-SETUP.md` for complete setup instructions
+- Never create memory/ or specs/ directories (SpecKit does this)
+- Only update .flight-plan/config.json to track status
 
-"flight-plan enable-speckit"
-
-✅ Created memory/constitution.md
-✅ Created specs/
-✅ Spec-Kit integration ready
-
-constitution.md references:
-- project-prd.md (project specs)
-- .flight-plan/current.md (phase/status)
-- ../../flight-plan-solution/FLIGHT-PLAN-PHASES.md (phase standards)
-
-You can now use Spec-Kit commands. The AI will:
-- Know what phase you're in
-- Apply appropriate standards
-- Reference Flight Plan context
-
-Next steps:
-- Use Spec-Kit for feature development
-- AI will automatically apply phase-appropriate standards
-```
 
 ---
 
