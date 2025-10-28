@@ -340,7 +340,7 @@ framework/ai-refs/
 │   ├── project-prd.md          # Use templates/project-prd.md.template
 │   └── project-rules.md        # Use templates/project-rules.md.template
 ├── .flight-plan/
-│   ├── FLIGHT-PLAN-COMMANDS.md       # COPY from flight-plan-solution/framework/
+│   ├── FLIGHT-PLAN-COMMANDS.md       # Use templates/project-commands.md.template
 │   ├── FLIGHT-PLAN-PHASES.md         # COPY from flight-plan-solution/framework/
 │   ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # COPY from flight-plan-solution/framework/
 │   ├── current.md                    # Use templates/flight-plan-current.md.template
@@ -355,10 +355,10 @@ framework/ai-refs/
 
 **Result:** Projects created alongside flight-plan-solution/ directory.
 
-**CRITICAL:** Copy these files into `.flight-plan/` to make project STANDALONE:
-- `FLIGHT-PLAN-COMMANDS.md` - Full command execution logic (NO external refs)
-- `FLIGHT-PLAN-PHASES.md` - Phase definitions and standards (NO external refs)
-- `FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit setup instructions (NO external refs)
+**CRITICAL:** `.flight-plan/` files to make project STANDALONE:
+- `FLIGHT-PLAN-COMMANDS.md` - Generated from templates/project-commands.md.template (PROJECT-ONLY commands)
+- `FLIGHT-PLAN-PHASES.md` - COPY from framework/ (phase standards, no refs to solution)
+- `FLIGHT-PLAN-SPECKIT-SETUP.md` - COPY from framework/ (SpecKit setup, no refs to solution)
 
 **IMPORTANT:** PRD and rules are in `docs/` to keep root clean.
 

@@ -105,12 +105,13 @@ flight-plan-solution/
     ├── BRIEF-BUILDER-v1.1.md             # Formats brainstorm into PRD
     ├── GENERATOR.md                       # Generates project structure
     ├── FLIGHT-PLAN-INIT.md               # Initial setup command
-    ├── FLIGHT-PLAN-COMMANDS.md           # Ongoing operations
+    ├── FLIGHT-PLAN-COMMANDS.md           # All commands (solution + project level)
     ├── FLIGHT-PLAN-PHASES.md             # 8 phases explained
     ├── FLIGHT-PLAN-SPECKIT-SETUP.md      # SpecKit integration guide
     ├── solution-rules.md                  # Solution-wide standards
     ├── templates/                         # Templates for generation
     │   ├── project-prd.md.template
+    │   ├── project-commands.md.template   # Project-only commands
     │   ├── solution-rules.md.template
     │   ├── project-rules.md.template
     │   ├── constitution.md.template (SpecKit)
@@ -140,13 +141,14 @@ MyApp/                                  # Your solution root directory
 │       ├── BRIEF-BUILDER-v1.1.md      # Format brainstorm → PRD
 │       ├── GENERATOR.md                # Initial project generation
 │       ├── FLIGHT-PLAN-INIT.md        # Setup command
-│       ├── FLIGHT-PLAN-COMMANDS.md    # Ongoing operations
+│       ├── FLIGHT-PLAN-COMMANDS.md    # All commands (solution + project)
 │       ├── FLIGHT-PLAN-PHASES.md      # 8 phases explained
 │       ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # SpecKit integration
 │       ├── solution-rules.md           # Solution-wide standards
 │       │
 │       ├── templates/                  # Templates for generation
 │       │   ├── project-prd.md.template
+│       │   ├── project-commands.md.template  # Project-only commands
 │       │   ├── solution-rules.md.template
 │       │   ├── project-rules.md.template
 │       │   └── cursor-rule.mdc.template
@@ -161,7 +163,7 @@ MyApp/                                  # Your solution root directory
 │   │   ├── project-prd.md              # What to build (single source of truth)
 │   │   └── project-rules.md            # How AI should work in this project
 │   ├── .flight-plan/
-│   │   ├── FLIGHT-PLAN-COMMANDS.md     # Flight Plan commands (standalone)
+│   │   ├── FLIGHT-PLAN-COMMANDS.md     # Project commands (help, status, prd refresh, note)
 │   │   ├── FLIGHT-PLAN-PHASES.md       # Phase standards (standalone)
 │   │   ├── FLIGHT-PLAN-SPECKIT-SETUP.md # SpecKit setup guide (standalone)
 │   │   ├── current.md                  # Progress tracking (phase, status)
@@ -353,7 +355,7 @@ MyApp/your-project/
 │   ├── project-prd.md          # What to build (single source of truth)
 │   └── project-rules.md        # How AI should work in this project
 ├── .flight-plan/
-│   ├── FLIGHT-PLAN-COMMANDS.md       # Flight Plan commands (standalone copy)
+│   ├── FLIGHT-PLAN-COMMANDS.md       # Project commands (help, status, prd refresh, note)
 │   ├── FLIGHT-PLAN-PHASES.md         # Phase standards (standalone copy)
 │   ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # SpecKit setup guide (standalone copy)
 │   ├── current.md                    # Current phase, status, activity
@@ -371,8 +373,8 @@ MyApp/your-project/
 **Structure highlights:**
 - `docs/project-prd.md` - Single source of truth (Git tracks history)
 - `docs/project-rules.md` - AI integration layer (standalone)
-- `.flight-plan/` - All Flight Plan reference files (standalone copies):
-  - `FLIGHT-PLAN-COMMANDS.md` - Command execution logic
+- `.flight-plan/` - All Flight Plan reference files (standalone):
+  - `FLIGHT-PLAN-COMMANDS.md` - **Project-only commands** (help, status, prd refresh, note)
   - `FLIGHT-PLAN-PHASES.md` - Phase workflow standards
   - `FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit installation guide
   - `current.md` - Status tracking
@@ -404,7 +406,7 @@ MyApp/your-project/
 Each project gets a `docs/project-rules.md` that tells the AI:
 - Where to find project specs (`docs/project-prd.md`)
 - Current phase and status (`.flight-plan/current.md`)
-- Flight Plan commands (`.flight-plan/FLIGHT-PLAN-COMMANDS.md`)
+- Available Flight Plan commands (`.flight-plan/FLIGHT-PLAN-COMMANDS.md` - project-only)
 - Phase standards (`.flight-plan/FLIGHT-PLAN-PHASES.md`)
 - How to work in this project
 

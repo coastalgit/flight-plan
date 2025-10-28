@@ -1,0 +1,361 @@
+# ⚡ Flight Plan Commands (Project Level)
+
+**Version:** 1.0  
+**Context:** This project  
+
+---
+
+## 💡 FOR AI AGENTS: UNDERSTANDING THIS FILE
+
+**This file is YOUR execution guide for Flight Plan commands in this project.**
+
+### What This File Is:
+This markdown file contains **instructions for you (the AI agent)** to execute when the user types "flight-plan" commands. Whether the user is in:
+- Terminal/CLI (Cursor terminal, etc.)
+- IDE chat (Cursor chat, Claude Code, etc.)
+- Desktop app (Claude Desktop, etc.)
+
+...you read this file and follow the instructions using your native file operations.
+
+### How Flight Plan Works:
+
+**1. User types a command:**
+```
+"flight-plan help"
+"flight-plan status"
+"flight-plan prd refresh"
+"flight-plan note"
+```
+
+**2. You (AI) process it:**
+- Recognize this as a Flight Plan command
+- Find the relevant section in this file
+- Read additional files if needed (e.g., `.flight-plan/FLIGHT-PLAN-PHASES.md`)
+- Execute using your file read/write capabilities
+
+**3. You perform actions:**
+- Read files (docs/project-prd.md, .flight-plan/current.md)
+- Update files (progress tracking, notes)
+- Show output to user (status, guidance, phase info)
+
+**No shell execution needed** - you do everything directly.
+
+### Your Role:
+- ✅ Read markdown files (this one and others in `.flight-plan/`)
+- ✅ Follow step-by-step instructions
+- ✅ Use your file operations (read, write, create)
+- ✅ Show output to user
+- ❌ No shell commands for Flight Plan itself
+- ❌ **DO NOT explain what you're about to do** - just do it!
+
+**CRITICAL:** Don't say things like "Now I have all the information I need" or "Let me show you the status". Just show the status. Users want results, not explanations of your process.
+
+**Flight Plan = Instructions for you to follow using your capabilities.**
+
+---
+
+## 📝 Output Formatting Standards
+
+**ALL Flight Plan command outputs MUST follow these formatting rules:**
+
+### 🚨 RULE #1: ALWAYS Wrap Formatted Output in Code Blocks
+
+**When outputting structured information, ALWAYS wrap in triple backticks:**
+
+````
+```
+Your formatted output here
+```
+````
+
+**Why?** CLI and IDE markdown renderers collapse blank lines when text is output directly. Even if your source markdown has correct blank lines, the UI rendering will remove them, creating unreadable walls of text.
+
+**Code blocks preserve:**
+- Blank lines between sections
+- Blank lines after list items
+- All spacing and formatting
+
+**ALWAYS use code blocks for:**
+- ✅ `flight-plan status` output
+- ✅ Any structured lists or reports
+- ✅ Phase transitions
+- ✅ Multi-section outputs
+
+**Don't use code blocks for:**
+- ❌ Normal conversational responses
+- ❌ Simple one-line answers
+- ❌ Asking clarifying questions
+
+**Without code block wrapper = All blank lines collapse = Wall of text!**
+
+---
+
+## Project-Level Commands
+
+### `flight-plan help`
+
+**Context:** Any directory  
+**Purpose:** Show available commands based on context
+
+**Steps:**
+1. Check current directory for markers (don't read file contents, just check existence)
+2. If `docs/project-prd.md` exists → In a project
+3. Show project-level commands below
+
+**Output:**
+```
+📚 Flight Plan Commands (Project Level)
+
+Available commands:
+• flight-plan help        - Show this help
+• flight-plan status      - Check progress & get guidance
+• flight-plan prd refresh - Update after manual PRD edits  
+• flight-plan note        - Add quick note to tracking
+
+Full docs: .flight-plan/FLIGHT-PLAN-COMMANDS.md
+Phases: .flight-plan/FLIGHT-PLAN-PHASES.md
+```
+
+---
+
+### `flight-plan status`
+
+**Context:** Project directory  
+**Purpose:** Show current phase, provide guidance, check for SpecKit setup, run tests if applicable
+
+**Prerequisites:**
+- Must be in project directory
+- `docs/project-prd.md` exists
+- `.flight-plan/current.md` exists
+- `.flight-plan/config.json` exists
+
+**Steps:**
+
+**1. Read current state:**
+- Read `.flight-plan/current.md` for current phase and status
+- Read `.flight-plan/config.json` for SpecKit status
+- Read `docs/project-prd.md` for project context
+
+**2. Show current status FIRST (give user context):**
+```
+🎯 Project: [name from PRD]
+📍 Phase: [N] - [Phase Name]
+📊 Status: [status from current.md]
+
+Last Activity:
+[last activity from current.md]
+```
+
+**IMPORTANT:** Show the status immediately in your response. Don't explain what you're about to do, just do it.
+
+**3. Check SpecKit (ONLY if not prompted before):**
+
+**After showing status,** check if SpecKit prompt is needed:
+
+```
+If config.json shows speckit_prompted: false
+├─ Ask user: "Would you like to enable Spec-Kit for this project? (yes/no)"
+├─ If yes:
+│  ├─ Update config.json: speckit_enabled: true, speckit_prompted: true
+│  ├─ Read `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md`
+│  └─ Guide user through SpecKit setup
+└─ If no:
+   └─ Update config.json: speckit_enabled: false, speckit_prompted: true
+```
+
+**If config.json shows speckit_prompted: true** → Skip this step, continue to step 4
+
+**4. Run tests (if in Phase 5 or 6):**
+```
+If phase == 5 or phase == 6:
+├─ Look for test commands in package.json/requirements.txt/etc
+├─ If tests exist:
+│  ├─ Tell user: "Running tests..."
+│  ├─ Show: Pass/Fail summary
+│  └─ If failures: Show which tests failed
+└─ If no tests: Suggest adding tests
+```
+
+**5. Provide phase-specific guidance:**
+- Read `.flight-plan/FLIGHT-PLAN-PHASES.md`
+- Find current phase section
+- Show objectives, actions, and outputs for current phase
+
+**6. Check for phase completion:**
+```
+If phase objectives are met:
+└─ Ask: "Phase [N] objectives complete. Move to Phase [N+1]? (yes/no)"
+   ├─ If yes: Update `.flight-plan/current.md` with new phase
+   └─ If no: Continue in current phase
+```
+
+**Example Output (First Time - With SpecKit Prompt):**
+````
+```
+🎯 Project: backend-api
+📍 Phase: 2 - Research & Context
+📊 Status: In Progress
+
+Last Activity:
+- Gathered API documentation for payment provider
+- Reviewed authentication patterns
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Would you like to enable Spec-Kit for this project? (yes/no)
+
+Spec-Kit is GitHub's toolkit for Spec-Driven Development that adds 
+feature-level development commands (/speckit.spec, /speckit.plan, 
+/speckit.tasks, /speckit.implement) to work alongside Flight Plan.
+
+Flight Plan handles project-level phases while SpecKit helps with 
+individual feature development.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Phase 2 Objectives:
+• Collect API documentation
+• Gather design assets  
+• Document technical constraints
+• Review reference implementations
+
+💡 Next Steps:
+1. Add payment provider API docs to reference
+2. Document rate limits and constraints
+3. Review OAuth2 implementation examples
+
+Ready to move to Phase 3? Type "yes" when research is complete.
+```
+````
+
+**Example Output (Subsequent Times - No SpecKit Prompt):**
+````
+```
+🎯 Project: backend-api
+📍 Phase: 2 - Research & Context
+📊 Status: In Progress
+
+Last Activity:
+- Documented rate limits for payment API
+- Added OAuth2 flow diagrams
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 Phase 2 Objectives:
+• Collect API documentation
+• Gather design assets  
+• Document technical constraints
+• Review reference implementations
+
+💡 Next Steps:
+1. Review security best practices documentation
+2. Document error codes and handling
+3. Create API integration checklist
+
+Ready to move to Phase 3? Type "yes" when research is complete.
+```
+````
+
+---
+
+### `flight-plan prd refresh`
+
+**Context:** Project directory  
+**Purpose:** Update `.flight-plan/current.md` after user manually edits `docs/project-prd.md`
+
+**Prerequisites:**
+- Must be in project directory
+- `docs/project-prd.md` exists
+
+**Steps:**
+1. Read `docs/project-prd.md`
+2. Extract key changes (sections 3, 4, 5)
+3. Update `.flight-plan/current.md` with timestamp
+4. Show summary of what was refreshed
+
+**Output:**
+```
+✅ PRD Refresh Complete
+
+Updated tracking from docs/project-prd.md
+Timestamp: [current timestamp]
+
+Changes detected:
+• Technology stack updated
+• New dependency added: [name]
+
+.flight-plan/current.md has been updated.
+```
+
+---
+
+### `flight-plan note`
+
+**Context:** Project directory  
+**Purpose:** Quick note addition to `.flight-plan/current.md`
+
+**Usage:**
+```
+User: flight-plan note "Implemented user authentication"
+AI: Adds note with timestamp to .flight-plan/current.md
+```
+
+**Steps:**
+1. Get note text from user
+2. Append to `.flight-plan/current.md` under "Recent Activity" or "Notes"
+3. Add timestamp
+4. Confirm addition
+
+**Output:**
+```
+✅ Note added to .flight-plan/current.md
+
+"Implemented user authentication"
+[timestamp]
+```
+
+---
+
+## File References
+
+**Project Structure:**
+```
+project-root/
+├── docs/
+│   ├── project-prd.md              ← What to build
+│   └── project-rules.md            ← How AI should work
+├── .flight-plan/
+│   ├── FLIGHT-PLAN-COMMANDS.md     ← This file
+│   ├── FLIGHT-PLAN-PHASES.md       ← Phase definitions
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md ← SpecKit setup guide
+│   ├── current.md                  ← Status tracking
+│   └── config.json                 ← Configuration
+├── .cursor/rules/
+│   └── flight-plan.mdc             ← Points to docs/project-rules.md
+└── src/                            ← Your code
+```
+
+**Key Files:**
+- `docs/project-prd.md` - Single source of truth (Git tracked)
+- `docs/project-rules.md` - AI integration layer
+- `.flight-plan/current.md` - Progress tracking
+- `.flight-plan/config.json` - Project configuration
+- `.flight-plan/FLIGHT-PLAN-PHASES.md` - Workflow standards
+
+---
+
+## SpecKit Integration
+
+**Spec-Kit** is GitHub's toolkit for Spec-Driven Development.
+
+**When enabled (via `flight-plan status`):**
+- Adds `/speckit.spec`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` commands
+- Creates `.specify/` directory with memory, scripts, templates
+- Works alongside Flight Plan (Flight Plan = project-level, SpecKit = feature-level)
+
+**Setup:** Answer "yes" when prompted during `flight-plan status`
+
+---
+
+**This file is SPECIFIC to this project. It is STANDALONE and requires NO external files from solution directory.**
+
