@@ -128,9 +128,6 @@ For AI agents, here are ALL the files and their correct paths:
 ### Project-Level Files
 - `docs/project-prd.md` ← Single source of truth
 - `docs/project-rules.md` ← AI integration layer
-- `docs/third-party/` (reference materials)
-- `docs/snippets/` (code examples)
-- `docs/research/` (background docs)
 - `.flight-plan/FLIGHT-PLAN-COMMANDS.md` (standalone copy)
 - `.flight-plan/FLIGHT-PLAN-PHASES.md` (standalone copy)
 - `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` (standalone copy)
@@ -173,4 +170,16 @@ No guessing, no errors!
 **Impact:** Documentation clarity
 **Breaking:** No - only improves existing references
 **Benefit:** AI knows exact file locations
+
+---
+
+## Update: Docs Structure Simplified (2025-10-28)
+
+The original `docs/` subdirectories (`third-party/`, `snippets/`, `research/`) were later removed to simplify the structure. Projects now only have:
+- `docs/project-prd.md`
+- `docs/project-rules.md`
+
+Users can create their own subdirectories as needed.
+
+**See:** `docs/SIMPLIFY-DOCS-STRUCTURE-2025-10-28.md`
 

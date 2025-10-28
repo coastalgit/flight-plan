@@ -44,10 +44,9 @@ The Flight Plan methodology structures AI-assisted development into 8 progressiv
 - Identify required tools and services
 
 **Outputs:**
-- docs/third-party/ populated with API specs
-- docs/research/ contains background materials
-- docs/snippets/ has relevant code examples
-- project-prd.md Section 3 (Implementation) updated with research findings
+- Reference materials collected (API specs, background docs, code examples)
+- docs/project-prd.md Section 3 (Implementation) updated with research findings
+- Technical constraints documented
 
 **Move to Phase 3 when:** All necessary context and reference materials are gathered.
 

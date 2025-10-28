@@ -156,7 +156,6 @@ flight-plan-solution/           ← Flight Plan tooling
 - `docs/` (all documentation)
   - `project-prd.md`
   - `project-rules.md`
-  - `third-party/`, `snippets/`, `research/`
 - `.flight-plan/` (Flight Plan internals - standalone copies)
   - `FLIGHT-PLAN-COMMANDS.md`
   - `FLIGHT-PLAN-PHASES.md`
@@ -166,8 +165,10 @@ flight-plan-solution/           ← Flight Plan tooling
   - `history/`
 - `.cursor/rules/flight-plan.mdc` (pointer to docs/project-rules.md)
 - `CLAUDE.md`, `GEMINI.md` (optional pointers)
-- `memory/constitution.md` (if SpecKit enabled)
-- `specs/` (if SpecKit enabled)
+- `.specify/` (if SpecKit enabled)
+  - `memory/constitution.md`
+  - `scripts/`
+  - `templates/`
 - `src/` (user's code)
 - `README.md` (project overview)
 
@@ -181,10 +182,7 @@ flight-plan-solution/           ← Flight Plan tooling
 project-a/                      ← Standalone project
 ├── docs/
 │   ├── project-prd.md          ← Single source of truth
-│   ├── project-rules.md        ← AI integration
-│   ├── third-party/
-│   ├── snippets/
-│   └── research/
+│   └── project-rules.md        ← AI integration
 ├── .flight-plan/               ← Standalone copies
 │   ├── FLIGHT-PLAN-COMMANDS.md
 │   ├── FLIGHT-PLAN-PHASES.md
@@ -194,8 +192,11 @@ project-a/                      ← Standalone project
 │   └── history/
 ├── .cursor/rules/
 │   └── flight-plan.mdc
-├── memory/constitution.md      ← If SpecKit enabled
-├── specs/                      ← If SpecKit enabled
+├── .specify/                   ← If SpecKit enabled
+│   ├── memory/
+│   │   └── constitution.md
+│   ├── scripts/
+│   └── templates/
 ├── src/                        ← Code
 └── README.md
 ```

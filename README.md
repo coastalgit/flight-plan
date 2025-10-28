@@ -159,10 +159,7 @@ MyApp/                                  # Your solution root directory
 ├── project-a/                          # Generated project (sibling to flight-plan-solution)
 │   ├── docs/
 │   │   ├── project-prd.md              # What to build (single source of truth)
-│   │   ├── project-rules.md            # How AI should work in this project
-│   │   ├── third-party/                # External API specs
-│   │   ├── snippets/                   # Code examples
-│   │   └── research/                   # Background docs
+│   │   └── project-rules.md            # How AI should work in this project
 │   ├── .flight-plan/
 │   │   ├── FLIGHT-PLAN-COMMANDS.md     # Flight Plan commands (standalone)
 │   │   ├── FLIGHT-PLAN-PHASES.md       # Phase standards (standalone)
@@ -354,10 +351,7 @@ For each project in your PRD (created in parent directory `MyApp/`):
 MyApp/your-project/
 ├── docs/
 │   ├── project-prd.md          # What to build (single source of truth)
-│   ├── project-rules.md        # How AI should work in this project
-│   ├── third-party/            # External API specs
-│   ├── snippets/               # Code examples
-│   └── research/               # Background docs
+│   └── project-rules.md        # How AI should work in this project
 ├── .flight-plan/
 │   ├── FLIGHT-PLAN-COMMANDS.md       # Flight Plan commands (standalone copy)
 │   ├── FLIGHT-PLAN-PHASES.md         # Phase standards (standalone copy)
