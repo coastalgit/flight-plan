@@ -7,17 +7,80 @@ A structured approach for initializing multi-project solutions using AI assistan
 
 ---
 
-## ⚠️ FOR AI AGENTS
+## 💡 FOR AI AGENTS: HOW FLIGHT PLAN WORKS
 
-**This README is INFORMATIONAL ONLY.**
+**Flight Plan is an AI-driven development methodology.**
 
-When executing Flight Plan commands:
-- ✅ **Read:** `framework/FLIGHT-PLAN-INIT.md` for `init` execution logic
-- ✅ **Read:** `framework/FLIGHT-PLAN-COMMANDS.md` for all command execution
-- ✅ **Read:** `solution-prd-v*.md` for actual project requirements
-- ❌ **DO NOT** treat README content as execution instructions
+### What Flight Plan IS:
+Flight Plan is a **framework of markdown files** that provide step-by-step instructions for you (the AI agent) to follow. Whether the user is interacting with you through:
+- A terminal/CLI (e.g., Cursor terminal, ChatGPT CLI)
+- An IDE agent UI (e.g., Cursor chat, Claude Code chat)
+- A chat interface (e.g., Claude Desktop, ChatGPT)
 
-**This README explains the system. Execution files contain the actual logic.**
+...the process is the same.
+
+### How It Works:
+
+**User types:** `"flight-plan init"`  
+**You (AI) do:**
+1. Read `framework/FLIGHT-PLAN-COMMANDS.md` (understand what this command does)
+2. Read `framework/FLIGHT-PLAN-INIT.md` (get detailed execution steps)
+3. Use your **native file operations** to perform actions:
+   - Read files (to understand requirements)
+   - Create files (to generate project structure)
+   - Write files (to create configurations)
+4. **No shell commands** - you do the work directly
+
+**User types:** `"flight-plan status"`  
+**You (AI) do:**
+1. Read `framework/FLIGHT-PLAN-COMMANDS.md`
+2. Find the `flight-plan status` section
+3. Read the files it tells you to read
+4. Show status information to the user
+
+### The Key Concept:
+- **"flight-plan X"** = Natural language instruction to you (the AI)
+- **You interpret and execute** using your file read/write capabilities
+- **No external program** to install or run
+- **No shell commands** for Flight Plan itself
+
+### What About npm/npx/uv Commands in This README?
+- Those are for **other tools** like SpecKit (optional integration)
+- **Not for Flight Plan itself**
+- Flight Plan will tell you **when** to guide the user to install those
+- You show the user the command, they run it in their terminal
+
+### This README is Documentation:
+- **For humans:** Overview of the system
+- **For AI:** High-level understanding
+- **For execution:** Read files in `framework/` directory
+
+**Ready to start?** When user says a "flight-plan" command, read the corresponding file in `framework/` and follow its steps.
+
+### 🎨 CRITICAL: Output Formatting for CLI/IDE
+
+**When outputting formatted text (previews, status, lists), ALWAYS wrap in code blocks:**
+
+```
+Use triple backticks to wrap your output
+```
+
+**Why?** Markdown renderers collapse blank lines when output directly. Code blocks preserve:
+- Blank lines between sections
+- Blank lines after list items  
+- All spacing and formatting
+
+**Use code blocks for:**
+- ✅ `flight-plan init` preview (structured output)
+- ✅ `flight-plan status` (lists and sections)
+- ✅ `flight-plan sync` preview (multiple items)
+- ✅ Any output with blank lines for readability
+
+**Don't use for:**
+- ❌ Normal conversation
+- ❌ Simple one-line answers
+
+**This is the ONLY way to preserve spacing in CLI/IDE UIs.**
 
 ---
 
@@ -94,18 +157,27 @@ MyApp/                                  # Your solution root directory
 │       └── cursor.md                   # AI working memory
 │
 ├── project-a/                          # Generated project (sibling to flight-plan-solution)
-│   ├── project-prd.md                  # What to build (single source of truth)
-│   ├── project-rules.md                # How AI should work (inherits from solution-rules)
+│   ├── docs/
+│   │   ├── project-prd.md              # What to build (single source of truth)
+│   │   ├── project-rules.md            # How AI should work in this project
+│   │   ├── third-party/                # External API specs
+│   │   ├── snippets/                   # Code examples
+│   │   └── research/                   # Background docs
 │   ├── .flight-plan/
+│   │   ├── FLIGHT-PLAN-COMMANDS.md     # Flight Plan commands (standalone)
+│   │   ├── FLIGHT-PLAN-PHASES.md       # Phase standards (standalone)
+│   │   ├── FLIGHT-PLAN-SPECKIT-SETUP.md # SpecKit setup guide (standalone)
 │   │   ├── current.md                  # Progress tracking (phase, status)
-│   │   └── history/
-│   ├── .cursor/
-│   │   └── rules/
-│   │       └── flight-plan.mdc         # Points to project-rules.md
-│   ├── CLAUDE.md (optional)            # Points to project-rules.md
-│   ├── docs/                           # Reference materials
+│   │   ├── config.json                 # Project configuration
+│   │   └── history/                    # Milestones
+│   ├── .cursor/rules/
+│   │   └── flight-plan.mdc             # Points to docs/project-rules.md
+│   ├── CLAUDE.md (optional)            # Points to docs/project-rules.md
+│   ├── memory/                         # SpecKit constitution (if enabled)
+│   │   └── constitution.md             # References docs/project-prd.md, docs/project-rules.md
+│   ├── specs/                          # SpecKit feature specs (if enabled)
 │   ├── src/                            # Your code
-│   └── README.md
+│   └── README.md                       # Project overview (informational only)
 │
 └── project-b/                          # Another generated project
     └── [same structure as project-a]
@@ -296,7 +368,7 @@ MyApp/your-project/
 ├── .cursor/rules/
 │   └── flight-plan.mdc         # Points to docs/project-rules.md
 ├── memory/                     # SpecKit constitution (if enabled)
-│   └── constitution.md         # References Flight Plan files
+│   └── constitution.md         # References docs/project-prd.md, docs/project-rules.md
 ├── specs/                      # SpecKit feature specs (if enabled)
 ├── src/                        # Your code
 └── README.md                   # Project overview
@@ -416,9 +488,9 @@ AI will show your status and ask if you want SpecKit. If yes, it guides you thro
 7. 💾 Saves decision to `.flight-plan/config.json`
 
 Spec-Kit will automatically:
-- Check your current Flight Plan phase
-- Apply phase-appropriate standards
-- Reference project-prd.md for constraints
+- Check your current Flight Plan phase (from `.flight-plan/current.md`)
+- Apply phase-appropriate standards (from `.flight-plan/FLIGHT-PLAN-PHASES.md`)
+- Reference `docs/project-prd.md` for requirements and constraints
 - Use quality gates from your PRD
 - Always work with latest SpecKit practices
 

@@ -5,22 +5,170 @@
 
 ---
 
+## 💡 FOR AI AGENTS: UNDERSTANDING THIS FILE
+
+**This file is YOUR execution guide for Flight Plan commands.**
+
+### What This File Is:
+This markdown file contains **instructions for you (the AI agent)** to execute when the user types "flight-plan" commands. Whether the user is in:
+- Terminal/CLI (Cursor terminal, etc.)
+- IDE chat (Cursor chat, Claude Code, etc.)
+- Desktop app (Claude Desktop, etc.)
+
+...you read this file and follow the instructions using your native file operations.
+
+### How Flight Plan Works:
+
+**1. User types a command:**
+```
+"flight-plan init"
+"flight-plan status"
+"flight-plan sync"
+```
+
+**2. You (AI) process it:**
+- Recognize this as a Flight Plan command
+- Find the relevant section in this file
+- Read additional files if needed (e.g., `FLIGHT-PLAN-INIT.md`)
+- Execute using your file read/write capabilities
+
+**3. You perform actions:**
+- Read files (solution PRDs, project files)
+- Create files (project structures, configurations)
+- Update files (sync changes, update tracking)
+- Show output to user (previews, status, results)
+
+**No shell execution needed** - you do everything directly.
+
+### Example: "flight-plan init"
+```
+User: "flight-plan init"
+↓
+You: Read this file (FLIGHT-PLAN-COMMANDS.md)
+↓
+You: Navigate to "flight-plan init" section below
+↓
+You: See it says "Read framework/FLIGHT-PLAN-INIT.md"
+↓
+You: Read that file and follow its steps
+↓
+You: Use file operations to show preview
+```
+
+### About npm/npx/uv Commands:
+- If you see `npx`, `npm`, `uv` commands in this file
+- They are for **other tools** (like SpecKit - optional)
+- **NOT for Flight Plan itself**
+- You **guide the user** to run those commands
+- You don't execute them yourself
+
+### Your Role:
+- ✅ Read markdown files (this one and others in `framework/`)
+- ✅ Follow step-by-step instructions
+- ✅ Use your file operations (read, write, create)
+- ✅ Show output to user
+- ❌ No shell commands for Flight Plan itself
+
+**Flight Plan = Instructions for you to follow using your capabilities.**
+
+---
+
 ## Overview
 
 **Initial Setup (First Time):**
 ```
-"flight-plan init"         ← Preview project structure
-"flight-plan init apply"   ← Generate projects
+User types: "flight-plan init"
+AI action: Show preview of project structure
+
+User types: "flight-plan init apply"
+AI action: Generate projects
 ```
 
 **Ongoing Work:**
 ```
-"flight-plan status"       ← Check progress, get guidance
-"flight-plan sync"         ← Sync solution PRD changes to projects
-"flight-plan prd refresh"  ← Update tracking after manual PRD edits
+User types: "flight-plan status"
+AI action: Check progress, provide guidance
+
+User types: "flight-plan sync"
+AI action: Sync solution PRD changes to projects
+
+User types: "flight-plan prd refresh"
+AI action: Update tracking after manual PRD edits
 ```
 
-AI interprets these naturally and performs the actions.
+**How it works:** AI interprets these phrases, reads the relevant markdown files, and performs the actions described.
+
+---
+
+## 📝 Output Formatting Standards
+
+**ALL Flight Plan command outputs MUST follow these formatting rules:**
+
+### 🚨 RULE #1: ALWAYS Wrap Formatted Output in Code Blocks
+
+**When outputting structured information, ALWAYS wrap in triple backticks:**
+
+````
+```
+Your formatted output here
+```
+````
+
+**Why?** CLI and IDE markdown renderers collapse blank lines when text is output directly. Even if your source markdown has correct blank lines, the UI rendering will remove them, creating unreadable walls of text.
+
+**Code blocks preserve:**
+- Blank lines between sections
+- Blank lines after list items
+- All spacing and formatting
+
+**ALWAYS use code blocks for:**
+- ✅ `flight-plan init` preview
+- ✅ `flight-plan status` output
+- ✅ `flight-plan sync` preview
+- ✅ Any structured lists or reports
+- ✅ Directory structures
+- ✅ Multi-section outputs
+
+**Don't use code blocks for:**
+- ❌ Normal conversational responses
+- ❌ Simple one-line answers
+- ❌ Asking clarifying questions
+
+**Without code block wrapper = All blank lines collapse = Wall of text!**
+
+---
+
+### Inside Code Blocks: Formatting Rules
+
+✅ **Use blank lines for readability:**
+- Blank line between sections
+- Blank line after each list item
+- Blank line between projects/items
+
+✅ **Use consistent symbols:**
+- Bullet points: `•` with space after
+- Changes: `+` (added), `~` (changed), `-` (removed)
+- Status: `✅` (good), `⚠️` (warning), `❌` (error)
+
+✅ **Use proper indentation:**
+- 2 spaces for nested content
+- Align related items
+
+✅ **Use line breaks:**
+- Each item on its own line
+- No continuous paragraphs for lists
+
+❌ **DO NOT:**
+- Run text together without breaks
+- Omit blank lines between items
+- Create walls of text
+
+**These rules apply to:**
+- Preview outputs (`init`, `sync`)
+- Status outputs (`status` command)
+- Apply confirmations
+- Error messages
+- All AI responses
 
 ---
 
@@ -38,6 +186,80 @@ Flight Plan provides context (phase, standards) → Spec-Kit uses it for feature
 **Optional:** Run `flight-plan status` in any project and AI will ask if you want SpecKit.
 
 **Learn more:** [github.com/github/spec-kit](https://github.com/github/spec-kit)
+
+---
+
+## 📁 Expected Directory Structures
+
+**USER TYPICALLY OPENS:** Working folder (e.g., `MyApp/`) in their IDE
+
+### Level 1: Working Folder (MyApp/)
+```
+MyApp/                          ← User opens this in IDE
+├── flight-plan-solution/       ← Flight Plan tooling
+├── project-a/                  ← Generated project
+├── project-b/                  ← Generated project
+└── [user's other files]
+```
+
+**Contains:**
+- ✅ `flight-plan-solution/` subdirectory
+- ✅ Generated projects (project-a/, project-b/, etc.)
+
+**Does NOT contain:**
+- ❌ `solution-prd-v*.md` (lives in flight-plan-solution/)
+- ❌ `framework/` (lives in flight-plan-solution/)
+- ❌ `test-case/`, `examples/`, `.git/` (repo markers)
+
+### Level 2: flight-plan-solution/ Directory
+```
+flight-plan-solution/
+├── solution-prd-v1.md          ← User's PRD
+├── README.md, LICENSE
+├── framework/                  ← All Flight Plan logic
+│   ├── FLIGHT-PLAN-COMMANDS.md (this file!)
+│   ├── FLIGHT-PLAN-INIT.md
+│   ├── GENERATOR.md
+│   ├── templates/
+│   └── ai-refs/
+└── solution-rules.md           ← Created during generation
+```
+
+**Contains:**
+- ✅ `solution-prd-v*.md` files
+- ✅ `framework/` directory with all Flight Plan files
+- ✅ `README.md` and `LICENSE`
+
+**Does NOT contain:**
+- ❌ `test-case/` (repo marker)
+- ❌ `examples/` (repo marker)
+- ❌ `GENERATOR.md` at root (should be in framework/)
+- ❌ Generated projects (they go in parent)
+
+### Level 3: Generated Project (project-a/)
+```
+project-a/                      ← Standalone project
+├── docs/
+│   ├── project-prd.md          ← Single source of truth
+│   └── project-rules.md        ← AI integration
+├── .flight-plan/               ← Standalone copies
+│   ├── FLIGHT-PLAN-COMMANDS.md
+│   ├── current.md
+│   └── config.json
+├── memory/constitution.md      ← If SpecKit enabled
+├── src/                        ← Code
+└── README.md
+```
+
+**Contains:**
+- ✅ `docs/project-prd.md` and `docs/project-rules.md`
+- ✅ `.flight-plan/` with standalone copies
+- ✅ `memory/constitution.md` (if SpecKit)
+
+**Does NOT contain:**
+- ❌ `solution-prd-v*.md` (lives in flight-plan-solution/)
+- ❌ `framework/` (lives in flight-plan-solution/)
+- ❌ References to `../../flight-plan-solution/`
 
 ---
 
@@ -393,24 +615,19 @@ Full docs: .flight-plan/FLIGHT-PLAN-COMMANDS.md
 Before proceeding, verify you're NOT running from the Flight Plan repository:
 
 **Step 1: Check if this is the Flight Plan REPO (wrong location)**
-```bash
-pwd
-ls
-```
 
-Signs you're in the REPO (not a solution):
-- Directory name is "FlightPlan" (not "flight-plan-solution")
-- Contains `test-case/` directory
-- Contains `.git/` directory  
-- Contains `examples/` directory
+**DO NOT run shell commands. Use file system checks only.**
 
-If ANY of these are true:
+Check if these exist in CURRENT directory:
+- `test-case/` directory (check if `test-case/README.md` exists)
+- `examples/` directory (check if `examples/` exists)
+- `GENERATOR.md` file at root level (not in framework/)
+
+If ANY of these exist:
 ```
 ❌ Cannot show status: Running from Flight Plan repository!
 
 You need to set up a solution directory first.
-
-Current location: [show pwd]
 
 You need to:
 1. Create a solution directory somewhere OUTSIDE this repo

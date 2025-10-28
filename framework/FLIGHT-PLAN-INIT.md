@@ -8,6 +8,46 @@
 
 ---
 
+## 💡 FOR AI AGENTS: YOUR ROLE IN "flight-plan init"
+
+**You are reading the execution instructions for "flight-plan init" command.**
+
+### What This File Is:
+This is **your step-by-step guide** for executing the `flight-plan init` command. The user has typed "flight-plan init" and you're now reading this to understand what to do.
+
+### How You Got Here:
+1. User typed: `"flight-plan init"`
+2. You read: `framework/FLIGHT-PLAN-COMMANDS.md`
+3. It directed you to: Read this file for execution steps
+4. You're here now: Ready to follow the steps below
+
+### What You'll Do:
+**Follow the numbered STEPS below** (STEP 0, STEP 1, STEP 2, etc.) using your native capabilities:
+- **Read files:** solution-prd-v*.md, README.md, GENERATOR.md
+- **Detect location:** Check which directory we're in
+- **Show preview:** Display what will be generated
+- **Create files:** (only during "flight-plan init apply")
+
+### Your Execution Method:
+- ✅ Use your **file reading** tools
+- ✅ Use your **file writing** tools (during apply)
+- ✅ Use your **file system checks** (does file exist?)
+- ✅ **Display output** to user
+- ❌ No shell commands needed
+
+### About npm/npx/uv References:
+- If you see `npx` or `uv` commands mentioned later
+- Those are for **SpecKit** (optional tool, separate from Flight Plan)
+- You **guide the user** to run those (later, if they choose)
+- You don't execute them yourself
+
+### Ready to Start?
+**Proceed to STEP 0 below** and follow each step in order. Use your file operations to perform the actions described.
+
+**Flight Plan = These instructions. You = The executor using your capabilities.**
+
+---
+
 ## Quick Reference
 
 **Two-Step Process:**
@@ -30,31 +70,184 @@
 
 When user says **"flight-plan init"**, show preview. When they say **"flight-plan init apply"**, generate structure.
 
+---
+
+## EXPECTED DIRECTORY STRUCTURES
+
+**USER TYPICALLY OPENS:** Working folder (e.g., `MyApp/`) which may or may not contain `flight-plan-solution/`
+
+### LEVEL 1: Working Folder (e.g., MyApp/)
+
+**What you'll find here:**
+- `flight-plan-solution/` subdirectory (if user has set up Flight Plan)
+- `project-a/`, `project-b/`, etc. (if projects have been generated)
+- User's other files
+
+**What you WON'T find here:**
+- ❌ `solution-prd-v*.md` (lives inside flight-plan-solution/)
+- ❌ `framework/` (lives inside flight-plan-solution/)
+- ❌ `test-case/`, `examples/`, `.git/` (these are repo markers)
+
+**Example structure:**
+```
+MyApp/                          ← User opens this in IDE
+├── flight-plan-solution/       ← Flight Plan tooling
+├── project-a/                  ← Generated project (if any)
+├── project-b/                  ← Generated project (if any)
+└── [user's other files]
+```
+
+### LEVEL 2: flight-plan-solution/ Directory
+
+**What you'll find here:**
+- `solution-prd-v*.md` (one or more PRD versions)
+- `README.md` (Flight Plan documentation)
+- `LICENSE` (license file)
+- `framework/` (all Flight Plan logic)
+  - `FLIGHT-PLAN-INIT.md` (this file!)
+  - `FLIGHT-PLAN-COMMANDS.md`
+  - `FLIGHT-PLAN-PHASES.md`
+  - `FLIGHT-PLAN-SPECKIT-SETUP.md`
+  - `GENERATOR.md`
+  - `BRIEF-BUILDER-v*.md`
+  - `templates/` (file templates)
+  - `ai-refs/` (working files, created during generation)
+    - `solution-overview.md` (created on init/sync)
+    - `notes.md` (created on init)
+    - `cursor.md` (staging file for resolutions)
+- `solution-rules.md` (created during init/sync)
+
+**What you WON'T find here:**
+- ❌ `test-case/` (repo marker)
+- ❌ `examples/` (repo marker)
+- ❌ `.git/` (repo marker)
+- ❌ `GENERATOR.md` at root (should be in framework/)
+- ❌ Generated projects (they go in parent directory)
+
+**Example structure:**
+```
+flight-plan-solution/           ← Flight Plan tooling
+├── solution-prd-v1.md          ← User's PRD (required!)
+├── solution-prd-v1-1.md        ← Auto-revision (if created)
+├── README.md                   ← Documentation
+├── LICENSE
+├── framework/                  ← All logic here
+│   ├── FLIGHT-PLAN-INIT.md
+│   ├── FLIGHT-PLAN-COMMANDS.md
+│   ├── FLIGHT-PLAN-PHASES.md
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md
+│   ├── GENERATOR.md
+│   ├── BRIEF-BUILDER-v1.1.md
+│   ├── templates/
+│   │   ├── project-prd.md.template
+│   │   ├── project-rules.md.template
+│   │   ├── solution-rules.md.template
+│   │   └── ...
+│   └── ai-refs/                ← Created during generation
+│       ├── solution-overview.md
+│       ├── notes.md
+│       └── cursor.md
+└── solution-rules.md           ← Created during generation
+```
+
+### LEVEL 3: Generated Project Directory (e.g., project-a/)
+
+**What you'll find here:**
+- `docs/` (all documentation)
+  - `project-prd.md`
+  - `project-rules.md`
+  - `third-party/`, `snippets/`, `research/`
+- `.flight-plan/` (Flight Plan internals - standalone copies)
+  - `FLIGHT-PLAN-COMMANDS.md`
+  - `FLIGHT-PLAN-PHASES.md`
+  - `FLIGHT-PLAN-SPECKIT-SETUP.md`
+  - `current.md`
+  - `config.json`
+  - `history/`
+- `.cursor/rules/flight-plan.mdc` (pointer to docs/project-rules.md)
+- `CLAUDE.md`, `GEMINI.md` (optional pointers)
+- `memory/constitution.md` (if SpecKit enabled)
+- `specs/` (if SpecKit enabled)
+- `src/` (user's code)
+- `README.md` (project overview)
+
+**What you WON'T find here:**
+- ❌ `solution-prd-v*.md` (lives in flight-plan-solution/)
+- ❌ `framework/` (lives in flight-plan-solution/)
+- ❌ References to `../../flight-plan-solution/` (projects are standalone)
+
+**Example structure:**
+```
+project-a/                      ← Standalone project
+├── docs/
+│   ├── project-prd.md          ← Single source of truth
+│   ├── project-rules.md        ← AI integration
+│   ├── third-party/
+│   ├── snippets/
+│   └── research/
+├── .flight-plan/               ← Standalone copies
+│   ├── FLIGHT-PLAN-COMMANDS.md
+│   ├── FLIGHT-PLAN-PHASES.md
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md
+│   ├── current.md
+│   ├── config.json
+│   └── history/
+├── .cursor/rules/
+│   └── flight-plan.mdc
+├── memory/constitution.md      ← If SpecKit enabled
+├── specs/                      ← If SpecKit enabled
+├── src/                        ← Code
+└── README.md
+```
+
+---
+
+## DETECTION LOGIC FOR AI
+
+When user opens a folder in IDE and runs a command:
+
+**1. Check current directory for repo markers (WRONG if found):**
+- `test-case/README.md` exists? → REPO, not solution
+- `examples/` directory exists? → REPO, not solution
+- `GENERATOR.md` at root level? → REPO, not solution
+
+**2. Check current directory for solution markers:**
+- `solution-prd-v*.md` exists? → In flight-plan-solution/
+- `framework/` directory exists? → In flight-plan-solution/
+- `README.md` + `LICENSE` exist? → Likely flight-plan-solution/
+
+**3. Check current directory for project markers:**
+- `docs/project-prd.md` exists? → In a generated project
+- `.flight-plan/current.md` exists? → In a generated project
+
+**4. Check for subdirectories:**
+- `flight-plan-solution/` subdirectory exists? → In working folder
+- Read files with `flight-plan-solution/` prefix
+
+---
+
 ### STEP 0: CRITICAL DIRECTORY VALIDATION ⚠️
 
 **BEFORE doing ANYTHING (including reading PRD), validate you're NOT in the repo itself:**
 
-**Step 1: Check current directory name and structure**
-```bash
-pwd
-basename $(pwd)  # or Get-Location on Windows
-```
+**DO NOT navigate directories. DO NOT run `cd ..`. Check ONLY the current working directory.**
 
-**Step 2: Check if this looks like the Flight Plan REPOSITORY (wrong location)**
+**Step 1: Check current directory for repo markers**
 
-Signs you're in the REPO (not a solution):
-- Current directory name is "FlightPlan" or similar (not "flight-plan-solution")
-- Contains `test-case/` directory
-- Contains `.git/` directory
-- Contains `examples/` directory
+Check if these files/directories exist in the CURRENT directory:
+- `test-case/` (directory)
+- `examples/` (directory)
+- `GENERATOR.md` (file in root - not in framework/)
 
-**If ANY of these are true, STOP:**
+**Use file system checks (not shell commands):**
+- Check if file/directory exists: `test-case/README.md`
+- Check if file exists: `GENERATOR.md` (at root level)
+
+**If ANY of these exist in CURRENT directory, STOP:**
 ```
 ❌ STOP: You're running from the Flight Plan repository itself!
 
 This is WRONG. You need to set up a solution directory first.
-
-Current location: [show pwd]
 
 You need to:
 1. Create a solution directory somewhere OUTSIDE this repo
@@ -81,23 +274,23 @@ Flight Plan cannot run from the repository itself.
 
 ---
 
-**Step 3: Verify directory name contains "flight-plan-solution"**
+**Step 2: Verify you're in "flight-plan-solution" directory**
 
-If current directory path does NOT contain "flight-plan-solution":
+Check if current working directory name is "flight-plan-solution".
+
+If NOT in "flight-plan-solution" directory:
 ```
 ⚠️  Warning: Not in a "flight-plan-solution" directory
 
-Current directory: [show pwd]
+Expected directory name: flight-plan-solution
 
-Expected: Your path should contain "flight-plan-solution"
-
-Example:
+Example correct paths:
   C:\MySolution\flight-plan-solution\  ← Should be here
   ~/MySolution/flight-plan-solution/   ← Should be here
 
 This keeps Flight Plan tooling separate from generated projects.
 
-Recommended: Set up correctly, then run "flight-plan init" again.
+Recommended: Navigate to flight-plan-solution/ directory, then run "flight-plan init" again.
 ```
 
 **STOP HERE. Do not proceed.**
@@ -174,41 +367,41 @@ See README.md section "Set Up Your Solution Directory" for details.
 
 ---
 
-### STEP 3: DETECT CONTEXT & NAVIGATE
+### STEP 3: DETECT CURRENT LOCATION (NO NAVIGATION)
 
-**User might open parent directory in Cursor, so check where we are:**
+**User might open parent directory in Cursor, so detect where we are:**
 
-**Check current directory:**
-```bash
-pwd  # or cd on Windows
-ls   # What's here?
-```
+**DO NOT run shell commands like `pwd` or `ls`. DO NOT navigate with `cd`. Use file system checks only.**
 
 **Scenario A: Already in flight-plan-solution/**
-```
-Current: MyApp/flight-plan-solution/
-Files here: solution-prd-v1.md, README.md, framework/
-Action: Continue (already in correct location)
-Project target: ../ (MyApp/)
-```
+- Check if `solution-prd-v*.md` exists in current directory (try to read it)
+- Check if `framework/` directory exists (try to read `framework/GENERATOR.md`)
+- Check if `README.md` exists in current directory
+
+If YES to all: You're in `flight-plan-solution/`
+- Project target directory: `../` (parent directory)
+- File paths: Use `.` (e.g., `./README.md`, `./framework/GENERATOR.md`)
+- Continue to STEP 4
 
 **Scenario B: In parent directory (MyApp/)**
+- Check if `flight-plan-solution/` subdirectory exists (try to read `flight-plan-solution/README.md`)
+- Check if `flight-plan-solution/solution-prd-v*.md` exists
+
+If YES: You're in parent directory
+- Project target directory: `./` (current directory - projects go here)
+- File paths: Use `flight-plan-solution/` prefix (e.g., `flight-plan-solution/README.md`)
+- Continue to STEP 4 with adjusted paths
+
+**If neither scenario matches:**
 ```
-Current: MyApp/
-Files here: flight-plan-solution/ (subdirectory)
-Action: Navigate to flight-plan-solution/ first
-Project target: Current directory (.)
+❌ Cannot locate flight-plan-solution directory or required files
+
+Run "flight-plan init" from one of these locations:
+- Inside flight-plan-solution/ directory
+- Parent directory that contains flight-plan-solution/
 ```
 
-**Determine project creation path:**
-- If in `flight-plan-solution/`: Create projects in `../`
-- If in parent with `flight-plan-solution/` subdir: Create projects in `./`
-
-**Navigate if needed:**
-```bash
-# If in parent directory:
-cd flight-plan-solution/
-```
+**CRITICAL: Do NOT navigate directories. Just detect location and adjust file read paths accordingly.**
 
 ---
 
@@ -237,7 +430,40 @@ Read these files in order to understand the system:
 
 ### STEP 5: SHOW PREVIEW
 
-Present a clear preview of what will be generated:
+Present a clear preview of what will be generated.
+
+**🚨 CRITICAL: ALWAYS WRAP PREVIEW IN CODE BLOCKS 🚨**
+
+**You MUST wrap the entire preview output in triple backticks (code blocks):**
+
+````
+```
+🎯 Flight Plan Preview: ...
+[your entire preview here]
+```
+````
+
+**Why?** Without code blocks, CLI/IDE markdown renderers collapse ALL blank lines, making output unreadable even if your source is correct. This took 6 attempts to discover during testing with Claude Code.
+
+**Code blocks preserve:**
+- Blank lines between sections
+- Blank lines after list items
+- All spacing and formatting
+
+**Without code block wrapper = Wall of unreadable text!**
+
+---
+
+**INSIDE CODE BLOCKS: Formatting Rules**
+
+- ✅ Use blank lines between sections for readability
+- ✅ Use bullet points (•) with space after for lists
+- ✅ Use line breaks after each list item
+- ✅ Indent nested content with 2 spaces
+- ✅ Keep each decision/question on separate lines
+- ✅ Add blank line after each project in PROJECT DETAILS
+- ❌ DO NOT run text together in continuous paragraphs
+- ❌ DO NOT omit line breaks between items
 
 ```
 🎯 Flight Plan Preview: [Solution Name from PRD]
@@ -280,7 +506,7 @@ MyApp/
 
 📦 PROJECT DETAILS
 
-[For each project, show:]
+[For each project, format with blank line after each project block:]
 
 • **[project-name]**
   Type: [Frontend/Backend/Functions/etc from PRD]
@@ -296,31 +522,65 @@ MyApp/
     Internal: [other projects from PRD]
     External: [third-party services from PRD]
 
-[Repeat for each project]
+• **[project-2-name]**
+  Type: [Frontend/Backend/Functions/etc from PRD]
+  Purpose: [one-line from PRD]
+  
+  Technology Stack:
+    Language: [from PRD or "To be determined"]
+    Framework: [from PRD or "To be determined"]
+    Database: [from PRD or "Not applicable" or "To be determined"]
+    Deployment: [from PRD or "To be determined"]
+    
+  Dependencies:
+    Internal: [other projects from PRD]
+    External: [third-party services from PRD]
+
+[Continue with blank line between each project...]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🏗️  ARCHITECTURE (from PRD)
 
 [Show high-level architecture if mentioned in PRD]
-Example:
+[Use ASCII diagram with clear line breaks:]
+
+[Example for simple architecture:]
   User → portfolio-site → Netlify CDN
   Contact Form → Netlify Forms → Email
 
-[Or if complex:]
-  frontend → backend-api → PostgreSQL
-              ↓
-          auth-service
-              ↓
-          email-functions
+[Example for complex architecture - use blank lines between tiers:]
+  Client Layer:
+    frontend (React)
+  
+  API Layer:
+    backend-api (Express)
+      ↓
+    auth-service (JWT)
+  
+  Data Layer:
+    PostgreSQL database
+    Redis cache
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🔧 TECHNOLOGY DECISIONS (from PRD)
 
-[List key tech decisions and reasoning:]
-• [Decision 1]: [Reason from PRD]
-• [Decision 2]: [Reason from PRD]
+[Extract from PRD Section 5 and Section 11 (Design Rationale)]
+[Format as bullet list with blank line after each decision:]
+
+• [Decision 1 name]: [Brief reason from PRD]
+
+• [Decision 2 name]: [Brief reason from PRD]
+
+• [Decision 3 name]: [Brief reason from PRD]
+
+[Example:]
+• Database Choice (PostgreSQL): Chosen for ACID compliance and JSON support for flexible data modeling
+
+• Authentication (JWT): Stateless auth for microservices, easier horizontal scaling
+
+• Hosting (Vercel): Zero-config deployments, built-in CDN, serverless functions
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -328,10 +588,15 @@ Example:
 
 ⚠️  These questions from your PRD will become project blockers if unresolved:
 
-[IF PRD Section 8 has questions, list them:]
+[IF PRD Section 8 has questions, format with blank lines between each:]
+
 • question-1: [Question text from PRD] (Priority: High/Medium/Low)
   → Will block: [project-name]
+
 • question-2: [Question text from PRD] (Priority: High/Medium/Low)
+  → Will block: [project-name]
+
+• question-3: [Question text from PRD] (Priority: High/Medium/Low)
   → Will block: [project-name]
 
 [IF PRD Section 8 is empty or missing:]
