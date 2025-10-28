@@ -11,11 +11,18 @@
 ## Quick Reference
 
 **Two-Step Process:**
-1. `flight-plan init` → Preview structure (read-only)
+1. `flight-plan init` → Preview structure (read-only, informational)
 2. `flight-plan init apply` → Generate projects (creates files)
 
-**During preview:** Ask questions, verify understanding  
+**During preview:** 
+- Ask questions about the preview itself
+- Explore what will be created
+- Verify PRD was parsed correctly
+- **Resolve open questions from PRD** (edit PRD, re-run `flight-plan init` to see updated preview)
+
 **After preview:** Say "flight-plan init apply" to proceed
+
+**Tip:** Resolve as many open questions as possible during preview. They become project blockers if unresolved.
 
 ---
 
@@ -23,9 +30,83 @@
 
 When user says **"flight-plan init"**, show preview. When they say **"flight-plan init apply"**, generate structure.
 
-### STEP 0: PREREQUISITES CHECK ⚠️
+### STEP 0: CRITICAL DIRECTORY VALIDATION ⚠️
 
-**BEFORE doing anything, verify required files exist:**
+**BEFORE doing ANYTHING (including reading PRD), validate you're NOT in the repo itself:**
+
+**Step 1: Check current directory name and structure**
+```bash
+pwd
+basename $(pwd)  # or Get-Location on Windows
+```
+
+**Step 2: Check if this looks like the Flight Plan REPOSITORY (wrong location)**
+
+Signs you're in the REPO (not a solution):
+- Current directory name is "FlightPlan" or similar (not "flight-plan-solution")
+- Contains `test-case/` directory
+- Contains `.git/` directory
+- Contains `examples/` directory
+
+**If ANY of these are true, STOP:**
+```
+❌ STOP: You're running from the Flight Plan repository itself!
+
+This is WRONG. You need to set up a solution directory first.
+
+Current location: [show pwd]
+
+You need to:
+1. Create a solution directory somewhere OUTSIDE this repo
+2. Copy this Flight Plan directory AS "flight-plan-solution" into your solution
+3. Add your PRD to that flight-plan-solution/ directory
+4. Run "flight-plan init" from THERE
+
+Example structure you need:
+  MySolution/
+  └── flight-plan-solution/
+      ├── solution-prd-v1.md  ← Your PRD
+      ├── README.md
+      ├── LICENSE
+      └── framework/
+          ├── GENERATOR.md
+          ├── templates/
+          └── ai-refs/
+      └── ...
+
+Flight Plan cannot run from the repository itself.
+```
+
+**STOP HERE. Do not proceed. Do not read PRD. Do not generate anything.**
+
+---
+
+**Step 3: Verify directory name contains "flight-plan-solution"**
+
+If current directory path does NOT contain "flight-plan-solution":
+```
+⚠️  Warning: Not in a "flight-plan-solution" directory
+
+Current directory: [show pwd]
+
+Expected: Your path should contain "flight-plan-solution"
+
+Example:
+  C:\MySolution\flight-plan-solution\  ← Should be here
+  ~/MySolution/flight-plan-solution/   ← Should be here
+
+This keeps Flight Plan tooling separate from generated projects.
+
+Recommended: Set up correctly, then run "flight-plan init" again.
+```
+
+**STOP HERE. Do not proceed.**
+
+---
+
+### STEP 1: PREREQUISITES CHECK ⚠️
+
+**Once in correct directory, verify required files exist:**
 
 1. **Check for solution-prd-v*.md in current directory**
    - Look for: `solution-prd-v1.md`, `solution-prd-v2.md`, etc.
@@ -50,7 +131,11 @@ Each solution needs its own PRD based on YOUR requirements.
 
 **STOP HERE. Do not proceed. Do not show preview. Do not use examples.**
 
-2. **Check directory structure (verify not running from repo)**
+---
+
+### STEP 2: VERIFY NOT IN REPO ⚠️
+
+**Check directory structure (verify not running from repo)**
 
 **Check parent directory contents:**
 ```bash
@@ -85,11 +170,11 @@ See README.md section "Set Up Your Solution Directory" for details.
 
 **STOP HERE. Do not proceed until user has correct structure.**
 
-**If PRD exists AND directory structure is correct:** Continue to Step 1...
+**If PRD exists AND directory structure is correct:** Continue to Step 3...
 
 ---
 
-### STEP 1: DETECT CONTEXT & NAVIGATE
+### STEP 3: DETECT CONTEXT & NAVIGATE
 
 **User might open parent directory in Cursor, so check where we are:**
 
@@ -102,7 +187,7 @@ ls   # What's here?
 **Scenario A: Already in flight-plan-solution/**
 ```
 Current: MyApp/flight-plan-solution/
-Files here: solution-prd-v1.md, templates/, GENERATOR.md
+Files here: solution-prd-v1.md, README.md, framework/
 Action: Continue (already in correct location)
 Project target: ../ (MyApp/)
 ```
@@ -127,19 +212,19 @@ cd flight-plan-solution/
 
 ---
 
-### STEP 2: LOAD CONTEXT
+### STEP 4: LOAD CONTEXT
 
 Read these files in order to understand the system:
 
 1. **README.md** - Understand the Flight Plan system and workflow
 2. **solution-prd-v*.md** - The user's specific project requirements (latest version)
-3. **GENERATOR.md** - How generation works (don't execute yet, just understand)
+3. **framework/GENERATOR.md** - How generation works (don't execute yet, just understand)
 
 **⚠️ NEVER read examples/ folder for project content - only read user's PRD**
 
 ---
 
-### STEP 3: SHOW PREVIEW
+### STEP 5: SHOW PREVIEW
 
 Present a clear preview of what will be generated:
 
@@ -228,15 +313,27 @@ Example:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-⚠️  OPEN QUESTIONS (from PRD)
+📋 OPEN QUESTIONS FROM PRD
 
-[List with priority:]
+⚠️  These questions from your PRD will become project blockers:
+
 • question-1: [Question text] (Priority: High/Medium/Low)
-  → Will be added to: [project-name] blockers
+  → Will block: [project-name]
 • question-2: [Question text] (Priority: High/Medium/Low)
-  → Will be added to: [project-name] blockers
+  → Will block: [project-name]
 
-Each project will only see questions that affect them.
+💡 RECOMMENDATION: Resolve these NOW during preview phase
+
+How to resolve:
+1. Discuss the questions with AI ("For Q1, I want PostgreSQL")
+2. AI stages your resolutions (doesn't modify PRD yet)
+3. Run "flight-plan init" again to see updated preview
+4. Continue until satisfied
+5. Run "flight-plan init apply"
+   → Creates solution-prd-v[X]-[Y].md with resolutions
+   → Generates projects with fewer blockers
+
+Example: If using solution-prd-v2.md, Flight Plan creates solution-prd-v2-1.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -251,7 +348,7 @@ Constraints: [from PRD]
 
 ---
 
-### STEP 3: DISCUSS & REFINE
+### STEP 6: DISCUSS & REFINE
 
 After showing preview, end with separator and **wait silently**.
 
@@ -269,27 +366,78 @@ End preview like this:
 
 **Then STOP. Say nothing more.**
 
-The preview shows everything. User can:
-- Ask questions about the structure
-- Verify tech stack extraction
-- Clarify dependencies
-- Question technology decisions
-- Want to resolve open questions
-- Request changes to the preview
-- Say "flight-plan init apply" to proceed
+**What happens now:**
 
-**Answer their questions using context from README, PRD, and GENERATOR.**
+**Option 1: User asks questions about the PREVIEW:**
+- ✅ "What does project-rules.md do?"
+- ✅ "Why is the backend using PostgreSQL?"
+- ✅ "What's the difference between solution-rules and project-rules?"
+- ✅ "Will SpecKit be set up automatically?"
+→ Answer using context from README, PRD, and framework/GENERATOR
+
+**Option 2: User wants to resolve open questions:**
+- ✅ "Let's resolve question-1 about the database"
+- ✅ "For question-2, I think we should use JWT authentication"
+→ Discuss the questions and help them decide
+→ AI stages resolutions in conversation context
+→ Next preview shows simulated results
+→ On `apply`, Flight Plan creates auto-revision PRD (e.g., v1-1.md)
+
+**Option 3: User wants to change tech stack:**
+- ✅ "Actually, let's use MongoDB instead of PostgreSQL"
+→ Stage the change in conversation
+→ On `apply`, creates auto-revision with changes
+
+**Option 4: User is satisfied with preview:**
+- ✅ "flight-plan init apply"
+→ Creates auto-revision PRD if resolutions were made
+→ Generates projects (Step 7)
+
+**Preview is iterative:**
+- User can run `flight-plan init` multiple times
+- Resolve questions conversationally during preview
+- When happy, `flight-plan init apply` creates auto-revision + projects
+
+**Answer their questions using context from README, PRD, and framework/GENERATOR.**
 
 ---
 
-### STEP 4: WAIT FOR APPLY COMMAND
+### STEP 7: WAIT FOR APPLY COMMAND
 
 Only when user says **"flight-plan init apply"**:
 
-1. Read **GENERATOR.md** in full
-2. Follow all instructions in GENERATOR.md
-3. Create the structure
-4. Report what was created
+**First: Handle any staged resolutions**
+
+1. **Detect current PRD version:**
+   - List all `solution-prd-v*.md` files
+   - Parse version numbers (v1.md = 1.0, v1-1.md = 1.1, v2.md = 2.0, v2-1.md = 2.1)
+   - Find highest major version, then highest minor within that major
+   - That's the "current PRD"
+
+2. **If resolutions were staged during preview:**
+   - Calculate next version (v1.md → v1-1.md, v1-1.md → v1-2.md, v2.md → v2-1.md)
+   - Create new PRD file with resolutions integrated:
+     ```markdown
+     <!-- Flight Plan Auto-Revision -->
+     <!-- Version: X.Y -->
+     <!-- Base: solution-prd-vX.md or solution-prd-vX-Y.md -->
+     <!-- Resolved: question-1 (Database), question-2 (Auth) -->
+     <!-- Date: [timestamp] -->
+     
+     [Copy of base PRD with resolved questions removed/updated]
+     ```
+   - Show: "✅ Created solution-prd-vX-Y.md with your resolutions"
+
+3. **If no resolutions staged:**
+   - Use current PRD as-is
+
+**Then: Generate projects**
+
+1. Read **framework/GENERATOR.md** in full
+2. Follow all instructions in framework/GENERATOR.md
+3. Use the PRD (current or newly created auto-revision)
+4. Create the structure
+5. Report what was created
 
 **Do NOT execute on:**
 - "generate our flight plan" (old pattern)
@@ -310,7 +458,7 @@ Only when user says **"flight-plan init apply"**:
 - **Don't rush to generate** - let user verify understanding first
 - **Answer questions** using the README and PRD context
 - **Only generate** when explicitly triggered
-- **Follow GENERATOR.md exactly** when creating structure
+- **Follow framework/GENERATOR.md exactly** when creating structure
 
 ---
 

@@ -72,6 +72,69 @@ Without validation, AI might:
 
 ---
 
+## `flight-plan help`
+
+**Works from anywhere - detects context and shows appropriate commands.**
+
+**What it does:**
+1. Checks current directory
+2. Detects if solution-level, project-level, or wrong location
+3. Shows relevant commands WITHOUT reading files
+
+**Example outputs:**
+
+**From project directory:**
+```
+📋 Flight Plan - Project Commands
+
+You're in a project directory.
+
+Available commands:
+• flight-plan status           - Show status + guidance
+• flight-plan prd refresh      - Preview tracking updates
+• flight-plan prd refresh apply - Apply tracking updates  
+• flight-plan note [text]      - Add activity note
+
+Tip: Run "flight-plan status" for guidance on what to do next.
+
+See full docs: ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+```
+
+**From solution directory:**
+```
+📋 Flight Plan - Solution Commands
+
+You're in the flight-plan-solution directory.
+
+Available commands:
+• flight-plan init             - Preview project structure
+• flight-plan init apply       - Generate projects
+• flight-plan status           - Show all projects' progress
+• flight-plan sync             - Preview PRD changes
+• flight-plan sync apply       - Apply PRD changes
+
+Tip: Start with "flight-plan init" to preview your solution.
+
+See full docs: ./FLIGHT-PLAN-COMMANDS.md
+```
+
+**From wrong location:**
+```
+❌ Not in a Flight Plan directory
+
+This command works in:
+- flight-plan-solution/ directory (solution-level)
+- A project directory (project-level)
+
+Current directory doesn't have:
+- solution-prd-v*.md (solution-level marker)
+- project-prd.md (project-level marker)
+
+Navigate to the correct directory first.
+```
+
+---
+
 ## Command Reference
 
 ### Solution-Level Commands
@@ -79,6 +142,7 @@ Without validation, AI might:
 
 | Command | Purpose |
 |---------|---------|
+| `flight-plan help` | Show available commands |
 | `flight-plan init` | Preview project structure from PRD |
 | `flight-plan init apply` | Generate projects and tracking |
 | `flight-plan status` | Show all projects' progress |
@@ -92,6 +156,7 @@ Without validation, AI might:
 
 | Command | Purpose |
 |---------|---------|
+| `flight-plan help` | Show available commands |
 | `flight-plan status` | Show status + guidance on what to do next |
 | `flight-plan prd refresh` | Preview tracking changes |
 | `flight-plan prd refresh apply` | Apply tracking updates |
@@ -146,7 +211,7 @@ AI: [Explains migration considerations]
 
 You: "flight-plan sync apply"
 
-AI: ✅ Updated backend-api/project-prd.md
+AI: ✅ Updated backend-api/docs/project-prd.md
     ✅ Updated backend-api/memory/constitution.md
     ...
 ```
@@ -158,15 +223,163 @@ AI: ✅ Updated backend-api/project-prd.md
 
 ---
 
+## PRD Auto-Revision System
+
+**Flight Plan automatically versions PRDs when you resolve questions during preview/sync.**
+
+### Version Naming Convention
+
+**User creates major versions:**
+- `solution-prd-v1.md` - Initial PRD (v1.0 implicit)
+- `solution-prd-v2.md` - Major update (v2.0 implicit)
+- `solution-prd-v3.md` - Another major update (v3.0 implicit)
+
+**Flight Plan creates minor versions (auto-revisions):**
+- `solution-prd-v1-1.md` - v1.1 (resolved questions from v1.0)
+- `solution-prd-v1-2.md` - v1.2 (more resolutions)
+- `solution-prd-v2-1.md` - v2.1 (resolved questions from v2.0)
+
+### Auto-Revision Header
+
+Every auto-revision includes metadata:
+```markdown
+<!-- Flight Plan Auto-Revision -->
+<!-- Version: 1.1 -->
+<!-- Base: solution-prd-v1.md -->
+<!-- Resolved: question-1 (Database choice), question-2 (Auth strategy) -->
+<!-- Date: 2025-10-27T15:30:00Z -->
+
+# Task Manager Solution
+[Rest of PRD with resolved questions removed/updated]
+```
+
+### Version Detection
+
+Flight Plan automatically detects the latest PRD:
+1. Lists all `solution-prd-v*.md` files
+2. Parses versions (v1.md = 1.0, v1-1.md = 1.1, v2.md = 2.0, v2-1.md = 2.1)
+3. Finds highest major version
+4. Within that major, finds highest minor
+5. **Uses that file**
+
+**Examples:**
+```
+Files: v1.md, v1-1.md, v1-2.md
+→ Uses: v1-2.md (latest in v1.x series)
+
+Files: v1.md, v1-1.md, v2.md
+→ Uses: v2.md (latest major version)
+
+Files: v1.md, v1-1.md, v2.md, v2-1.md, v2-2.md
+→ Uses: v2-2.md (latest in v2.x series)
+```
+
+### When Auto-Revisions are Created
+
+**During `flight-plan init apply`:**
+- If you resolved questions during preview
+- Creates next minor version
+- Projects generated using auto-revision
+
+**During `flight-plan sync apply`:**
+- If you resolved new questions during sync preview
+- Creates next minor version
+- Projects updated using auto-revision
+
+### Git Workflow
+
+**Flight Plan never runs git commands. You control all commits.**
+
+Recommended workflow:
+```bash
+# After Flight Plan creates auto-revision
+git add solution-prd-v1-1.md
+git commit -m "PRD v1.1: Resolved database and auth questions"
+
+# Or commit with generated projects
+git add .
+git commit -m "Initial project setup with v1.1 resolutions"
+```
+
+### Cleanup Old Versions
+
+**You can safely delete old PRD files anytime.**
+
+Flight Plan only looks at what files currently exist - it doesn't track history or expect specific files.
+
+Examples:
+```bash
+# Keep only latest in each major version
+rm solution-prd-v1.md solution-prd-v1-1.md
+# v1-2.md still works fine
+
+# Keep only current major version
+rm solution-prd-v1*.md
+# v2-1.md still works fine
+
+# Keep only latest overall
+rm solution-prd-v1*.md solution-prd-v2.md
+# v2-1.md still works fine
+```
+
+**Flight Plan will:**
+- Always detect the highest version from existing files
+- Never complain about missing older versions
+- Work with any subset of PRD files
+
+---
+
 ## Solution-Level Commands
 
 ### Context Detection
 
 **How AI knows this is solution-level:**
 1. Check current directory for `solution-prd-v*.md`
-2. Check for `templates/` subdirectory
-3. Check for `ai-refs/` directory
+2. Check for `framework/` subdirectory
+3. Check for `framework/ai-refs/` directory
 4. If found: Solution-level context
+
+---
+
+### `flight-plan help`
+
+**Context:** Any (works everywhere)
+
+**Purpose:** Show available commands for current context
+
+**Prerequisites Check:**
+NONE - This command never tries to read files, just checks what exists.
+
+**What it does:**
+1. Checks current directory for markers:
+   - `solution-prd-v*.md` → Solution-level
+   - `project-prd.md` → Project-level
+   - Neither → Wrong location
+2. Shows appropriate command list
+3. Provides tip for next action
+
+**Example:**
+```bash
+cd task-manager-ui/
+
+"flight-plan help"
+
+📋 Flight Plan - Project Commands
+
+You're in a project directory.
+
+Available commands:
+• flight-plan status           - Show status + guidance
+• flight-plan prd refresh      - Preview tracking updates
+• flight-plan prd refresh apply - Apply tracking updates  
+• flight-plan note [text]      - Add activity note
+
+Tip: Run "flight-plan status" for guidance on what to do next.
+
+See full docs: ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+```
+
+**Key Point:** This command NEVER reads file contents, only checks if marker files exist. No errors if files are missing - it tells you that's the problem.
 
 ---
 
@@ -175,6 +388,57 @@ AI: ✅ Updated backend-api/project-prd.md
 **Context:** Solution-level (has `solution-prd-v*.md`)
 
 **Purpose:** Show progress across all projects
+
+**Prerequisites Check:**
+Before proceeding, verify you're NOT running from the Flight Plan repository:
+
+**Step 1: Check if this is the Flight Plan REPO (wrong location)**
+```bash
+pwd
+ls
+```
+
+Signs you're in the REPO (not a solution):
+- Directory name is "FlightPlan" (not "flight-plan-solution")
+- Contains `test-case/` directory
+- Contains `.git/` directory  
+- Contains `examples/` directory
+
+If ANY of these are true:
+```
+❌ Cannot show status: Running from Flight Plan repository!
+
+You need to set up a solution directory first.
+
+Current location: [show pwd]
+
+You need to:
+1. Create a solution directory somewhere OUTSIDE this repo
+2. Copy Flight Plan AS "flight-plan-solution" into your solution
+3. Add your PRD there
+4. Run "flight-plan status" from that flight-plan-solution/ directory
+
+See FLIGHT-PLAN-INIT.md for detailed setup.
+```
+
+**Step 2: Verify prerequisites**
+1. ✅ `solution-prd-v*.md` exists in current directory
+2. ✅ At least one project exists in parent directory (`../`)
+
+If PRD missing:
+```
+❌ Cannot show status: No solution PRD found
+
+Required: solution-prd-v1.md (or higher version)
+This command works in flight-plan-solution/ directory.
+```
+
+If no projects exist:
+```
+❌ Cannot show status: No projects found
+
+Run "flight-plan init apply" first to generate projects.
+```
 
 **What it does:**
 1. Reads all project `.flight-plan/current.md` files
@@ -235,11 +499,16 @@ To sync:
 5. Lists files that will be updated
 
 **What apply does:**
-1. Updates `project-prd.md` files
-2. Updates `project-rules.md` if solution rules changed
-3. Updates `memory/constitution.md` if Spec-Kit enabled
-4. Updates `solution-rules.md` if needed
-5. Logs all changes
+1. Creates auto-revision PRD if resolutions were staged (e.g., v2-1.md)
+2. Updates `docs/project-prd.md` files to new version
+3. Updates `docs/project-rules.md` if solution rules changed
+4. Updates `memory/constitution.md` if Spec-Kit enabled
+5. Updates `solution-rules.md` if needed
+6. **Appends to `ai-refs/solution-overview.md` PRD version history:**
+   - Logs the sync operation
+   - Records which PRD version was synced to
+   - Notes which projects were updated
+   - Lists resolved questions if auto-revision created
 
 **Example:**
 ```bash
@@ -274,11 +543,11 @@ PROJECT CHANGES:
 
 Will update:
 ✓ solution-rules.md (add GitHub MCP, update standards)
-✓ backend-api/project-prd.md
-✓ backend-api/project-rules.md
+✓ backend-api/docs/project-prd.md
+✓ backend-api/docs/project-rules.md
 ✓ backend-api/memory/constitution.md (tech stack)
-✓ notifications/project-prd.md
-✓ notifications/project-rules.md
+✓ notifications/docs/project-prd.md
+✓ notifications/docs/project-rules.md
 ✓ ai-refs/solution-overview.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -288,14 +557,30 @@ Will update:
 "flight-plan sync apply"
 
 ✅ Updated: solution-rules.md
-✅ Updated: backend-api/project-prd.md
-✅ Updated: backend-api/project-rules.md
+✅ Updated: backend-api/docs/project-prd.md
+✅ Updated: backend-api/docs/project-rules.md
 ✅ Updated: backend-api/memory/constitution.md
-✅ Updated: notifications/project-prd.md
-✅ Updated: notifications/project-rules.md
+✅ Updated: notifications/docs/project-prd.md
+✅ Updated: notifications/docs/project-rules.md
 ✅ Updated: ai-refs/solution-overview.md
 
 Sync complete. All projects now at v2.
+
+📝 ai-refs/solution-overview.md now shows:
+
+## PRD Version History
+
+### v2.0 (2025-10-27 16:45)
+- **Action:** Synced projects from v1 to v2
+- **Base PRD:** solution-prd-v2.md (user-created major version)
+- **Updated Projects:** backend-api, notifications
+- **Notes:** Added GitHub MCP, updated test coverage to 80%
+
+### v1.1 (2025-10-27 15:30)
+- **Action:** Initial project generation
+- **Base PRD:** solution-prd-v1.md → solution-prd-v1-1.md
+- **Generated Projects:** backend-api, frontend, notifications
+- **Notes:** Resolved question-1 (Database), question-2 (Auth)
 ```
 
 **Important:** This command does NOT run Git commands. Git is the user's responsibility.
@@ -307,9 +592,10 @@ Sync complete. All projects now at v2.
 ### Context Detection
 
 **How AI knows this is project-level:**
-1. Check current directory for `project-prd.md`
+1. Check current directory for `docs/project-prd.md`
 2. Check for `.flight-plan/` subdirectory
-3. Check for `project-rules.md`
+3. Check for `docs/project-rules.md`
+4. If found: Project-level context
 4. If found: Project-level context
 
 ---
@@ -320,10 +606,72 @@ Sync complete. All projects now at v2.
 
 **Purpose:** Show this project's current status
 
+**Prerequisites Check:**
+
+**Step 1: Check if running from Flight Plan repository (WRONG)**
+```bash
+pwd
+ls
+```
+
+Signs you're in the Flight Plan REPO (not a project):
+- Directory name is "FlightPlan" (repo name)
+- Contains `test-case/` directory
+- Contains `.git/` directory
+- Contains `examples/` directory
+- Contains `GENERATOR.md` file
+
+If ANY of these are true:
+```
+❌ Cannot show status: You're in the Flight Plan repository!
+
+Current location: [show pwd]
+
+This command works in a PROJECT directory, not the Flight Plan repo.
+
+You need to:
+1. Set up a solution directory with flight-plan-solution/ 
+2. Run "flight-plan init apply" to generate projects
+3. Navigate to a project directory
+4. Run "flight-plan status" from THERE
+
+See FLIGHT-PLAN-INIT.md for setup instructions.
+```
+
+**STOP HERE if in Flight Plan repo.**
+
+---
+
+**Step 2: Verify project files exist**
+
+Before proceeding, verify:
+1. ✅ `project-prd.md` exists in current directory
+2. ✅ `.flight-plan/current.md` exists
+3. ✅ `.flight-plan/config.json` exists
+
+If missing:
+```
+❌ Cannot show status: Missing project files
+
+This command works in a project directory.
+
+Expected files:
+- project-prd.md (project requirements)
+- .flight-plan/current.md (progress tracking)
+- .flight-plan/config.json (project config)
+
+Current directory: [show actual path]
+
+If starting fresh, use "flight-plan init apply" from your solution directory first.
+```
+
 **What it does:**
-1. Reads `.flight-plan/current.md`
-2. Shows current phase, activity, blockers
-3. Shows PRD sync status
+1. Reads `.flight-plan/current.md` from current directory
+2. Reads `.flight-plan/config.json` from current directory
+3. Shows current phase, activity, blockers
+4. Shows PRD sync status
+5. If build phase (5-6): Runs tests automatically
+6. If SpecKit not prompted: Asks about SpecKit integration
 
 **Example:**
 ```bash
@@ -350,7 +698,7 @@ Recent Notes:
 
 ### `flight-plan prd refresh`
 
-**Context:** Project-level (has `project-prd.md`)
+**Context:** Project-level (has `docs/project-prd.md`)
 
 **Purpose:** Update tracking after manual PRD edits
 
@@ -359,6 +707,26 @@ Recent Notes:
 - `flight-plan prd refresh apply` - Apply tracking updates
 
 **Prerequisites Check:**
+
+**Step 1: Check if running from Flight Plan repository (WRONG)**
+
+Signs you're in the Flight Plan REPO:
+- Contains `test-case/`, `.git/`, `examples/`, or `GENERATOR.md`
+
+If in repo:
+```
+❌ Cannot refresh: You're in the Flight Plan repository!
+
+This command works in a PROJECT directory.
+Navigate to a project, then run "flight-plan prd refresh".
+```
+
+**STOP HERE if in Flight Plan repo.**
+
+---
+
+**Step 2: Verify project files**
+
 Before proceeding, verify:
 1. ✅ `project-prd.md` exists in current directory
 2. ✅ `.flight-plan/current.md` exists
@@ -505,151 +873,6 @@ Recent Notes now shows:
 
 ---
 
-### `flight-plan next`
-
-**Location:** Any project directory OR solution directory
-
-**Purpose:** Get contextual guidance on what to do next
-
-**Prerequisites Check:**
-Before proceeding, verify context:
-- Project-level: Check for `project-prd.md` and `.flight-plan/current.md`
-- Solution-level: Check for `solution-prd-v*.md` and `ai-refs/`
-
-**What it does:**
-1. Detects context (project or solution level)
-2. Reads current phase and status from `.flight-plan/current.md`
-3. Checks blockers and open items
-4. **If SpecKit not yet offered:** Asks "Would you like SpecKit? (yes/no)"
-   - If yes: Guides through SpecKit setup (reads FLIGHT-PLAN-SPECKIT-SETUP.md)
-   - If no: Marks as prompted in config.json
-5. **In build phases (5-6):** Automatically runs tests and shows results
-   - Detects test framework (Jest, pytest, etc.)
-   - Runs tests in background
-   - Shows pass/fail summary in status output
-6. **If phase objectives complete:** Offers to move to next phase
-7. **If not complete:** Provides specific next steps for current phase
-
-**Project-Level Example (Phase 1):**
-```bash
-cd backend-api/
-
-"flight-plan status"
-
-📍 You are here: Phase 1 (Define Mission)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Current Focus: Understanding requirements
-
-✅ Completed:
-- Initial project setup
-- PRD generated
-
-⚠️ Blockers (2):
-- question-1: Database choice?
-- question-2: Authentication strategy?
-
-🎯 What to do next:
-
-1. Review your project requirements:
-   cat project-prd.md
-
-2. Resolve blockers by editing project-prd.md
-   Then run: "flight-plan prd refresh apply"
-
-3. Once blockers are resolved, I'll guide you to Phase 2
-
-📚 Learn more about Phase 1:
-   cat ../flight-plan-solution/FLIGHT-PLAN-PHASES.md
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-**Project-Level Example (Phase 5 - with tests):**
-```bash
-cd backend-api/
-
-"flight-plan status"
-
-📍 You are here: Phase 5 (Build Code)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Current Focus: Implementing features
-
-✅ Completed:
-- User authentication module
-- Database models
-
-🧪 Tests: 45 passing, 3 failing
-   
-   Failures:
-   - profile.test.js: should update user profile
-   - profile.test.js: should validate email format
-   - settings.test.js: should save preferences
-
-🎯 What to do next:
-
-1. Fix failing tests (details above)
-
-2. Implement remaining features:
-   - Profile management
-   - Settings API
-
-3. Once all tests pass and features complete,
-   I'll guide you to Phase 6 (Automate & Integrate)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-**Phase transition example:**
-When phase objectives are met, AI proactively says:
-```
-✅ Phase 1 (Define Mission) Complete!
-
-All requirements documented, blockers resolved.
-
-Ready to move to Phase 2: Build Context?
-This phase focuses on gathering research and reference materials.
-
-Say 'yes' to move to Phase 2, or 'not yet' to stay in Phase 1.
-```
-
-**Solution-Level Example:**
-```bash
-cd flight-plan-solution/
-
-"flight-plan status"
-
-📊 Solution Overview
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Projects: 3
-Blockers: 2 across projects
-
-Project Status:
-✅ frontend      Phase 5 (Build)      - 85% tests passing
-⚠️  backend-api  Phase 1 (Define)     - 2 blockers
-📝 notifications Phase 2 (Context)    - Gathering APIs
-
-🎯 Recommended Actions:
-
-1. Resolve backend-api blockers:
-   cd ../backend-api/
-   "flight-plan status"
-
-2. Fix frontend failing tests:
-   cd ../frontend/
-   "flight-plan test"
-
-3. Continue notifications research:
-   cd ../notifications/
-   "flight-plan status"
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
----
-
 ### SpecKit Integration (via `flight-plan status`)
 
 **SpecKit setup is integrated into `flight-plan status` command - not a separate command.**
@@ -664,9 +887,11 @@ When user first runs `flight-plan status` in a project:
 
 **For AI Implementers:**
 - SpecKit prompting happens IN `flight-plan status`, not as separate command
-- Read `FLIGHT-PLAN-SPECKIT-SETUP.md` for complete setup instructions
+- Check `.flight-plan/config.json` in current directory (project root)
+- Read `../flight-plan-solution/FLIGHT-PLAN-SPECKIT-SETUP.md` for setup instructions
 - Never create memory/ or specs/ directories (SpecKit does this)
-- Only update .flight-plan/config.json to track status
+- Only update `.flight-plan/config.json` in current directory to track status
+- All file reads should be relative to project directory, not parent
 
 
 ---

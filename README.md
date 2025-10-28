@@ -21,22 +21,28 @@ A 3-phase workflow for taking messy brainstorms and turning them into organized,
 
 ```
 flight-plan-solution/
-├── README.md                               # This file
-├── BRIEF-BUILDER-v1.1.md                  # Formats brainstorm into PRD
-├── GENERATOR.md                            # Generates project structure
-├── FLIGHT-PLAN-INIT.md                    # Initial setup command
-├── FLIGHT-PLAN-COMMANDS.md                # Ongoing operations
-├── FLIGHT-PLAN-PHASES.md                  # 8 phases explained
-├── templates/                              # Templates for generation
-│   ├── project-prd.md.template
-│   ├── solution-rules.md.template
-│   ├── project-rules.md.template
-│   ├── constitution.md.template (Spec-Kit)
-│   ├── flight-plan-current.md.template
-│   └── cursor-rule.mdc.template
-└── examples/
-    ├── portfolio-site-brainstorm.md       # Raw brainstorm example
-    └── portfolio-site-prd-v1.md           # Generated PRD example
+├── solution-prd-v1.md                     # Your PRD (stays in root)
+├── README.md                              # This file (stays in root)
+├── LICENSE                                # License (stays in root)
+└── framework/                             # All framework files
+    ├── BRIEF-BUILDER-v1.1.md             # Formats brainstorm into PRD
+    ├── GENERATOR.md                       # Generates project structure
+    ├── FLIGHT-PLAN-INIT.md               # Initial setup command
+    ├── FLIGHT-PLAN-COMMANDS.md           # Ongoing operations
+    ├── FLIGHT-PLAN-PHASES.md             # 8 phases explained
+    ├── FLIGHT-PLAN-SPECKIT-SETUP.md      # SpecKit integration guide
+    ├── solution-rules.md                  # Solution-wide standards
+    ├── templates/                         # Templates for generation
+    │   ├── project-prd.md.template
+    │   ├── solution-rules.md.template
+    │   ├── project-rules.md.template
+    │   ├── constitution.md.template (SpecKit)
+    │   ├── flight-plan-current.md.template
+    │   └── cursor-rule.mdc.template
+    └── ai-refs/                          # AI coordination files
+        ├── solution-overview.md           # Projects status & PRD history
+        ├── notes.md                       # User notes
+        └── cursor.md                      # AI working reference
 ```
 
 ---
@@ -49,26 +55,27 @@ flight-plan-solution/
 MyApp/                                  # Your solution root directory
 │
 ├── flight-plan-solution/               # Flight Plan tooling (copy from repo)
-│   ├── README.md                       # This file
-│   ├── BRIEF-BUILDER-v1.1.md          # Format brainstorm → PRD
-│   ├── GENERATOR.md                    # Initial project generation
-│   ├── FLIGHT-PLAN-COMMANDS.md        # Ongoing operations
-│   ├── FLIGHT-PLAN-PHASES.md          # 8 phases explained
-│   │
-│   ├── templates/                      # Templates for generation
-│   │   ├── flight-plan-current.md.template
-│   │   ├── flight-plan-requirements.md.template
-│   │   ├── flight-plan-implementation.md.template
-│   │   └── cursor-rule.mdc.template
-│   │
-│   ├── examples/                       # Reference examples
-│   │   ├── portfolio-site-brainstorm.md
-│   │   └── portfolio-site-prd-v1.md
-│   │
 │   ├── solution-prd-v1.md             # YOUR formatted PRD (you add this)
+│   ├── README.md                       # This file
+│   ├── LICENSE                         # License
 │   │
-│   └── ai-refs/                        # Cross-project coordination (generated)
-│       ├── solution-overview.md        # All projects status
+│   └── framework/                      # All framework files
+│       ├── BRIEF-BUILDER-v1.1.md      # Format brainstorm → PRD
+│       ├── GENERATOR.md                # Initial project generation
+│       ├── FLIGHT-PLAN-INIT.md        # Setup command
+│       ├── FLIGHT-PLAN-COMMANDS.md    # Ongoing operations
+│       ├── FLIGHT-PLAN-PHASES.md      # 8 phases explained
+│       ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # SpecKit integration
+│       ├── solution-rules.md           # Solution-wide standards
+│       │
+│       ├── templates/                  # Templates for generation
+│       │   ├── project-prd.md.template
+│       │   ├── solution-rules.md.template
+│       │   ├── project-rules.md.template
+│       │   └── cursor-rule.mdc.template
+│       │
+│       └── ai-refs/                    # Cross-project coordination (generated)
+│           ├── solution-overview.md    # All projects status & PRD history
 │       ├── notes.md                    # Your personal notes
 │       └── cursor.md                   # AI working memory
 │
@@ -169,41 +176,76 @@ cp solution-prd-v1.md ./flight-plan-solution/
 ### 4. Generate Project Structure
 
 **In Cursor (or any AI):**
+
+**📍 Important: Directory Setup**
+
+You can open Cursor in either location:
+- **Option A:** `MyApp/flight-plan-solution/` (recommended for init)
+- **Option B:** `MyApp/` (lets you see all projects in explorer)
+
+The system detects your location and adjusts paths automatically.
+
 ```
 Open MyApp/flight-plan-solution/ in Cursor
 
 # Step 1: Preview (see what will be created)
 "flight-plan init"
 
-AI: [Shows detailed preview with tech stack, projects, dependencies, etc.]
+AI: [Shows detailed preview with tech stack, projects, dependencies, open questions, etc.]
 
-# Step 2: Ask questions (optional)
-"What database is the backend using?"
+# Step 2: Resolve issues (optional but recommended)
+"Let's resolve the database question - I want to use PostgreSQL"
 
-AI: "PostgreSQL from PRD Section 3..."
+AI: "Got it! Staging that resolution..."
 
-# Step 3: Apply (actually create the projects)
+# Preview again to see simulated results
+"flight-plan init"
+
+AI: [Shows updated preview - question marked as resolved!]
+
+# Resolve more if needed, then apply
+"For authentication, let's use JWT tokens"
+
+AI: "Staged! Run 'flight-plan init apply' when ready."
+
+# Step 3: Apply (create auto-revision + projects)
 "flight-plan init apply"
 
-AI: ✅ Generated 3 projects in ../
+AI: ✅ Created solution-prd-v1-1.md (with your resolutions)
+    ✅ Generated 3 projects in ../
     ✅ Created solution-rules.md
     ✅ Created ai-refs/
+    
+Note: Projects use v1-1.md, so fewer blockers!
 ```
 
 **Two-step pattern:**
 1. **Preview** - `flight-plan init` shows what will be created (read-only)
-2. **Apply** - `flight-plan init apply` actually creates projects (writes files)
+   - Iterative: run multiple times
+   - Resolve open questions conversationally
+   - AI stages resolutions (doesn't modify PRD yet)
+   - Shows simulated results
+2. **Apply** - `flight-plan init apply` creates everything
+   - Creates auto-revision PRD if resolutions were made (e.g., v1-1.md)
+   - Generates projects using auto-revision
+   - Projects start with fewer blockers
 
-**Why two steps?**
-- Preview is safe - explore without commitment
-- Discuss and refine before generating
-- Clear separation between planning and execution
+**Auto-Revision Tracking:**
+- User creates major versions: v1.md, v2.md, v3.md (via Brief Builder)
+- Flight Plan creates minor versions: v1-1.md, v1-2.md (with resolutions)
+- Always uses latest version automatically
+- User commits all files manually (Flight Plan never runs git)
 
 **Done!** Your projects are now in `MyApp/` alongside `flight-plan-solution/`.
 
 **Next steps:**
 ```bash
 cd MyApp/backend-api/
+
+# Get help - works from any directory!
+"flight-plan help"
+
+# Or jump right to status
 "flight-plan status"
 ```
 
@@ -214,6 +256,8 @@ The AI will guide you through:
 - Optional SpecKit setup (for feature-level development)
 - Moving through Flight Plan phases naturally
 
+**💡 Tip:** Forgot a command? Just type `flight-plan help` from any Flight Plan directory.
+
 ---
 
 ## 📋 What Gets Generated
@@ -222,28 +266,69 @@ For each project in your PRD (created in parent directory `MyApp/`):
 
 ```
 MyApp/your-project/
-├── project-prd.md              # What to build (single source of truth)
-├── project-rules.md            # How AI should work (inherits solution-rules.md)
+├── docs/
+│   ├── project-prd.md          # What to build (single source of truth)
+│   ├── project-rules.md        # How AI should work in this project
+│   ├── third-party/            # External API specs
+│   ├── snippets/               # Code examples
+│   └── research/               # Background docs
+├── FLIGHT-PLAN-COMMANDS.md     # Flight Plan commands (standalone copy)
+├── FLIGHT-PLAN-PHASES.md       # Phase standards (standalone copy)
 ├── .flight-plan/
 │   ├── current.md              # Current phase, status, activity
 │   ├── config.json             # Project configuration (SpecKit, etc.)
 │   └── history/                # Milestones
 ├── .cursor/rules/
-│   └── flight-plan.mdc         # Points to project-rules.md
+│   └── flight-plan.mdc         # Points to docs/project-rules.md
 ├── memory/                     # SpecKit constitution (if enabled)
 │   └── constitution.md         # References Flight Plan files
 ├── specs/                      # SpecKit feature specs (if enabled)
-├── docs/                       # Reference materials
 └── src/                        # Your code
 ```
 
 **Structure highlights:**
-- `project-prd.md` - Single source of truth (Git tracks history)
-- `project-rules.md` - AI integration layer (inherits from solution)
+- `docs/project-prd.md` - Single source of truth (Git tracks history)
+- `docs/project-rules.md` - AI integration layer (standalone)
+- `FLIGHT-PLAN-COMMANDS.md` & `FLIGHT-PLAN-PHASES.md` - Local copies (no `../../` refs)
 - `.flight-plan/current.md` - Light status tracking (phase, blockers)
 - `.flight-plan/config.json` - Project configuration (decisions remembered)
 - `memory/constitution.md` - SpecKit integration (optional, references Flight Plan)
-- Minimal AI pointer files (just reference project-rules.md)
+- Minimal AI pointer files (just reference docs/project-rules.md)
+- **Projects are STANDALONE** - can be moved anywhere
+
+---
+
+## 📊 PRD Version Tracking
+
+**Flight Plan automatically tracks PRD versions in `ai-refs/solution-overview.md`:**
+
+```markdown
+## PRD Version History
+
+### v2.1 (2025-10-28 10:15)
+- Action: Synced projects from v2.0 to v2.1
+- Base PRD: solution-prd-v2.md → solution-prd-v2-1.md
+- Updated Projects: backend-api, frontend
+- Notes: Resolved question about deployment, updated CORS config
+
+### v2.0 (2025-10-27 16:45)
+- Action: Synced projects from v1.1 to v2.0
+- Base PRD: solution-prd-v2.md (user-created major version)
+- Updated Projects: All projects
+- Notes: Added real-time features, new notification service
+
+### v1.1 (2025-10-27 15:30)
+- Action: Initial project generation
+- Base PRD: solution-prd-v1.md → solution-prd-v1-1.md
+- Generated Projects: backend-api, frontend, notifications
+- Notes: Resolved database choice (PostgreSQL), auth strategy (JWT)
+```
+
+**This history helps:**
+- Track which PRD version each project uses
+- See what questions were resolved when
+- Understand solution evolution over time
+- Coordinate across multiple projects
 
 ---
 
@@ -312,9 +397,16 @@ Spec-Kit:    "Let's implement user authentication feature"
 ### Enable Spec-Kit in Your Project
 
 **When working in a project:**
-Navigate to your project:
+
+**📍 Tip:** Open `MyApp/` in Cursor to see all projects in the explorer, then use terminal to navigate:
 ```
-cd MyApp/your-project/
+cd your-project/
+"flight-plan status"
+```
+
+Or open the project directory directly:
+```
+Open MyApp/your-project/ in Cursor
 "flight-plan status"
 ```
 

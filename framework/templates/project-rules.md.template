@@ -1,6 +1,5 @@
 # Project Rules: {{PROJECT_NAME}}
 
-**Inherits from:** ../../flight-plan-solution/solution-rules.md  
 **Last Updated:** {{LAST_UPDATED}}
 
 ---
@@ -8,22 +7,29 @@
 ## For AI Agents
 
 **Read in order:**
-1. `../../flight-plan-solution/solution-rules.md` (solution-wide rules)
-2. This file (project-specific rules)
-3. `project-prd.md` (what to build)
-4. `.flight-plan/current.md` (current phase/status)
-5. `../../flight-plan-solution/FLIGHT-PLAN-PHASES.md` (phase standards)
+1. This file (project rules)
+2. `project-prd.md` (same directory - what to build)
+3. `../.flight-plan/current.md` (current phase/status)
+4. `../FLIGHT-PLAN-PHASES.md` (phase standards)
+5. `../FLIGHT-PLAN-COMMANDS.md` (when user runs commands)
 
 ---
 
-## MCP Servers (This Project)
+## MCP Servers
 
-**Inherits from solution:** [List inherited MCP servers from solution-rules.md]
+{{MCP_SERVERS}}
 
-**Project-specific:**
-{{PROJECT_SPECIFIC_MCP}}
-
-If none additional, state: None
+Example:
+```json
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-firebase"]
+    }
+  }
+}
+```
 
 ---
 
@@ -37,17 +43,16 @@ If none additional, state: None
 
 ---
 
-## Quality Standards (This Project)
+## Quality Standards
 
-**Inherits solution minimum:** {{SOLUTION_STANDARDS}}
-
-**Project-specific:**
-{{PROJECT_STANDARDS}}
+{{QUALITY_STANDARDS}}
 
 Example:
+- Test coverage: 80%
 - API response time: <200ms
 - All endpoints require auth
 - Rate limiting: 100 req/min
+- Code review required
 
 ---
 
@@ -68,7 +73,7 @@ Example sections:
 
 **Current Phase:** See `.flight-plan/current.md`
 
-**Phase Standards:** See `../../flight-plan-solution/FLIGHT-PLAN-PHASES.md`
+**Phase Standards:** See `FLIGHT-PLAN-PHASES.md`
 
 When working:
 - AI should check current phase
@@ -83,12 +88,12 @@ When working:
 
 **Spec-Kit enabled:** {{SPECKIT_ENABLED}}
 
-If No: Use `flight-plan enable-speckit` to set up Spec-Kit integration
+If No: Run `flight-plan status` and AI will prompt for SpecKit setup
 
 If Yes: Spec-Kit will read:
 - This file for context
-- FLIGHT-PLAN-PHASES.md for phase standards
-- solution-rules.md for shared tools
+- `FLIGHT-PLAN-PHASES.md` for phase standards
+- `project-prd.md` for specifications
 
 ---
 
@@ -96,15 +101,17 @@ If Yes: Spec-Kit will read:
 
 **Getting Started:**
 1. Read this file for complete context
-2. Check `.flight-plan/current.md` for current status
-3. Review `project-prd.md` for project specs
+2. Check `../.flight-plan/current.md` for current status
+3. Review `project-prd.md` (same directory) for project specs
 4. Use Flight Plan commands as needed
 
 **Flight Plan Commands:**
-- `flight-plan status` - Show current phase/blockers
+- `flight-plan help` - Show available commands
+- `flight-plan status` - Get guidance on what to do next (shows testing, prompts SpecKit)
 - `flight-plan prd refresh` - Update tracking from PRD edits
 - `flight-plan note [text]` - Add status note
-- `flight-plan enable-speckit` - Set up Spec-Kit (if desired)
+
+**When user runs any `flight-plan` command:** Read `../FLIGHT-PLAN-COMMANDS.md` for execution logic.
 
 ---
 

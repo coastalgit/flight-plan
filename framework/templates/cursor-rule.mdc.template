@@ -1,0 +1,14 @@
+---
+description: Flight Plan integration for {{PROJECT_NAME}}
+alwaysApply: true
+---
+
+# Flight Plan
+
+**Read `docs/project-rules.md` for all project context and Flight Plan integration.**
+
+---
+
+**Cursor Rule Version:** 1.0  
+**Compatible with:** Flight Plan v1.0  
+**Generated:** {{GENERATION_DATE}}

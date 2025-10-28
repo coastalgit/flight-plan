@@ -31,8 +31,9 @@ ls   # What files/folders are here?
 **Scenario A: In flight-plan-solution/ directory**
 ```
 Current: MyApp/flight-plan-solution/
-Files here: solution-prd-v*.md, templates/, GENERATOR.md
+Files here: solution-prd-v*.md, README.md, framework/
 Project target: ../ (parent directory = MyApp/)
+Templates: framework/templates/
 ```
 
 **Scenario B: In parent directory (MyApp/)**
@@ -40,7 +41,7 @@ Project target: ../ (parent directory = MyApp/)
 Current: MyApp/
 Files here: flight-plan-solution/ (subdirectory visible)
 Project target: ./ (current directory = MyApp/)
-Need to: cd flight-plan-solution/ to read templates
+Need to: cd flight-plan-solution/ to read framework/templates
 ```
 
 **Purpose:** Generate complete project structure from `solution-prd-v*.md`.
@@ -51,57 +52,71 @@ Need to: cd flight-plan-solution/ to read templates
 
 ---
 
-## ⚠️ CRITICAL: Correct Directory Structure
+## ⚠️ CRITICAL: Validate NOT Running from Repo
 
-**Before running, verify the user has set up correctly:**
+**BEFORE doing ANYTHING, check if running from Flight Plan repository itself:**
 
-❌ **WRONG - Running from the Flight Plan repo:**
-```
-D:\#R&D\FlightPlan/              # The repo itself
-├── templates/
-├── GENERATOR.md
-└── solution-prd-v1.md           # ← User put PRD here
-```
-**Problem:** Projects will be created in `D:\#R&D/` (wrong!)
-
-✅ **CORRECT - Running from a copy in solution directory:**
-```
-MyApp/                           # User's solution root
-├── flight-plan-solution/        # Copy of repo
-│   ├── templates/
-│   ├── GENERATOR.md
-│   └── solution-prd-v1.md       # ← PRD here
-```
-**Result:** Projects created in `MyApp/` (correct!)
-
-**Check before proceeding:**
-```
-Current directory: [show pwd]
-Parent directory: [show ls ../]
-
-If parent directory contains:
-- LICENSE, README.md for Flight Plan repo → WRONG LOCATION
-- Other Flight Plan repo files → WRONG LOCATION
-
-Expected parent:
-- Empty or your solution files → CORRECT
+**Step 1: Check current directory for repo markers**
+```bash
+pwd
+ls
 ```
 
-**If wrong location detected:**
+**Signs you're in the REPO (WRONG):**
+- Current directory name is "FlightPlan" (not "flight-plan-solution")
+- Contains `test-case/` directory
+- Contains `.git/` directory
+- Contains `examples/` directory
+
+**If ANY of these exist, STOP IMMEDIATELY:**
 ```
-❌ STOP: You're running from the Flight Plan repo itself!
+❌ STOP: You're running from the Flight Plan repository itself!
+
+This is WRONG. Projects would be created in the repo's parent directory.
+
+Current location: [show pwd]
 
 You need to:
-1. Create your solution directory (e.g., mkdir MyApp)
-2. Copy Flight Plan tools there: cp -r FlightPlan/ MyApp/flight-plan-solution/
-3. Put your PRD in: MyApp/flight-plan-solution/solution-prd-v1.md
-4. Open MyApp/flight-plan-solution/ in Cursor
-5. Run "flight-plan init apply"
+1. Create a solution directory somewhere OUTSIDE this repo
+2. Copy this Flight Plan directory AS "flight-plan-solution" into your solution
+3. Add your PRD to that flight-plan-solution/ directory
+4. Run "flight-plan init apply" from THERE
 
-This ensures projects are created in MyApp/, not in the repo parent directory.
+Expected structure:
+  YourSolution/
+  └── flight-plan-solution/
+      ├── GENERATOR.md
+      ├── templates/
+      ├── solution-prd-v1.md  ← Your PRD
+      └── ...
+
+This ensures projects are created in YourSolution/, not in [parent of this repo].
 
 See README.md section "Set Up Your Solution Directory" for details.
 ```
+
+**STOP HERE. Do not proceed. Do not read PRD. Do not generate anything.**
+
+---
+
+**Step 2: If not in repo, verify directory path contains "flight-plan-solution"**
+
+If current path does NOT contain "flight-plan-solution":
+```
+⚠️  Warning: Not in a "flight-plan-solution" directory
+
+Current: [show pwd]
+
+Expected: Path should contain "flight-plan-solution"
+
+Recommended structure:
+  YourSolution/
+  └── flight-plan-solution/  ← Should be here
+
+Please set up correctly first.
+```
+
+**STOP HERE if not in flight-plan-solution directory.**
 
 ---
 
@@ -227,9 +242,9 @@ Look for in PRD:
 
 ## STEP 4: GENERATE solution-rules.md
 
-Create `./solution-rules.md` (in flight-plan-solution directory):
+Create `./framework/solution-rules.md` (in framework directory):
 
-Use `templates/solution-rules.md.template`
+Use `framework/templates/solution-rules.md.template`
 
 **Fill in:**
 - MCP servers (if mentioned in PRD Section 6)
@@ -246,10 +261,10 @@ Use `templates/solution-rules.md.template`
 
 ## STEP 5: CREATE COORDINATION FILES
 
-In `./ai-refs/` (current directory):
+In `./framework/ai-refs/` (framework directory):
 
 ```
-ai-refs/
+framework/ai-refs/
 ├── solution-overview.md    # All projects, dependencies, status
 ├── notes.md                # Empty (user's personal notes)
 └── cursor.md               # Empty (AI working reference)
@@ -262,23 +277,41 @@ ai-refs/
 **PRD Version:** v[N]  
 **Last Updated:** [date]
 
+---
+
+## PRD Version History
+
+### v[N] ([date])
+- **Action:** Initial project generation
+- **Base PRD:** solution-prd-v[N].md
+- **Generated Projects:** [project-1], [project-2], [project-3]
+- **Notes:** [If auto-revision, list resolved questions; otherwise "User-created major version"]
+
+---
+
 ## Projects
 
 ### [project-1-name]
 - Type: [from PRD]
 - Status: Phase 1 - Define Mission
+- PRD Version: v[N] (generated from this version)
 - Location: ../[project-1-name]/
 - Dependencies: [internal + external]
 
 ### [project-2-name]
 - Type: [from PRD]
 - Status: Phase 1 - Define Mission
+- PRD Version: v[N] (generated from this version)
 - Location: ../[project-2-name]/
 - Dependencies: [internal + external]
+
+---
 
 ## Architecture
 
 [Diagram from PRD Section 4]
+
+---
 
 ## Shared Tools
 
@@ -292,45 +325,58 @@ ai-refs/
 **Determine project creation path based on context (from Step 1):**
 
 **If currently in flight-plan-solution/ directory:**
-- Template path: `./templates/`
+- Template path: `./framework/templates/`
 - Project path: `../[project-name]/`
 
 **If currently in parent directory (MyApp/):**
-- Template path: `./flight-plan-solution/templates/`
+- Template path: `./flight-plan-solution/framework/templates/`
 - Project path: `./[project-name]/`
 
 **Project structure to create:**
 
 ```
 [project-path]/[project-name]/
-├── project-prd.md          # Use templates/project-prd.md.template
-├── project-rules.md        # Use templates/project-rules.md.template
+├── docs/
+│   ├── project-prd.md          # Use templates/project-prd.md.template
+│   ├── project-rules.md        # Use templates/project-rules.md.template
+│   ├── third-party/            # Empty (for external API specs)
+│   ├── snippets/               # Empty (for code examples)
+│   └── research/               # Empty (for background docs)
+├── FLIGHT-PLAN-COMMANDS.md     # COPY from flight-plan-solution/
+├── FLIGHT-PLAN-PHASES.md       # COPY from flight-plan-solution/
 ├── .flight-plan/
-│   ├── current.md          # Use templates/flight-plan-current.md.template
-│   ├── config.json         # Use templates/config.json.template
-│   └── history/            # Empty directory
+│   ├── current.md              # Use templates/flight-plan-current.md.template
+│   ├── config.json             # Use templates/config.json.template
+│   └── history/                # Empty directory
 ├── .cursor/
 │   └── rules/
-│       └── flight-plan.mdc # Use templates/cursor-rule.mdc.template
-├── docs/                   # Empty directory
-├── src/                    # Empty directory
-└── README.md               # Generate from PRD
+│       └── flight-plan.mdc     # Use templates/cursor-rule.mdc.template
+├── src/                        # Empty directory
+└── README.md                   # Generate from PRD
 ```
 
 **Result:** Projects created alongside flight-plan-solution/ directory.
 
-**Do NOT create yet (created by setup-speckit command):**
-- `memory/constitution.md` (only via `flight-plan setup-speckit`)
-- `specs/` (only via `flight-plan setup-speckit`)
+**CRITICAL:** Copy these files into each project to make it STANDALONE:
+- `FLIGHT-PLAN-COMMANDS.md` - Full command execution logic
+- `FLIGHT-PLAN-PHASES.md` - Phase definitions and standards
+
+**IMPORTANT:** PRD and rules are in `docs/` to keep root clean.
+
+**Do NOT create yet (created by SpecKit when enabled):**
+- `memory/constitution.md` (only when user enables SpecKit via `flight-plan status`)
+- `specs/` (only when user enables SpecKit)
 - `CLAUDE.md` (optional, user can add later)
 
 ---
 
 ## STEP 7: FILL TEMPLATES
 
-### project-prd.md (Single Source of Truth)
+### docs/project-prd.md (Single Source of Truth)
 
-Use `templates/project-prd.md.template`
+Use `framework/templates/project-prd.md.template`
+
+Create in `docs/` subdirectory of each project.
 
 **Fill from PRD:**
 
@@ -360,9 +406,11 @@ Use `templates/project-prd.md.template`
 
 ---
 
-### project-rules.md (AI Integration)
+### docs/project-rules.md (AI Integration)
 
-Use `templates/project-rules.md.template`
+Use `framework/templates/project-rules.md.template`
+
+Create in `docs/` subdirectory of each project.
 
 **Fill:**
 - Inherited MCP servers (from solution-rules.md)
@@ -377,7 +425,7 @@ Use `templates/project-rules.md.template`
 
 ### .flight-plan/current.md (Status Tracking)
 
-Use `templates/flight-plan-current.md.template`
+Use `framework/templates/flight-plan-current.md.template`
 
 **Fill:**
 - PROJECT_NAME
@@ -393,7 +441,7 @@ Use `templates/flight-plan-current.md.template`
 
 ### .cursor/rules/flight-plan.mdc (Cursor Pointer)
 
-Use `templates/cursor-rule.mdc.template`
+Use `framework/templates/cursor-rule.mdc.template`
 
 **Fill:**
 - PROJECT_NAME
@@ -405,7 +453,7 @@ Use `templates/cursor-rule.mdc.template`
 
 ### .flight-plan/config.json (Project Configuration)
 
-Use `templates/config.json.template`
+Use `framework/templates/config.json.template`
 
 **Fill with:**
 ```json
@@ -452,22 +500,29 @@ Generate from PRD:
 
 ## Documentation
 
-- **Project PRD:** `project-prd.md` - Complete specifications
+- **Project PRD:** `docs/project-prd.md` - Complete specifications
 - **Status:** `.flight-plan/current.md` - Current phase and progress
 - **Configuration:** `.flight-plan/config.json` - Project settings
-- **Rules:** `project-rules.md` - How AI should work in this project
+- **Rules:** `docs/project-rules.md` - How AI should work in this project
+- **Commands:** `FLIGHT-PLAN-COMMANDS.md` - All Flight Plan commands (standalone)
+- **Phases:** `FLIGHT-PLAN-PHASES.md` - Phase standards and workflow (standalone)
 
 ## Flight Plan Integration
 
 This project uses Flight Plan methodology (8 phases).
 
-**Commands:**
-- `flight-plan next` - Get guidance on what to do next
-- `flight-plan status` - Show current state
-- `flight-plan setup-speckit` - Enable SpecKit integration (optional)
-- `flight-plan prd refresh` - Update tracking from PRD changes
+**Getting Started:**
+1. Run `flight-plan help` to see available commands
+2. Run `flight-plan status` for guidance on what to do next
+3. AI will guide you through current phase objectives
+4. Testing runs automatically during build phases
+5. Optional: Enable SpecKit when prompted for feature-level development
 
-See: `../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md`
+**Other Commands:**
+- `flight-plan prd refresh` - Update tracking from PRD changes
+- `flight-plan note [text]` - Add activity note
+
+**Note:** This project is STANDALONE. All Flight Plan documentation is local.
 
 ## Architecture
 

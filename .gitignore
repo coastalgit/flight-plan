@@ -1,0 +1,18 @@
+# Test solution directories (keep test-case/ folder, ignore generated solutions)
+test-task-manager/
+test-*/solution-prd-v*.md
+
+# Node modules (if running any JS-based tests)
+node_modules/
+
+# IDE files
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*~
+

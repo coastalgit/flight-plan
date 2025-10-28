@@ -60,6 +60,16 @@ Example:
 3. Read project-prd.md (what to build)
 4. Read .flight-plan/current.md (status)
 
+**Flight Plan Commands:**
+
+When user runs any `flight-plan` command, AI must read execution logic from `FLIGHT-PLAN-COMMANDS.md`.
+
+Available commands:
+- Solution-level: `init`, `status`, `sync`, `help`
+- Project-level: `status`, `prd refresh`, `note`, `help` (each project has its own copy)
+
+Projects are STANDALONE - each has its own `FLIGHT-PLAN-COMMANDS.md` copy.
+
 ---
 
 ## Security Standards (All Projects)
