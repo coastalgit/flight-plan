@@ -7,6 +7,20 @@ A structured approach for initializing multi-project solutions using AI assistan
 
 ---
 
+## ⚠️ FOR AI AGENTS
+
+**This README is INFORMATIONAL ONLY.**
+
+When executing Flight Plan commands:
+- ✅ **Read:** `framework/FLIGHT-PLAN-INIT.md` for `init` execution logic
+- ✅ **Read:** `framework/FLIGHT-PLAN-COMMANDS.md` for all command execution
+- ✅ **Read:** `solution-prd-v*.md` for actual project requirements
+- ❌ **DO NOT** treat README content as execution instructions
+
+**This README explains the system. Execution files contain the actual logic.**
+
+---
+
 ## 🎯 What This Is
 
 A 3-phase workflow for taking messy brainstorms and turning them into organized, AI-ready project structures.
@@ -272,63 +286,34 @@ MyApp/your-project/
 │   ├── third-party/            # External API specs
 │   ├── snippets/               # Code examples
 │   └── research/               # Background docs
-├── FLIGHT-PLAN-COMMANDS.md     # Flight Plan commands (standalone copy)
-├── FLIGHT-PLAN-PHASES.md       # Phase standards (standalone copy)
 ├── .flight-plan/
-│   ├── current.md              # Current phase, status, activity
-│   ├── config.json             # Project configuration (SpecKit, etc.)
-│   └── history/                # Milestones
+│   ├── FLIGHT-PLAN-COMMANDS.md       # Flight Plan commands (standalone copy)
+│   ├── FLIGHT-PLAN-PHASES.md         # Phase standards (standalone copy)
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # SpecKit setup guide (standalone copy)
+│   ├── current.md                    # Current phase, status, activity
+│   ├── config.json                   # Project configuration (SpecKit, etc.)
+│   └── history/                      # Milestones
 ├── .cursor/rules/
 │   └── flight-plan.mdc         # Points to docs/project-rules.md
 ├── memory/                     # SpecKit constitution (if enabled)
 │   └── constitution.md         # References Flight Plan files
 ├── specs/                      # SpecKit feature specs (if enabled)
-└── src/                        # Your code
+├── src/                        # Your code
+└── README.md                   # Project overview
 ```
 
 **Structure highlights:**
 - `docs/project-prd.md` - Single source of truth (Git tracks history)
 - `docs/project-rules.md` - AI integration layer (standalone)
-- `FLIGHT-PLAN-COMMANDS.md` & `FLIGHT-PLAN-PHASES.md` - Local copies (no `../../` refs)
-- `.flight-plan/current.md` - Light status tracking (phase, blockers)
-- `.flight-plan/config.json` - Project configuration (decisions remembered)
+- `.flight-plan/` - All Flight Plan reference files (standalone copies):
+  - `FLIGHT-PLAN-COMMANDS.md` - Command execution logic
+  - `FLIGHT-PLAN-PHASES.md` - Phase workflow standards
+  - `FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit installation guide
+  - `current.md` - Status tracking
+  - `config.json` - Project configuration
 - `memory/constitution.md` - SpecKit integration (optional, references Flight Plan)
 - Minimal AI pointer files (just reference docs/project-rules.md)
-- **Projects are STANDALONE** - can be moved anywhere
-
----
-
-## 📊 PRD Version Tracking
-
-**Flight Plan automatically tracks PRD versions in `ai-refs/solution-overview.md`:**
-
-```markdown
-## PRD Version History
-
-### v2.1 (2025-10-28 10:15)
-- Action: Synced projects from v2.0 to v2.1
-- Base PRD: solution-prd-v2.md → solution-prd-v2-1.md
-- Updated Projects: backend-api, frontend
-- Notes: Resolved question about deployment, updated CORS config
-
-### v2.0 (2025-10-27 16:45)
-- Action: Synced projects from v1.1 to v2.0
-- Base PRD: solution-prd-v2.md (user-created major version)
-- Updated Projects: All projects
-- Notes: Added real-time features, new notification service
-
-### v1.1 (2025-10-27 15:30)
-- Action: Initial project generation
-- Base PRD: solution-prd-v1.md → solution-prd-v1-1.md
-- Generated Projects: backend-api, frontend, notifications
-- Notes: Resolved database choice (PostgreSQL), auth strategy (JWT)
-```
-
-**This history helps:**
-- Track which PRD version each project uses
-- See what questions were resolved when
-- Understand solution evolution over time
-- Coordinate across multiple projects
+- **Projects are COMPLETELY STANDALONE** - can be moved anywhere, no external dependencies
 
 ---
 
@@ -350,23 +335,24 @@ MyApp/your-project/
 
 **Works with any AI IDE/tool:**
 
-Each project gets a `project-rules.md` that tells the AI:
-- Where to find project specs (project-prd.md)
-- What solution-wide tools are available (solution-rules.md)
-- Current phase and status (.flight-plan/current.md)
+Each project gets a `docs/project-rules.md` that tells the AI:
+- Where to find project specs (`docs/project-prd.md`)
+- Current phase and status (`.flight-plan/current.md`)
+- Flight Plan commands (`.flight-plan/FLIGHT-PLAN-COMMANDS.md`)
+- Phase standards (`.flight-plan/FLIGHT-PLAN-PHASES.md`)
 - How to work in this project
 
 **AI-specific pointer files:**
-- `.cursor/rules/flight-plan.mdc` → points to project-rules.md (auto-loaded)
-- `CLAUDE.md` → points to project-rules.md (for Claude Desktop)
-- `GEMINI.md` → points to project-rules.md (for Gemini)
+- `.cursor/rules/flight-plan.mdc` → points to `docs/project-rules.md` (auto-loaded)
+- `CLAUDE.md` → points to `docs/project-rules.md` (for Claude Desktop)
+- `GEMINI.md` → points to `docs/project-rules.md` (for Gemini)
 
-**Setup:** None needed! Just open the project. AI auto-reads project-rules.md.
+**Setup:** None needed! Just open the project. AI auto-reads `docs/project-rules.md`.
 
 The AI will:
-1. Check your current phase
-2. Apply phase-appropriate standards
-3. Use available tools (MCP servers from solution-rules.md)
+1. Check your current phase (`.flight-plan/current.md`)
+2. Apply phase-appropriate standards (`.flight-plan/FLIGHT-PLAN-PHASES.md`)
+3. Use available tools (MCP servers listed in `docs/project-rules.md`)
 4. Guide you through Flight Plan methodology naturally
 
 ---
@@ -422,9 +408,10 @@ AI will show your status and ask if you want SpecKit. If yes, it guides you thro
 3. 📖 Displays actual installation steps from SpecKit README (not assumed!)
 4. ⏸️ Waits for you to install SpecKit
 5. 🔧 Then creates `memory/constitution.md` with Flight Plan references:
-   - PRD location: `project-prd.md`
+   - PRD location: `docs/project-prd.md`
+   - Project rules: `docs/project-rules.md`
    - Current phase: `.flight-plan/current.md`
-   - Phase standards: `../flight-plan-solution/FLIGHT-PLAN-PHASES.md`
+   - Phase standards: `.flight-plan/FLIGHT-PLAN-PHASES.md`
 6. 📁 Creates `specs/` directory for feature specs
 7. 💾 Saves decision to `.flight-plan/config.json`
 

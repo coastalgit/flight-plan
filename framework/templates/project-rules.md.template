@@ -10,8 +10,8 @@
 1. This file (project rules)
 2. `project-prd.md` (same directory - what to build)
 3. `../.flight-plan/current.md` (current phase/status)
-4. `../FLIGHT-PLAN-PHASES.md` (phase standards)
-5. `../FLIGHT-PLAN-COMMANDS.md` (when user runs commands)
+4. `../.flight-plan/FLIGHT-PLAN-PHASES.md` (phase standards)
+5. `../.flight-plan/FLIGHT-PLAN-COMMANDS.md` (when user runs commands)
 
 ---
 
@@ -71,9 +71,9 @@ Example sections:
 
 ## Flight Plan Integration
 
-**Current Phase:** See `.flight-plan/current.md`
+**Current Phase:** See `../.flight-plan/current.md`
 
-**Phase Standards:** See `FLIGHT-PLAN-PHASES.md`
+**Phase Standards:** See `../.flight-plan/FLIGHT-PLAN-PHASES.md`
 
 When working:
 - AI should check current phase
@@ -92,7 +92,7 @@ If No: Run `flight-plan status` and AI will prompt for SpecKit setup
 
 If Yes: Spec-Kit will read:
 - This file for context
-- `FLIGHT-PLAN-PHASES.md` for phase standards
+- `../.flight-plan/FLIGHT-PLAN-PHASES.md` for phase standards
 - `project-prd.md` for specifications
 
 ---
@@ -111,7 +111,7 @@ If Yes: Spec-Kit will read:
 - `flight-plan prd refresh` - Update tracking from PRD edits
 - `flight-plan note [text]` - Add status note
 
-**When user runs any `flight-plan` command:** Read `../FLIGHT-PLAN-COMMANDS.md` for execution logic.
+**When user runs any `flight-plan` command:** Read `../.flight-plan/FLIGHT-PLAN-COMMANDS.md` for execution logic.
 
 ---
 

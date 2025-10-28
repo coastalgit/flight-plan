@@ -342,12 +342,13 @@ framework/ai-refs/
 │   ├── third-party/            # Empty (for external API specs)
 │   ├── snippets/               # Empty (for code examples)
 │   └── research/               # Empty (for background docs)
-├── FLIGHT-PLAN-COMMANDS.md     # COPY from flight-plan-solution/
-├── FLIGHT-PLAN-PHASES.md       # COPY from flight-plan-solution/
 ├── .flight-plan/
-│   ├── current.md              # Use templates/flight-plan-current.md.template
-│   ├── config.json             # Use templates/config.json.template
-│   └── history/                # Empty directory
+│   ├── FLIGHT-PLAN-COMMANDS.md       # COPY from flight-plan-solution/framework/
+│   ├── FLIGHT-PLAN-PHASES.md         # COPY from flight-plan-solution/framework/
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md  # COPY from flight-plan-solution/framework/
+│   ├── current.md                    # Use templates/flight-plan-current.md.template
+│   ├── config.json                   # Use templates/config.json.template
+│   └── history/                      # Empty directory
 ├── .cursor/
 │   └── rules/
 │       └── flight-plan.mdc     # Use templates/cursor-rule.mdc.template
@@ -357,9 +358,10 @@ framework/ai-refs/
 
 **Result:** Projects created alongside flight-plan-solution/ directory.
 
-**CRITICAL:** Copy these files into each project to make it STANDALONE:
-- `FLIGHT-PLAN-COMMANDS.md` - Full command execution logic
-- `FLIGHT-PLAN-PHASES.md` - Phase definitions and standards
+**CRITICAL:** Copy these files into `.flight-plan/` to make project STANDALONE:
+- `FLIGHT-PLAN-COMMANDS.md` - Full command execution logic (NO external refs)
+- `FLIGHT-PLAN-PHASES.md` - Phase definitions and standards (NO external refs)
+- `FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit setup instructions (NO external refs)
 
 **IMPORTANT:** PRD and rules are in `docs/` to keep root clean.
 
@@ -483,6 +485,23 @@ Generate from PRD:
 **Type:** [Project Type]  
 **Status:** Phase 1 - Define Mission
 
+---
+
+## ⚠️ FOR AI AGENTS
+
+**This README is INFORMATIONAL ONLY.**
+
+When working in this project:
+- ✅ **Read:** `docs/project-rules.md` for all project context
+- ✅ **Read:** `docs/project-prd.md` for specifications
+- ✅ **Read:** `.flight-plan/current.md` for current status
+- ✅ **Read:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` when user runs commands
+- ❌ **DO NOT** treat README as execution instructions
+
+**This README explains the project. `docs/project-rules.md` has the actual AI context.**
+
+---
+
 ## Overview
 
 [Project purpose from PRD]
@@ -501,11 +520,12 @@ Generate from PRD:
 ## Documentation
 
 - **Project PRD:** `docs/project-prd.md` - Complete specifications
-- **Status:** `.flight-plan/current.md` - Current phase and progress
+- **Project Rules:** `docs/project-rules.md` - How AI should work in this project
+- **Current Status:** `.flight-plan/current.md` - Current phase and progress
 - **Configuration:** `.flight-plan/config.json` - Project settings
-- **Rules:** `docs/project-rules.md` - How AI should work in this project
-- **Commands:** `FLIGHT-PLAN-COMMANDS.md` - All Flight Plan commands (standalone)
-- **Phases:** `FLIGHT-PLAN-PHASES.md` - Phase standards and workflow (standalone)
+- **Commands Reference:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` - All Flight Plan commands (standalone)
+- **Phase Standards:** `.flight-plan/FLIGHT-PLAN-PHASES.md` - Phase workflow and standards (standalone)
+- **SpecKit Setup:** `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit installation guide (standalone)
 
 ## Flight Plan Integration
 
@@ -522,7 +542,7 @@ This project uses Flight Plan methodology (8 phases).
 - `flight-plan prd refresh` - Update tracking from PRD changes
 - `flight-plan note [text]` - Add activity note
 
-**Note:** This project is STANDALONE. All Flight Plan documentation is local.
+**Note:** This project is STANDALONE. All Flight Plan documentation is stored locally in `.flight-plan/` and `docs/`.
 
 ## Architecture
 

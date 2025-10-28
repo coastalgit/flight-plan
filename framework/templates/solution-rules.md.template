@@ -54,11 +54,11 @@ Example:
 
 **Flight Plan:** All projects use Flight Plan methodology (8 phases)
 
-**Context Files for Any AI:**
-1. Read this file first (solution-rules.md)
-2. Read project-rules.md (project-specific)
-3. Read project-prd.md (what to build)
-4. Read .flight-plan/current.md (status)
+**Context Files for Any AI (when in a project):**
+1. Read `docs/project-rules.md` (project-specific, includes solution standards)
+2. Read `docs/project-prd.md` (what to build - single source of truth)
+3. Read `.flight-plan/current.md` (current phase and status)
+4. Read `.flight-plan/FLIGHT-PLAN-COMMANDS.md` (when user runs commands)
 
 **Flight Plan Commands:**
 

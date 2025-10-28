@@ -97,7 +97,7 @@ Available commands:
 
 Tip: Run "flight-plan status" for guidance on what to do next.
 
-See full docs: ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+Full docs: .flight-plan/FLIGHT-PLAN-COMMANDS.md
 ```
 
 **From solution directory:**
@@ -115,7 +115,7 @@ Available commands:
 
 Tip: Start with "flight-plan init" to preview your solution.
 
-See full docs: ./FLIGHT-PLAN-COMMANDS.md
+Full docs: ./framework/FLIGHT-PLAN-COMMANDS.md
 ```
 
 **From wrong location:**
@@ -128,7 +128,7 @@ This command works in:
 
 Current directory doesn't have:
 - solution-prd-v*.md (solution-level marker)
-- project-prd.md (project-level marker)
+- docs/project-prd.md (project-level marker)
 
 Navigate to the correct directory first.
 ```
@@ -152,7 +152,7 @@ Navigate to the correct directory first.
 **Note:** `init` is the first command you run. Others are for ongoing work.
 
 ### Project-Level Commands
-(Context: directory with `project-prd.md`)
+(Context: directory with `docs/project-prd.md`)
 
 | Command | Purpose |
 |---------|---------|
@@ -353,7 +353,7 @@ NONE - This command never tries to read files, just checks what exists.
 **What it does:**
 1. Checks current directory for markers:
    - `solution-prd-v*.md` → Solution-level
-   - `project-prd.md` → Project-level
+   - `docs/project-prd.md` → Project-level
    - Neither → Wrong location
 2. Shows appropriate command list
 3. Provides tip for next action
@@ -376,7 +376,7 @@ Available commands:
 
 Tip: Run "flight-plan status" for guidance on what to do next.
 
-See full docs: ../flight-plan-solution/FLIGHT-PLAN-COMMANDS.md
+Full docs: .flight-plan/FLIGHT-PLAN-COMMANDS.md
 ```
 
 **Key Point:** This command NEVER reads file contents, only checks if marker files exist. No errors if files are missing - it tells you that's the problem.
@@ -500,11 +500,11 @@ To sync:
 
 **What apply does:**
 1. Creates auto-revision PRD if resolutions were staged (e.g., v2-1.md)
-2. Updates `docs/project-prd.md` files to new version
-3. Updates `docs/project-rules.md` if solution rules changed
-4. Updates `memory/constitution.md` if Spec-Kit enabled
-5. Updates `solution-rules.md` if needed
-6. **Appends to `ai-refs/solution-overview.md` PRD version history:**
+2. Updates `docs/project-prd.md` files in each project to new version
+3. Updates `docs/project-rules.md` in each project if solution rules changed
+4. Updates `memory/constitution.md` in each project if Spec-Kit enabled
+5. Updates `framework/solution-rules.md` if needed
+6. **Appends to `framework/ai-refs/solution-overview.md` PRD version history:**
    - Logs the sync operation
    - Records which PRD version was synced to
    - Notes which projects were updated
@@ -556,17 +556,17 @@ Will update:
 
 "flight-plan sync apply"
 
-✅ Updated: solution-rules.md
+✅ Updated: framework/solution-rules.md
 ✅ Updated: backend-api/docs/project-prd.md
 ✅ Updated: backend-api/docs/project-rules.md
 ✅ Updated: backend-api/memory/constitution.md
 ✅ Updated: notifications/docs/project-prd.md
 ✅ Updated: notifications/docs/project-rules.md
-✅ Updated: ai-refs/solution-overview.md
+✅ Updated: framework/ai-refs/solution-overview.md
 
 Sync complete. All projects now at v2.
 
-📝 ai-refs/solution-overview.md now shows:
+📝 framework/ai-refs/solution-overview.md now shows:
 
 ## PRD Version History
 
@@ -602,7 +602,7 @@ Sync complete. All projects now at v2.
 
 ### `flight-plan status`
 
-**Context:** Project-level (has `project-prd.md`)
+**Context:** Project-level (has `docs/project-prd.md`)
 
 **Purpose:** Show this project's current status
 
@@ -645,9 +645,10 @@ See FLIGHT-PLAN-INIT.md for setup instructions.
 **Step 2: Verify project files exist**
 
 Before proceeding, verify:
-1. ✅ `project-prd.md` exists in current directory
-2. ✅ `.flight-plan/current.md` exists
-3. ✅ `.flight-plan/config.json` exists
+1. ✅ `docs/project-prd.md` exists
+2. ✅ `docs/project-rules.md` exists
+3. ✅ `.flight-plan/current.md` exists
+4. ✅ `.flight-plan/config.json` exists
 
 If missing:
 ```
@@ -728,7 +729,7 @@ Navigate to a project, then run "flight-plan prd refresh".
 **Step 2: Verify project files**
 
 Before proceeding, verify:
-1. ✅ `project-prd.md` exists in current directory
+1. ✅ `docs/project-prd.md` exists
 2. ✅ `.flight-plan/current.md` exists
 
 If missing:
@@ -738,14 +739,14 @@ If missing:
 This command works in a project directory.
 
 Expected files:
-- project-prd.md (project requirements)
+- docs/project-prd.md (project requirements)
 - .flight-plan/current.md (progress tracking)
 
 If starting fresh, use "flight-plan init" from flight-plan-solution/ first.
 ```
 
 **What preview does:**
-1. Reads current `project-prd.md`
+1. Reads current `docs/project-prd.md`
 2. Compares with `.flight-plan/current.md` state
 3. Detects Spec-Kit if enabled (checks for `memory/constitution.md`)
 4. Shows what changed
@@ -759,7 +760,7 @@ If starting fresh, use "flight-plan init" from flight-plan-solution/ first.
 **Example:**
 ```bash
 cd backend-api/
-vim project-prd.md           # Edit PRD manually
+vim docs/project-prd.md      # Edit PRD manually
 
 "flight-plan prd refresh"
 
@@ -888,10 +889,10 @@ When user first runs `flight-plan status` in a project:
 **For AI Implementers:**
 - SpecKit prompting happens IN `flight-plan status`, not as separate command
 - Check `.flight-plan/config.json` in current directory (project root)
-- Read `../flight-plan-solution/FLIGHT-PLAN-SPECKIT-SETUP.md` for setup instructions
+- Read `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` for setup instructions (local copy)
 - Never create memory/ or specs/ directories (SpecKit does this)
 - Only update `.flight-plan/config.json` in current directory to track status
-- All file reads should be relative to project directory, not parent
+- All file reads are relative to project directory (standalone project)
 
 
 ---

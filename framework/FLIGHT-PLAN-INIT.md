@@ -216,11 +216,22 @@ cd flight-plan-solution/
 
 Read these files in order to understand the system:
 
-1. **README.md** - Understand the Flight Plan system and workflow
+1. **README.md** - Understand the Flight Plan system and workflow (INFORMATIONAL ONLY)
 2. **solution-prd-v*.md** - The user's specific project requirements (latest version)
 3. **framework/GENERATOR.md** - How generation works (don't execute yet, just understand)
 
 **⚠️ NEVER read examples/ folder for project content - only read user's PRD**
+
+**From the PRD, extract:**
+- Section 1: Solution name
+- Section 3: Project list (names, types, descriptions)
+- Section 4: Architecture and dependencies
+- Section 5: Technology decisions
+- Section 6: Development tools and MCP servers
+- **Section 8: OPEN QUESTIONS** ← These become blockers if unresolved!
+- Section 9: Technical specifications per project
+
+**CRITICAL:** Open Questions from Section 8 MUST be shown in preview. If PRD has no Section 8 or it's empty, say "No open questions."
 
 ---
 
@@ -313,16 +324,20 @@ Example:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📋 OPEN QUESTIONS FROM PRD
+📋 OPEN QUESTIONS FROM PRD (Section 8)
 
-⚠️  These questions from your PRD will become project blockers:
+⚠️  These questions from your PRD will become project blockers if unresolved:
 
-• question-1: [Question text] (Priority: High/Medium/Low)
+[IF PRD Section 8 has questions, list them:]
+• question-1: [Question text from PRD] (Priority: High/Medium/Low)
   → Will block: [project-name]
-• question-2: [Question text] (Priority: High/Medium/Low)
+• question-2: [Question text from PRD] (Priority: High/Medium/Low)
   → Will block: [project-name]
 
-💡 RECOMMENDATION: Resolve these NOW during preview phase
+[IF PRD Section 8 is empty or missing:]
+✅ No open questions found in PRD.
+
+💡 RECOMMENDATION: Resolve questions NOW during preview phase
 
 How to resolve:
 1. Discuss the questions with AI ("For Q1, I want PostgreSQL")
