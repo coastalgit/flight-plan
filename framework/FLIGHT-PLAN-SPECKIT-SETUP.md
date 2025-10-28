@@ -1,26 +1,91 @@
 # SpecKit Setup Instructions for AI
 
-**Version:** 2.0  
-**Last Updated:** 2025-10-24  
-**Source:** https://raw.githubusercontent.com/github/spec-kit/refs/heads/main/README.md
+**Version:** 3.0  
+**Last Updated:** 2025-10-28  
+**Context:** PROJECT-LEVEL ONLY (run from within a generated project)
 
 ---
 
-## ⚠️ CRITICAL: THESE ARE THE OFFICIAL SPECKIT INSTRUCTIONS
+## ⚠️ CRITICAL: PROJECT-LEVEL COMMAND ONLY
 
-**This document contains the ACTUAL SpecKit installation steps from the official README.**
+**This command runs IN a generated project directory, NOT at solution level.**
 
-Any AI executing `flight-plan setup-speckit` MUST:
-1. Read this ENTIRE file before proceeding
-2. Use ONLY the instructions from the SpecKit README (included below)
-3. NEVER assume, invent, or modify these instructions
-4. If unsure, fetch latest from: https://raw.githubusercontent.com/github/spec-kit/refs/heads/main/README.md
+**Expected location:**
+```
+MyApp/
+├── flight-plan-solution/
+└── project-a/                  ← Run "flight-plan setup-speckit" HERE
+    ├── docs/
+    │   ├── project-prd.md
+    │   └── project-rules.md
+    └── .flight-plan/
+        ├── FLIGHT-PLAN-COMMANDS.md
+        └── current.md
+```
 
 ---
 
-## Official SpecKit Installation (from README)
+## What is SpecKit?
 
-**Source:** https://github.com/github/spec-kit/blob/main/README.md
+**SpecKit** is GitHub's toolkit for Spec-Driven Development.
+
+**Source:** https://github.com/github/spec-kit
+
+**What it provides:**
+- Feature specifications (`/speckit.specify`)
+- Implementation plans (`/speckit.plan`)
+- Task breakdowns (`/speckit.tasks`)
+- Execution tracking (`/speckit.implement`)
+
+**Flight Plan Integration:**
+- Flight Plan manages project lifecycle (8 phases, overall progress)
+- SpecKit manages individual features (specs, plans, tasks)
+- Flight Plan provides context → SpecKit uses it for feature development
+
+---
+
+## How User Learns About SpecKit
+
+**Users discover SpecKit through `flight-plan status`:**
+
+When user first runs `flight-plan status` in a project:
+1. AI checks `.flight-plan/config.json` for `speckit_prompted` field
+2. If not prompted yet: AI asks about SpecKit
+3. If yes: AI shows installation steps (from this file)
+4. After installation: AI runs `flight-plan setup-speckit` automatically
+
+**Users DO NOT manually run "flight-plan setup-speckit"** - it's triggered by the status command flow.
+
+---
+
+## SpecKit Directory Structure (Actual)
+
+**After running `specify init . --ai cursor-agent --here`, SpecKit creates:**
+
+```
+project-a/
+├── .specify/                   ← SpecKit's directory
+│   ├── memory/
+│   │   └── constitution.md    ← Default template
+│   ├── scripts/
+│   │   └── [helper scripts]
+│   └── templates/
+│       └── [spec templates]
+├── docs/
+│   ├── project-prd.md
+│   └── project-rules.md
+└── .flight-plan/
+    └── current.md
+```
+
+**IMPORTANT:**
+- ❌ NOT `memory/` at root level
+- ❌ NOT `specs/` directory (created later by `/speckit.specify`)
+- ✅ `.specify/` directory with subdirectories
+
+---
+
+## Official SpecKit Installation
 
 ### Step 1: Install `uv` (Prerequisite)
 
@@ -43,481 +108,506 @@ uv self update
 
 ---
 
-### Step 2: Install SpecKit
+### Step 2: Install SpecKit (Recommended Method)
 
-SpecKit provides TWO installation options:
-
-#### Option 1: Persistent Installation (Recommended)
-
-Install once and use everywhere:
+**Persistent installation (recommended):**
 
 ```bash
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 ```
 
-Then use the tool directly:
+**Verify installation:**
 ```bash
-specify init
-specify check
+specify --version
 ```
 
-**To upgrade SpecKit:**
+**To upgrade later:**
 ```bash
 uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git
 ```
 
-**Benefits of persistent installation:**
-- Tool stays installed and available in PATH
-- No need to create shell aliases
-- Better tool management with `uv tool list`, `uv tool upgrade`, `uv tool uninstall`
-- Cleaner shell configuration
-
-#### Option 2: One-time Usage
-
-Run directly without installing:
-
-```bash
-uvx --from git+https://github.com/github/spec-kit.git specify init <PROJECT_NAME>
-```
-
 ---
 
-### Step 3: Initialize SpecKit in Your Project
+### Step 3: Initialize SpecKit in Project
 
-From your project directory:
+**From your project directory:**
 
 ```bash
-specify init <PROJECT_NAME> --ai <agent>
+specify init . --ai cursor-agent --here
 ```
 
-**Supported AI agents:**
+**Available AI agents:**
 - `claude` - Claude Code
 - `copilot` - GitHub Copilot
 - `cursor-agent` - Cursor
 - `gemini` - Gemini CLI
 - `windsurf` - Windsurf
 - `qwen` - Qwen Code
-- `opencode` - opencode
-- `codex` - Codex CLI
-- `kilocode` - Kilo Code
-- `auggie` - Auggie CLI
-- `codebuddy` - CodeBuddy CLI
 - `roo` - Roo Code
-- `amp` - Amp
+- And more...
 
 **Additional options:**
-- `--here` - Initialize in current directory
-- `--force` - Force merge/overwrite in current directory
+- `--here` - Initialize in current directory (required for existing projects)
+- `--force` - Force merge/overwrite
 - `--no-git` - Skip git repository initialization
-- `--script ps` - Use PowerShell scripts (Windows)
-
-**Example:**
-```bash
-# Initialize with Cursor
-specify init my-project --ai cursor-agent
-
-# Initialize in current directory
-specify init . --ai claude
-
-# Or use --here flag
-specify init --here --ai copilot
-```
 
 ---
 
-### What SpecKit Creates
+## Flight Plan Integration Flow
 
-When you run `specify init`, SpecKit automatically creates:
+### When Running `flight-plan status` (First Time)
 
-```
-project/
-├── CLAUDE.md                  # (or agent-specific file)
-├── memory/
-│   └── constitution.md        # Project principles
-├── scripts/
-│   ├── check-prerequisites.sh
-│   ├── common.sh
-│   ├── create-new-feature.sh
-│   ├── setup-plan.sh
-│   └── update-claude-md.sh
-├── specs/                     # Feature specifications
-│   └── 001-feature-name/
-│       ├── contracts/
-│       ├── data-model.md
-│       ├── plan.md
-│       ├── quickstart.md
-│       ├── research.md
-│       └── spec.md
-└── templates/
-    ├── CLAUDE-template.md
-    ├── plan-template.md
-    ├── spec-template.md
-    └── tasks-template.md
-```
-
-**⚠️ IMPORTANT: Flight Plan does NOT create these directories!**
-- SpecKit creates `memory/` and `memory/constitution.md`
-- SpecKit creates `specs/` directory structure
-- SpecKit creates `scripts/` and `templates/`
-- Flight Plan only needs to REFERENCE these files
-
----
-
-### Step 4: SpecKit Commands
-
-After initialization, use these commands in your AI assistant:
-
-```bash
-/speckit.constitution  # Create project principles
-/speckit.specify       # Create feature specification
-/speckit.plan          # Create implementation plan
-/speckit.tasks         # Break down into tasks
-/speckit.implement     # Execute implementation
-```
-
----
-
-## Flight Plan Integration
-
-Flight Plan's role is to:
-1. Guide user through SpecKit installation
-2. Let SpecKit create its own structure
-3. Reference SpecKit's files from Flight Plan context
-
-**Flight Plan does NOT:**
-- ❌ Create `memory/` directory
-- ❌ Create `specs/` directory
-- ❌ Create `constitution.md` file
-- ❌ Modify SpecKit's structure
-
-**Flight Plan DOES:**
-- ✅ Check if user has `uv` installed
-- ✅ Show SpecKit installation commands
-- ✅ Guide user to run `specify init`
-- ✅ Update `.flight-plan/config.json` to track SpecKit status
-- ✅ Reference SpecKit's files in documentation
-
----
-
-## How to Execute `flight-plan setup-speckit`
-
-### STEP 1: Check Prerequisites
-
-**Verify context:**
-1. ✅ In a project directory (has `project-prd.md`)
-2. ✅ `.flight-plan/` directory exists
-
-**Check if SpecKit already initialized:**
-```bash
-# Check for SpecKit directories
-ls memory/ specs/ 2>/dev/null
-```
-
-If SpecKit already configured:
-```
-⚠️  SpecKit already initialized
-
-Found: memory/constitution.md and specs/ directory
-
-SpecKit is already set up in this project.
-To reinitialize, remove the SpecKit directories first or use `specify init --force --here`
-```
-**STOP. Do not proceed.**
-
----
-
-### STEP 2: Check `uv` Installation
-
-**Ask user to check if `uv` is installed:**
-
-```bash
-uv --version
-```
-
-**If not installed, provide instructions:**
-```bash
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-**If installed but outdated:**
-```bash
-# Upgrade uv
-uv self update
-```
-
----
-
-### STEP 3: Present Official SpecKit Installation to User
-
-**Show user the actual SpecKit installation from the official README:**
+**If SpecKit not prompted yet:**
 
 ```
-📖 SpecKit Setup for [project-name]
+📊 [project-name] Status
+
+Phase: 1 - Define Mission
+Activity: Initial requirements gathering
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🌱 WHAT IS SPECKIT?
+🌱 Optional: SpecKit Integration
 
-Build high-quality software faster with Spec-Driven Development.
-An open source toolkit that allows you to focus on product scenarios 
-and predictable outcomes instead of vibe coding.
+SpecKit provides feature-driven development with specs, plans, and tasks.
 
-Source: https://github.com/github/spec-kit
+Would you like to set up SpecKit for this project? [y/n]
+```
+
+---
+
+### If User Says "yes"
+
+**Show installation steps:**
+
+```
+✅ SpecKit Setup for [project-name]
+
+Project: [project-name]
+Current Phase: Phase [N] ([phase-name])
+Tech Stack: [from project-prd.md]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📥 INSTALLATION STEPS:
 
-Step 1: Install SpecKit (Recommended Method)
+Step 1: Install SpecKit
 
-   uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 Step 2: Initialize SpecKit in this project
 
-   cd [project-directory]
-   specify init . --ai [your-ai-agent] --here
+  specify init . --ai cursor-agent --here
 
-   Available AI agents:
-   - claude          (Claude Code)
-   - copilot         (GitHub Copilot)
-   - cursor-agent    (Cursor)
-   - gemini          (Gemini CLI)
-   - windsurf        (Windsurf)
-   - and more (see Step 3 in Official Installation section above)
-
-   Example:
-   specify init . --ai cursor-agent --here
+  (Say 'y' to the warning about existing files - it's safe)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📚 TO UPGRADE SPECKIT LATER:
+After installation completes, run:
 
-   uv tool install specify-cli --force --from git+https://github.com/github/spec-kit.git
+  flight-plan setup-speckit
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🎯 YOUR PROJECT CONTEXT (from Flight Plan):
-
-Project: [project-name]
-Current Phase: Phase [N] from .flight-plan/current.md
-Tech Stack: [from project-prd.md]
-Quality Standards: [from project-prd.md]
+This will configure SpecKit's constitution with your Flight Plan context.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-What SpecKit will create:
-- memory/constitution.md (project principles)
-- specs/ (feature specifications)
-- scripts/ (helper scripts)
-- templates/ (spec templates)
-
-You can reference Flight Plan files from your SpecKit constitution:
-- ../project-prd.md (requirements & tech stack)
-- ../.flight-plan/current.md (current phase)
-- ../../flight-plan-solution/FLIGHT-PLAN-PHASES.md (phase standards)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Please run the installation commands above.
-Type 'done' when SpecKit is initialized.
 ```
 
-**Wait for user to complete installation.**
+**Update `.flight-plan/config.json`:**
+```json
+{
+  "speckit_prompted": true,
+  "speckit_enabled": false
+}
+```
 
 ---
 
-### STEP 4: Update Flight Plan Tracking
+### If User Says "no"
 
-**After user confirms SpecKit is installed:**
+```
+📝 Noted: SpecKit setup skipped
 
-1. **Verify SpecKit created its structure:**
-   ```bash
-   ls memory/constitution.md specs/ 2>/dev/null
-   ```
-   
-   If files exist, proceed. If not, user needs to run `specify init` again.
+You can enable SpecKit later by running "flight-plan status" again.
 
-2. **Update `.flight-plan/config.json`:**
-   ```json
-   {
-     "project_name": "[project-name]",
-     "generated_date": "[existing]",
-     "prd_version": "[existing]",
-     "speckit_enabled": true,
-     "speckit_prompted": true,
-     "speckit_initialized_date": "[current date YYYY-MM-DD HH:MM UTC]",
-     "current_phase": [existing],
-     "last_updated": "[current date]"
-   }
-   ```
+Updated .flight-plan/config.json
+```
 
-3. **Show completion:**
-   ```
-   ✅ SpecKit initialized successfully!
-   
-   Flight Plan tracking updated in .flight-plan/config.json
-
-   🚀 NEXT STEPS:
-
-   1. Use SpecKit commands in your AI assistant:
-      /speckit.constitution  # Define project principles
-      /speckit.specify       # Create feature spec
-      /speckit.plan          # Create implementation plan
-      /speckit.tasks         # Break down tasks
-      /speckit.implement     # Execute implementation
-
-   2. Reference Flight Plan files in your SpecKit constitution:
-      - project-prd.md (your requirements & tech stack)
-      - .flight-plan/current.md (your current phase)
-      - ../flight-plan-solution/FLIGHT-PLAN-PHASES.md (phase standards)
-
-   3. SpecKit will respect your Flight Plan context automatically.
-
-   📚 Resources:
-      - SpecKit docs: https://github.com/github/spec-kit
-      - Flight Plan phases: ../flight-plan-solution/FLIGHT-PLAN-PHASES.md
-      - Your PRD: project-prd.md
-   ```
+**Update `.flight-plan/config.json`:**
+```json
+{
+  "speckit_prompted": true,
+  "speckit_enabled": false
+}
+```
 
 ---
 
-## How SpecKit Uses Flight Plan Context
+## How to Execute `flight-plan setup-speckit`
 
-SpecKit creates its own `memory/constitution.md` during `specify init`. 
+**This runs AFTER user has installed SpecKit.**
 
-**After SpecKit is initialized, user can EDIT constitution.md to reference Flight Plan files:**
+### STEP 1: Validate Context
+
+**Check you're in a project directory:**
+
+1. ✅ Check if `docs/project-prd.md` exists
+2. ✅ Check if `.flight-plan/` directory exists
+
+If missing:
+```
+❌ Cannot setup SpecKit: Not in a project directory
+
+This command works in a project directory with:
+- docs/project-prd.md
+- .flight-plan/current.md
+
+Current location: [show pwd]
+```
+
+**STOP if validation fails.**
+
+---
+
+### STEP 2: Check SpecKit Installation
+
+**Check if `.specify/` directory exists:**
+
+```bash
+# Check for .specify/ directory
+ls .specify/
+```
+
+If NOT found:
+```
+❌ SpecKit not initialized
+
+Please run SpecKit installation first:
+
+  specify init . --ai cursor-agent --here
+
+Then run "flight-plan setup-speckit" again.
+```
+
+**STOP if SpecKit not installed.**
+
+---
+
+### STEP 3: Read Project Context
+
+**Read these files from current directory (project root):**
+
+1. **docs/project-prd.md** - Tech stack, quality standards, requirements
+2. **docs/project-rules.md** - AI rules, MCP servers
+3. **.flight-plan/current.md** - Current phase, tasks, blockers
+4. **.flight-plan/FLIGHT-PLAN-PHASES.md** - Phase standards (standalone copy)
+
+**Extract from project-prd.md:**
+- Project name
+- Technology stack (languages, frameworks, databases)
+- Quality standards (test coverage, performance, security)
+- Open questions / blockers
+- Constraints
+
+**Extract from current.md:**
+- Current phase number and name
+- Active tasks
+- Blockers
+
+**Extract from project-rules.md:**
+- MCP servers configured
+- AI behavior rules
+- Project-specific standards
+
+---
+
+### STEP 4: Generate Constitution
+
+**Generate `.specify/memory/constitution.md` with Flight Plan context:**
 
 ```markdown
-## Flight Plan Integration
+# [Project Name] Constitution
 
-**Project Context:**
-- ../project-prd.md - Requirements, tech stack, quality standards
-- ../.flight-plan/current.md - Current phase, status, blockers  
-- ../project-rules.md - Project rules, MCP servers, standards
+**Generated by Flight Plan**  
+**Date:** [current date]  
+**Phase:** [phase number] - [phase name]
 
-**Phase Standards:**
-- ../../flight-plan-solution/FLIGHT-PLAN-PHASES.md - Standards per phase (1-8)
+---
 
-Use these files to:
-- Apply phase-appropriate standards during /speckit.spec
-- Respect quality gates from PRD during /speckit.implement
-- Reference tech stack constraints during /speckit.plan
+## 🔗 Flight Plan Integration
+
+This project uses Flight Plan for lifecycle management (8-phase methodology).
+
+**Context Files:**
+- `docs/project-prd.md` - Requirements, tech stack, quality standards
+- `.flight-plan/current.md` - Current phase, tasks, blockers
+- `docs/project-rules.md` - AI rules, MCP servers, standards
+- `.flight-plan/FLIGHT-PLAN-PHASES.md` - Phase standards
+
+**Current Phase:** [phase number] - [phase name]
+
+### Phase Standards
+
+Apply standards based on current Flight Plan phase:
+
+- **Phase 1-2** (Define/Plan): Focus on requirements clarity
+- **Phase 3-4** (Setup/Build): Establish foundation and architecture
+- **Phase 5-6** (Test/Polish): Ensure quality and refinement
+- **Phase 7-8** (Deploy/Operate): Production readiness
+
+See `.flight-plan/FLIGHT-PLAN-PHASES.md` for detailed phase standards.
+
+---
+
+## 🎯 Project Context
+
+**Name:** [project name]
+
+**Purpose:** [from project-prd.md]
+
+**Type:** [Frontend/Backend/etc from project-prd.md]
+
+---
+
+## 🛠️ Technology Stack
+
+**Language:** [from project-prd.md]
+
+**Framework:** [from project-prd.md]
+
+**Database:** [from project-prd.md or "Not applicable"]
+
+**Deployment:** [from project-prd.md]
+
+**Key Dependencies:**
+[List from project-prd.md]
+
+---
+
+## ✅ Quality Standards
+
+**From Flight Plan PRD:**
+
+**Test Coverage:** [from project-prd.md]
+
+**Performance:** [from project-prd.md]
+
+**Security:** [from project-prd.md]
+
+**Accessibility:** [from project-prd.md]
+
+**Code Quality:** [from project-prd.md]
+
+All SpecKit implementations must satisfy these standards.
+
+---
+
+## 🚧 Current Constraints
+
+[List constraints from project-prd.md]
+
+---
+
+## 🔍 Open Questions / Blockers
+
+[List from .flight-plan/current.md]
+
+When creating specs, address these questions or note dependencies.
+
+---
+
+## 🤖 AI Integration
+
+**MCP Servers Configured:**
+[List from project-rules.md]
+
+**AI Behavior Rules:**
+[Extract relevant rules from project-rules.md]
+
+---
+
+## 📋 SpecKit Workflow with Flight Plan
+
+### Creating a Feature Spec
+
+1. Check current phase in `.flight-plan/current.md`
+2. Apply phase-appropriate standards from `.flight-plan/FLIGHT-PLAN-PHASES.md`
+3. Reference tech stack from this constitution
+4. Ensure quality standards are met
+5. Note any blockers from Flight Plan
+
+### During Implementation
+
+1. Follow tech stack defined above
+2. Apply quality standards from PRD
+3. Update Flight Plan progress if completing phase objectives
+4. Use MCP servers as configured
+
+### After Implementation
+
+1. Verify against quality standards
+2. Update Flight Plan if feature completes a phase objective
+3. Run `flight-plan status` to check overall progress
+
+---
+
+## 🎨 Project-Specific Principles
+
+[Any additional principles from project-prd.md or project-rules.md]
+
+---
+
+**This constitution is synchronized with Flight Plan.**
+**When project-prd.md changes, run `flight-plan prd refresh apply` to update this file.**
+
+---
+
+**Generated:** [timestamp]  
+**Flight Plan Version:** 1.0  
+**SpecKit Version:** [specify --version]
 ```
 
-**Note:** SpecKit creates constitution.md with its own template. Users can manually add Flight Plan references if desired.
+---
+
+### STEP 5: Update Tracking
+
+**Update `.flight-plan/config.json`:**
+
+```json
+{
+  "project_name": "[project-name]",
+  "generated_date": "[existing]",
+  "prd_version": "[existing]",
+  "speckit_enabled": true,
+  "speckit_prompted": true,
+  "speckit_configured_date": "[current date YYYY-MM-DD HH:MM UTC]",
+  "current_phase": [existing],
+  "last_updated": "[current date]"
+}
+```
+
+---
+
+### STEP 6: Show Completion
+
+```
+✅ SpecKit configured successfully!
+
+Updated files:
+✓ .specify/memory/constitution.md (generated from Flight Plan context)
+✓ .flight-plan/config.json (tracking updated)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 NEXT STEPS:
+
+Use SpecKit commands for feature development:
+
+  /speckit.specify       - Create feature specification
+  /speckit.plan          - Create implementation plan
+  /speckit.tasks         - Break down into tasks
+  /speckit.implement     - Execute implementation
+
+Optional enhancement commands:
+  /speckit.clarify       - Ask clarifying questions (before /speckit.plan)
+  /speckit.checklist     - Generate quality checklist (after /speckit.plan)
+  /speckit.analyze       - Check consistency (before /speckit.implement)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SpecKit now has full context from your Flight Plan:
+✓ Current phase and standards
+✓ Tech stack and constraints
+✓ Quality requirements
+✓ Open questions and blockers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## When PRD Changes
+
+**After updating `docs/project-prd.md`:**
+
+```bash
+# Update tracking and constitution
+flight-plan prd refresh
+flight-plan prd refresh apply
+```
+
+This will:
+1. Update `.flight-plan/current.md`
+2. Update `.specify/memory/constitution.md` (if tech stack changed)
+3. Keep SpecKit synchronized with Flight Plan
 
 ---
 
 ## Error Handling
 
-### If Web Fetch Fails
+### If SpecKit Already Configured
+
+**Check `.flight-plan/config.json` for `speckit_enabled: true`:**
 
 ```
-❌ Could not fetch SpecKit documentation
+⚠️  SpecKit already configured
 
-Tried: github.com/github/spec-kit
-Error: [error message]
+.specify/memory/constitution.md already exists and is configured.
 
-Please:
-1. Check internet connection
-2. Visit github.com/github/spec-kit manually
-3. Follow installation instructions there
-4. Then run: "flight-plan setup-speckit" again
+To reconfigure:
+1. Remove .specify/memory/constitution.md
+2. Run "flight-plan setup-speckit" again
 
-Or provide installation instructions, and I'll configure Flight Plan integration.
+Or edit .specify/memory/constitution.md directly.
 ```
 
-### If SpecKit Already Installed
-
-If user says "already installed":
+### If User Hasn't Installed SpecKit
 
 ```
-✅ SpecKit already installed
+❌ SpecKit not found
 
-Proceeding with Flight Plan integration only...
+Please install SpecKit first:
 
-[Continue with STEP 5]
+  uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+  specify init . --ai cursor-agent --here
+
+Then run "flight-plan setup-speckit" again.
 ```
-
-### If User Declines After Seeing Instructions
-
-```
-📝 Noted: SpecKit setup cancelled
-
-You can run "flight-plan setup-speckit" anytime to try again.
-
-Updated .flight-plan/config.json:
-  "speckit_enabled": false,
-  "speckit_prompted": true
-```
-
----
-
-## Testing Checklist
-
-Before recommending to user, verify:
-
-- [ ] Fetched actual SpecKit README
-- [ ] Extracted installation commands (from top of README)
-- [ ] Showed actual commands (not invented)
-- [ ] Provided Flight Plan context
-- [ ] Created constitution.md with correct file paths
-- [ ] Created specs/ directory
-- [ ] Updated config.json
-- [ ] Showed next steps
 
 ---
 
 ## Important Notes
 
 **DO:**
-- ✅ Read this ENTIRE file first (contains official SpecKit README info)
-- ✅ Use ACTUAL installation commands from official SpecKit README
-- ✅ Let SpecKit create its own directories (memory/, specs/, etc.)
-- ✅ Only update Flight Plan's config.json
-- ✅ Wait for user to complete installation
+- ✅ Run this from PROJECT directory (has docs/project-prd.md)
+- ✅ Check for `.specify/` directory (not `memory/` at root)
+- ✅ Generate constitution.md from project files
+- ✅ Use standalone project files (no ../../flight-plan-solution/ references)
+- ✅ Read `.flight-plan/FLIGHT-PLAN-PHASES.md` (local copy in project)
 
 **DON'T:**
-- ❌ Assume or invent installation steps
-- ❌ Create memory/ or specs/ directories (SpecKit does this)
-- ❌ Create constitution.md file (SpecKit does this)
-- ❌ Modify SpecKit's structure
-- ❌ Proceed without user confirmation
-- ❌ Use old/cached instructions
-
----
-
-## Version Tracking
-
-When you fetch SpecKit instructions:
-
-```json
-{
-  "speckit_version": "fetched-2025-10-24",
-  "speckit_readme_url": "https://github.com/github/spec-kit",
-  "last_fetched": "2025-10-24 16:30 UTC"
-}
-```
-
-This helps track which version of instructions was used.
+- ❌ Run this from solution directory
+- ❌ Look for `memory/` or `specs/` at root level (wrong structure)
+- ❌ Manually edit constitution.md (generate it)
+- ❌ Reference files outside project directory
+- ❌ Use examples/ folder for content
 
 ---
 
 ## Summary
 
 **The flow is:**
-1. User wants SpecKit
-2. Fetch github.com/github/spec-kit README (installation at top)
-3. Show actual installation commands to user
-4. User installs SpecKit
-5. We configure Flight Plan integration (constitution.md with file refs)
-6. Done!
+1. User runs `flight-plan status` in project
+2. AI asks about SpecKit (if not prompted before)
+3. User installs SpecKit: `specify init . --ai cursor-agent --here`
+4. User runs: `flight-plan setup-speckit`
+5. AI reads project context (PRD, current phase, rules)
+6. AI generates `.specify/memory/constitution.md` with full context
+7. SpecKit is now integrated with Flight Plan!
 
-**Key principle:** FETCH REAL INSTRUCTIONS, DON'T ASSUME.
+**Key principle:** AUTOMATE EVERYTHING. No manual editing.
 
 ---
 
-**Version:** 1.0  
+**Version:** 3.0  
 **Compatible with:** Flight Plan v1.0, SpecKit (latest)  
-**Last Updated:** 2025-10-24
-
+**Last Updated:** 2025-10-28

@@ -244,22 +244,28 @@ project-a/                      ← Standalone project
 │   └── project-rules.md        ← AI integration
 ├── .flight-plan/               ← Standalone copies
 │   ├── FLIGHT-PLAN-COMMANDS.md
+│   ├── FLIGHT-PLAN-PHASES.md
+│   ├── FLIGHT-PLAN-SPECKIT-SETUP.md
 │   ├── current.md
 │   └── config.json
-├── memory/constitution.md      ← If SpecKit enabled
+├── .specify/                   ← If SpecKit enabled
+│   ├── memory/
+│   │   └── constitution.md
+│   ├── scripts/
+│   └── templates/
 ├── src/                        ← Code
 └── README.md
 ```
 
 **Contains:**
 - ✅ `docs/project-prd.md` and `docs/project-rules.md`
-- ✅ `.flight-plan/` with standalone copies
-- ✅ `memory/constitution.md` (if SpecKit)
+- ✅ `.flight-plan/` with standalone copies of Flight Plan docs
+- ✅ `.specify/` directory (if SpecKit enabled)
 
 **Does NOT contain:**
 - ❌ `solution-prd-v*.md` (lives in flight-plan-solution/)
 - ❌ `framework/` (lives in flight-plan-solution/)
-- ❌ References to `../../flight-plan-solution/`
+- ❌ References to `../../flight-plan-solution/` (projects are standalone)
 
 ---
 
@@ -1100,14 +1106,15 @@ Recent Notes now shows:
 When user first runs `flight-plan status` in a project:
 1. AI checks `.flight-plan/config.json` for `speckit_prompted` field
 2. If not prompted: AI asks "Would you like SpecKit? (yes/no)"
-3. If yes: AI reads FLIGHT-PLAN-SPECKIT-SETUP.md and guides through setup
+3. If yes: AI reads `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` and guides through setup
 4. If no: Updates config.json, never asks again
 
 **For AI Implementers:**
 - SpecKit prompting happens IN `flight-plan status`, not as separate command
 - Check `.flight-plan/config.json` in current directory (project root)
-- Read `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` for setup instructions (local copy)
-- Never create memory/ or specs/ directories (SpecKit does this)
+- Read `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` for setup instructions (local copy in project)
+- Never create `.specify/` directory or subdirectories (SpecKit does this via `specify init`)
+- After SpecKit installed, `flight-plan setup-speckit` generates `.specify/memory/constitution.md`
 - Only update `.flight-plan/config.json` in current directory to track status
 - All file reads are relative to project directory (standalone project)
 
@@ -1304,16 +1311,27 @@ AI: Detected change, removed from blockers
 
 ---
 
-### Example 4: Enabling Spec-Kit
+### Example 4: Enabling SpecKit
 
 ```bash
 cd frontend/
 
-# Enable Spec-Kit
-"flight-plan enable-speckit"
+# Check status (AI will ask about SpecKit if not prompted)
+"flight-plan status"
 
-# Now use Spec-Kit
-"/speckit.spec user-profile"
+AI: Would you like to set up SpecKit for this project? [y/n]
+
+You: y
+
+AI: [Shows SpecKit installation steps]
+
+# After installing SpecKit
+"flight-plan setup-speckit"
+
+AI: ✅ SpecKit configured successfully!
+
+# Now use SpecKit
+"/speckit.specify user-profile"
 
 AI: Creates spec, references Flight Plan phase and standards
 ```
