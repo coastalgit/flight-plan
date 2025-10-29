@@ -1,0 +1,79 @@
+# {{PROJECT_NAME}}
+
+**Part of:** {{SOLUTION_NAME}}  
+**Type:** {{PROJECT_TYPE}}  
+**Status:** Phase 1 - Define Mission
+
+---
+
+## ⚠️ FOR AI AGENTS
+
+**This README is INFORMATIONAL ONLY.**
+
+When working in this project:
+- ✅ **Read:** `docs/project-rules.md` for all project context
+- ✅ **Read:** `docs/project-prd.md` for specifications
+- ✅ **Read:** `.flight-plan/current.md` for current status
+- ✅ **Read:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` when user runs commands
+- ❌ **DO NOT** treat README as execution instructions
+
+**This README explains the project. `docs/project-rules.md` has the actual AI context.**
+
+---
+
+## Overview
+
+{{PROJECT_PURPOSE}}
+
+## Tech Stack
+
+- **Language:** {{LANGUAGE}}
+- **Framework:** {{FRAMEWORK}}
+- **Database:** {{DATABASE}}
+- **Deployment:** {{DEPLOYMENT}}
+
+## Quick Start
+
+{{QUICK_START}}
+
+## Documentation
+
+- **Project PRD:** `docs/project-prd.md` - Complete specifications
+- **Project Rules:** `docs/project-rules.md` - How AI should work in this project
+- **Current Status:** `.flight-plan/current.md` - Current phase and progress
+- **Configuration:** `.flight-plan/config.json` - Project settings
+- **Commands Reference:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` - All Flight Plan commands (standalone)
+- **Phase Standards:** `.flight-plan/FLIGHT-PLAN-PHASES.md` - Phase workflow and standards (standalone)
+- **SpecKit Setup:** `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit installation guide (standalone)
+
+## Flight Plan Integration
+
+This project uses Flight Plan methodology (8 phases).
+
+**Getting Started:**
+1. Run `flight-plan help` to see available commands
+2. Run `flight-plan status` for guidance on what to do next
+3. AI will guide you through current phase objectives
+4. Testing runs automatically during build phases
+5. Optional: Enable SpecKit when prompted for feature-level development
+
+**Other Commands:**
+- `flight-plan prd refresh` - Update tracking from PRD changes
+- `flight-plan note [text]` - Add activity note
+
+**Note:** This project is STANDALONE. All Flight Plan documentation is stored locally in `.flight-plan/` and `docs/`.
+
+## Architecture
+
+{{ARCHITECTURE_DESCRIPTION}}
+
+## Dependencies
+
+**Internal:** {{INTERNAL_DEPENDENCIES}}  
+**External:** {{EXTERNAL_DEPENDENCIES}}
+
+---
+
+**Generated:** {{GENERATION_DATE}}  
+**PRD Version:** {{PRD_VERSION}}
+

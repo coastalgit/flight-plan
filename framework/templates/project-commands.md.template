@@ -353,6 +353,12 @@ project-root/
 - Creates `.specify/` directory with memory, scripts, templates
 - Works alongside Flight Plan (Flight Plan = project-level, SpecKit = feature-level)
 
+**⚠️ CRITICAL: SpecKit commands are Cursor AI chat commands, NOT terminal commands!**
+- ✅ Type `/speckit.specify` in **Cursor chat** (AI command)
+- ❌ Do NOT run in terminal
+- ❌ Do NOT use `run_terminal_cmd` or shell execution
+- ✅ AI processes these directly like "flight-plan status"
+
 **Setup:** Answer "yes" when prompted during `flight-plan status`
 
 ---

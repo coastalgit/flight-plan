@@ -69,6 +69,37 @@ Example sections:
 
 ---
 
+## Platform-Aware Commands
+
+**Shell Type:** Detected from user_info at runtime
+
+**PowerShell (Windows):**
+```powershell
+# Creating directories (use comma-separated list)
+mkdir src/components, src/services, src/utils
+
+# Or with Force flag (creates parent dirs)
+New-Item -ItemType Directory -Path src/components, src/services -Force
+
+# Multiple file operations
+Remove-Item file1.txt, file2.txt
+Copy-Item source.txt, source2.txt -Destination ./dest/
+```
+
+**Bash/Zsh (Unix/Linux/Mac):**
+```bash
+# Creating directories
+mkdir -p src/components src/services src/utils
+
+# Multiple operations work with space separation
+rm file1.txt file2.txt
+cp source.txt source2.txt ./dest/
+```
+
+**⚠️ Critical:** Always use platform-appropriate syntax. Check user_info shell type before running commands.
+
+---
+
 ## Flight Plan Integration
 
 **Current Phase:** See `../.flight-plan/current.md`

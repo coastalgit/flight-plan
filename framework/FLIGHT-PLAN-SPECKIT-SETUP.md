@@ -37,6 +37,12 @@ MyApp/
 - Task breakdowns (`/speckit.tasks`)
 - Execution tracking (`/speckit.implement`)
 
+**⚠️ CRITICAL: These are Cursor AI chat commands, NOT terminal commands!**
+- ✅ Type `/speckit.specify` in **Cursor chat** (AI command)
+- ❌ Do NOT run in terminal
+- ❌ Do NOT use `run_terminal_cmd` or shell execution
+- ✅ AI processes these directly like natural language
+
 **Flight Plan Integration:**
 - Flight Plan manages project lifecycle (8 phases, overall progress)
 - SpecKit manages individual features (specs, plans, tasks)
@@ -585,6 +591,9 @@ Point SpecKit at your Flight Plan files:
   /speckit.plan from docs/project-plan.md
   /speckit.tasks
   /speckit.implement
+
+⚠️ IMPORTANT: Type these in CURSOR CHAT, not terminal!
+These are AI commands (like "flight-plan status"), not shell commands.
 
 Optional enhancement commands:
   /speckit.clarify       - Ask clarifying questions (before /speckit.plan)

@@ -180,6 +180,12 @@ Your formatted output here
 - **Flight Plan** → Project-level (8 phases, PRDs, overall progress)
 - **Spec-Kit** → Feature-level (individual features, `/speckit.spec`, `/speckit.implement`)
 
+**⚠️ CRITICAL: SpecKit commands are Cursor AI chat commands, NOT terminal commands!**
+- ✅ Type `/speckit.specify` in **Cursor chat** (AI processes directly)
+- ❌ Do NOT run in terminal (no `run_terminal_cmd`)
+- ❌ Do NOT execute as shell commands
+- ✅ Handle like "flight-plan status" - natural language AI commands
+
 **Integration:**
 Flight Plan provides context (phase, standards) → Spec-Kit uses it for feature development.
 

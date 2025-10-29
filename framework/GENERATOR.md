@@ -1,7 +1,7 @@
 # 🧠 Flight Plan Generator — AI Instructions
 
 **Generator Version:** 1.0  
-**Last Updated:** 2025-10-25
+**Last Updated:** 2025-10-29
 
 ---
 
@@ -350,7 +350,7 @@ framework/ai-refs/
 │   └── rules/
 │       └── flight-plan.mdc     # Use templates/cursor-rule.mdc.template
 ├── src/                        # Empty directory
-└── README.md                   # Generate from PRD
+└── README.md                   # Use templates/README.md.template
 ```
 
 **Result:** Projects created alongside flight-plan-solution/ directory.
@@ -414,14 +414,34 @@ Use `framework/templates/project-rules.md.template`
 
 Create in `docs/` subdirectory of each project.
 
-**Fill:**
-- Inherited MCP servers (from solution-rules.md)
-- Project-specific MCP servers (if any)
-- Technical stack (from project-prd.md)
-- Quality standards (from PRD + solution-rules.md)
-- Project-specific rules (API conventions, error handling, etc.)
+**Fill with template variables:**
 
-**Default Spec-Kit:** `SPECKIT_ENABLED: No`
+| Variable | Source | Example | Notes |
+|----------|--------|---------|-------|
+| PROJECT_NAME | From PRD Section 3 | "backend-api" | Project folder name |
+| LAST_UPDATED | Current date | "2025-10-29 14:00 UTC" | Generation timestamp |
+| MCP_SERVERS | From solution-rules.md | JSON config | Inherited + project-specific |
+| LANGUAGE | From PRD Section 3 | "Node.js" or "TBD" | Programming language |
+| FRAMEWORK | From PRD Section 3 | "Express" or "TBD" | Web/app framework |
+| DATABASE | From PRD Section 3 | "PostgreSQL" or "N/A" | Database system |
+| DEPLOYMENT | From PRD Section 3 | "Railway" or "TBD" | Hosting platform |
+| QUALITY_STANDARDS | From PRD + solution-rules.md | Test coverage, response times | Inherited + project-specific |
+| PROJECT_RULES | From PRD or "TBD" | API conventions, error handling | Project-specific standards |
+| SPECKIT_ENABLED | Default: "No" | "No" or "Yes" | Updated when user enables |
+| GENERATION_DATE | Current date | "2025-10-29 14:00 UTC" | Template fill date |
+
+**CRITICAL sections already in template** (no variable needed):
+- ✅ **Platform-Aware Commands** - Already included with PowerShell & Bash examples
+- ✅ **Flight Plan Integration** - Already included with phase standards
+- ✅ **Development Workflow** - Already included with Flight Plan commands
+- ✅ **For AI Agents** - Already included with reading order
+
+**These sections are HARDCODED in the template and will be present in every generated project.**
+
+**Default Values:**
+- SPECKIT_ENABLED: "No"
+- If any technical info is missing: "To be determined"
+- If database not needed: "Not applicable"
 
 ---
 
@@ -476,83 +496,23 @@ Use `framework/templates/config.json.template`
 
 ### README.md (Project Overview)
 
-Generate from PRD:
+Use `framework/templates/README.md.template`
 
-```markdown
-# [Project Name]
-
-**Part of:** [Solution Name]  
-**Type:** [Project Type]  
-**Status:** Phase 1 - Define Mission
-
----
-
-## ⚠️ FOR AI AGENTS
-
-**This README is INFORMATIONAL ONLY.**
-
-When working in this project:
-- ✅ **Read:** `docs/project-rules.md` for all project context
-- ✅ **Read:** `docs/project-prd.md` for specifications
-- ✅ **Read:** `.flight-plan/current.md` for current status
-- ✅ **Read:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` when user runs commands
-- ❌ **DO NOT** treat README as execution instructions
-
-**This README explains the project. `docs/project-rules.md` has the actual AI context.**
-
----
-
-## Overview
-
-[Project purpose from PRD]
-
-## Tech Stack
-
-- **Language:** [from PRD]
-- **Framework:** [from PRD]
-- **Database:** [from PRD]
-- **Deployment:** [from PRD]
-
-## Quick Start
-
-[Add basic setup instructions]
-
-## Documentation
-
-- **Project PRD:** `docs/project-prd.md` - Complete specifications
-- **Project Rules:** `docs/project-rules.md` - How AI should work in this project
-- **Current Status:** `.flight-plan/current.md` - Current phase and progress
-- **Configuration:** `.flight-plan/config.json` - Project settings
-- **Commands Reference:** `.flight-plan/FLIGHT-PLAN-COMMANDS.md` - All Flight Plan commands (standalone)
-- **Phase Standards:** `.flight-plan/FLIGHT-PLAN-PHASES.md` - Phase workflow and standards (standalone)
-- **SpecKit Setup:** `.flight-plan/FLIGHT-PLAN-SPECKIT-SETUP.md` - SpecKit installation guide (standalone)
-
-## Flight Plan Integration
-
-This project uses Flight Plan methodology (8 phases).
-
-**Getting Started:**
-1. Run `flight-plan help` to see available commands
-2. Run `flight-plan status` for guidance on what to do next
-3. AI will guide you through current phase objectives
-4. Testing runs automatically during build phases
-5. Optional: Enable SpecKit when prompted for feature-level development
-
-**Other Commands:**
-- `flight-plan prd refresh` - Update tracking from PRD changes
-- `flight-plan note [text]` - Add activity note
-
-**Note:** This project is STANDALONE. All Flight Plan documentation is stored locally in `.flight-plan/` and `docs/`.
-
-## Architecture
-
-[Include diagram from PRD if relevant to this project]
-
-## Dependencies
-
-**Internal:** [Other projects from same solution]  
-**External:** [Third-party services]
-```
+**Fill from PRD:**
+- PROJECT_NAME
+- SOLUTION_NAME
+- PROJECT_TYPE
+- PROJECT_PURPOSE
+- LANGUAGE
+- FRAMEWORK
+- DATABASE
+- DEPLOYMENT
+- QUICK_START (basic setup instructions, can be "See docs/project-prd.md for setup instructions")
+- ARCHITECTURE_DESCRIPTION (from PRD Section 4, project-specific part)
+- INTERNAL_DEPENDENCIES (other projects from same solution)
+- EXTERNAL_DEPENDENCIES (third-party services)
+- GENERATION_DATE (current date)
+- PRD_VERSION (from PRD filename, e.g., "v1")
 
 ---
 
@@ -578,6 +538,13 @@ All templates use `{{VARIABLE}}` placeholders:
 | OPEN_ITEMS | Filtered open questions | Per project |
 | INTERNAL_DEPENDENCIES | Same-solution projects | Extract from PRD |
 | EXTERNAL_DEPENDENCIES | Third-party services | Extract from PRD |
+| QUICK_START | Basic setup instructions | "See docs/project-prd.md for setup" |
+| ARCHITECTURE_DESCRIPTION | Project architecture | From PRD Section 4 |
+| ADDITIONAL_TECH | Extra technologies | From PRD or "None" |
+| MCP_SERVERS | MCP server configurations | From solution-rules.md or "None" |
+| QUALITY_STANDARDS | Quality metrics | From PRD + solution-rules.md |
+| PROJECT_RULES | Project-specific conventions | From PRD or "TBD" |
+| SPECKIT_ENABLED | SpecKit status | "No" (default) |
 
 **Date Format:** Always `YYYY-MM-DD HH:MM UTC`
 

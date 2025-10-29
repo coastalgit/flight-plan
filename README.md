@@ -114,6 +114,7 @@ flight-plan-solution/
     │   ├── project-commands.md.template   # Project-only commands
     │   ├── solution-rules.md.template
     │   ├── project-rules.md.template
+    │   ├── README.md.template             # Project README template
     │   ├── constitution.md.template (SpecKit)
     │   ├── flight-plan-current.md.template
     │   └── cursor-rule.mdc.template
@@ -151,6 +152,8 @@ MyApp/                                  # Your solution root directory
 │       │   ├── project-commands.md.template  # Project-only commands
 │       │   ├── solution-rules.md.template
 │       │   ├── project-rules.md.template
+│       │   ├── README.md.template          # Project README template
+│       │   ├── flight-plan-current.md.template
 │       │   └── cursor-rule.mdc.template
 │       │
 │       └── ai-refs/                    # Cross-project coordination (generated)
@@ -454,6 +457,10 @@ Spec-Kit:    "Let's implement user authentication feature"
 - `specs/` - Feature specifications (created by SpecKit internally)
 - Commands: `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`
 
+**⚠️ CRITICAL: SpecKit commands are Cursor AI chat commands, NOT terminal commands!**
+- ✅ Type `/speckit.specify` in **Cursor chat** (like "flight-plan status")
+- ❌ Do NOT run in terminal
+
 ### Enable Spec-Kit in Your Project
 
 **When working in a project:**
@@ -486,8 +493,8 @@ AI will show your status and ask if you want SpecKit. If yes, it guides you thro
    - `docs/project-spec.md` - Requirements (extracted from PRD Section 3)
    - `docs/project-plan.md` - Tech stack & architecture (extracted from PRD Sections 4-5)
 6. 📋 Shows you how to point SpecKit at Flight Plan files:
-   - `/speckit.specify from docs/project-spec.md`
-   - `/speckit.plan from docs/project-plan.md`
+   - `/speckit.specify from docs/project-spec.md` ← Type in Cursor chat, not terminal!
+   - `/speckit.plan from docs/project-plan.md` ← Type in Cursor chat, not terminal!
 7. 💾 Saves decision to `.flight-plan/config.json`
 
 **Result:** SpecKit reads from your PRD - no duplication, no re-typing requirements!
@@ -594,6 +601,12 @@ This solution initializer is part of the broader Flight Plan methodology for AI-
 - Modify templates/ directory
 - Adjust GENERATOR.md instructions
 - Submit PR with improvements
+
+**Commands fail on Windows PowerShell:**
+- Flight Plan now includes platform-aware command guidance
+- AI automatically uses correct syntax based on your shell type
+- Example: `mkdir dir1, dir2` (PowerShell) vs `mkdir -p dir1 dir2` (Unix)
+- See `docs/PLATFORM-COMMANDS-FIX-2025-10-29.md` for details
 
 ---
 
