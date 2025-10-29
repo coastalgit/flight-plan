@@ -320,9 +320,13 @@ Then run "flight-plan setup-speckit" again.
 
 ---
 
-### STEP 4: Generate Constitution
+### STEP 4: Generate SpecKit Integration Files
 
-**Generate `.specify/memory/constitution.md` with Flight Plan context:**
+**Generate THREE files from your PRD:**
+
+---
+
+#### 4A. Generate `.specify/memory/constitution.md` (Principles & Guidelines ONLY)
 
 ```markdown
 # [Project Name] Constitution
@@ -337,133 +341,205 @@ Then run "flight-plan setup-speckit" again.
 
 This project uses Flight Plan for lifecycle management (8-phase methodology).
 
-**Context Files:**
-- `docs/project-prd.md` - Requirements, tech stack, quality standards
+**Always consult these files:**
+- `docs/project-prd.md` - Single source of truth for requirements
+- `docs/project-spec.md` - Feature specifications (for SpecKit)
+- `docs/project-plan.md` - Implementation plan (for SpecKit)
 - `.flight-plan/current.md` - Current phase, tasks, blockers
-- `docs/project-rules.md` - AI rules, MCP servers, standards
 - `.flight-plan/FLIGHT-PLAN-PHASES.md` - Phase standards
 
 **Current Phase:** [phase number] - [phase name]
 
-### Phase Standards
+---
+
+## 📋 Development Principles
+
+### Phase-Based Standards
 
 Apply standards based on current Flight Plan phase:
 
-- **Phase 1-2** (Define/Plan): Focus on requirements clarity
-- **Phase 3-4** (Setup/Build): Establish foundation and architecture
-- **Phase 5-6** (Test/Polish): Ensure quality and refinement
+- **Phase 1-2** (Define/Research): Focus on requirements clarity, gather context
+- **Phase 3-4** (Design/Setup): Establish foundation and architecture
+- **Phase 5-6** (Build/Test): Ensure quality and refinement
 - **Phase 7-8** (Deploy/Operate): Production readiness
 
 See `.flight-plan/FLIGHT-PLAN-PHASES.md` for detailed phase standards.
 
----
+### Quality Requirements
 
-## 🎯 Project Context
+**ALL implementations must satisfy quality standards defined in `docs/project-prd.md`:**
+- Test coverage requirements
+- Performance targets
+- Security requirements
+- Accessibility standards
+- Code quality standards
 
-**Name:** [project name]
+**Check `docs/project-prd.md` for specific metrics and thresholds.**
 
-**Purpose:** [from project-prd.md]
+### Workflow with Flight Plan
 
-**Type:** [Frontend/Backend/etc from project-prd.md]
-
----
-
-## 🛠️ Technology Stack
-
-**Language:** [from project-prd.md]
-
-**Framework:** [from project-prd.md]
-
-**Database:** [from project-prd.md or "Not applicable"]
-
-**Deployment:** [from project-prd.md]
-
-**Key Dependencies:**
-[List from project-prd.md]
-
----
-
-## ✅ Quality Standards
-
-**From Flight Plan PRD:**
-
-**Test Coverage:** [from project-prd.md]
-
-**Performance:** [from project-prd.md]
-
-**Security:** [from project-prd.md]
-
-**Accessibility:** [from project-prd.md]
-
-**Code Quality:** [from project-prd.md]
-
-All SpecKit implementations must satisfy these standards.
-
----
-
-## 🚧 Current Constraints
-
-[List constraints from project-prd.md]
-
----
-
-## 🔍 Open Questions / Blockers
-
-[List from .flight-plan/current.md]
-
-When creating specs, address these questions or note dependencies.
-
----
-
-## 🤖 AI Integration
-
-**MCP Servers Configured:**
-[List from project-rules.md]
-
-**AI Behavior Rules:**
-[Extract relevant rules from project-rules.md]
-
----
-
-## 📋 SpecKit Workflow with Flight Plan
-
-### Creating a Feature Spec
-
+**When creating features:**
 1. Check current phase in `.flight-plan/current.md`
-2. Apply phase-appropriate standards from `.flight-plan/FLIGHT-PLAN-PHASES.md`
-3. Reference tech stack from this constitution
-4. Ensure quality standards are met
+2. Apply phase-appropriate standards
+3. Reference `docs/project-spec.md` for requirements
+4. Reference `docs/project-plan.md` for tech approach
 5. Note any blockers from Flight Plan
 
-### During Implementation
-
-1. Follow tech stack defined above
-2. Apply quality standards from PRD
-3. Update Flight Plan progress if completing phase objectives
-4. Use MCP servers as configured
-
-### After Implementation
-
-1. Verify against quality standards
-2. Update Flight Plan if feature completes a phase objective
+**After implementation:**
+1. Verify against quality standards in PRD
+2. Update `.flight-plan/current.md` if completing phase objectives
 3. Run `flight-plan status` to check overall progress
 
 ---
 
-## 🎨 Project-Specific Principles
+## 🎨 Project-Specific Guidelines
 
-[Any additional principles from project-prd.md or project-rules.md]
+[Extract any development workflow rules or coding standards from docs/project-rules.md]
 
 ---
 
-**This constitution is synchronized with Flight Plan.**
-**When project-prd.md changes, run `flight-plan prd refresh apply` to update this file.**
+**This constitution provides PRINCIPLES. See `docs/project-spec.md` and `docs/project-plan.md` for actual requirements and implementation details.**
 
 ---
 
 **Generated:** [timestamp]  
-**Flight Plan Version:** 1.0  
-**SpecKit Version:** [specify --version]
+**Flight Plan Version:** 1.0
+```
+
+---
+
+#### 4B. Generate `docs/project-spec.md` (Feature Specifications)
+
+**Extract from `docs/project-prd.md`:**
+
+```markdown
+# [Project Name] - Feature Specification
+
+**Generated from:** docs/project-prd.md  
+**Date:** [current date]  
+**For:** SpecKit integration
+
+---
+
+## Overview
+
+[Extract from PRD Section 1 - Project overview and purpose]
+
+---
+
+## User Stories & Requirements
+
+[Extract from PRD Section 3 - Functional Requirements]
+[Extract user stories]
+[Format as clear, actionable requirements]
+
+---
+
+## Success Criteria
+
+[Extract from PRD - Success Criteria section]
+[What needs to be true for this to be successful]
+
+---
+
+## Constraints
+
+[Extract from PRD - Technical Constraints]
+[Extract from PRD - Business Constraints]
+
+---
+
+## Open Questions
+
+[Extract from PRD Section 8 - Open Questions]
+[List any blockers from .flight-plan/current.md]
+
+---
+
+**This spec is synchronized with Flight Plan PRD.**
+**When project-prd.md changes, run `flight-plan prd refresh apply` to regenerate this file.**
+```
+
+---
+
+#### 4C. Generate `docs/project-plan.md` (Implementation Plan)
+
+**Extract from `docs/project-prd.md`:**
+
+```markdown
+# [Project Name] - Implementation Plan
+
+**Generated from:** docs/project-prd.md  
+**Date:** [current date]  
+**For:** SpecKit integration
+
+---
+
+## Technology Stack
+
+[Extract from PRD Section 5 - Technology Stack]
+
+**Language:** [from PRD]  
+**Framework:** [from PRD]  
+**Database:** [from PRD]  
+**Deployment:** [from PRD]
+
+**Key Dependencies:**
+[List from PRD]
+
+---
+
+## Architecture
+
+[Extract from PRD Section 4 - Architecture]
+[Include diagrams if present]
+
+---
+
+## Data Model
+
+[Extract from PRD - Data Model section if present]
+[Database schema, entities, relationships]
+
+---
+
+## API Design
+
+[Extract from PRD - API Design section if present]
+[Endpoints, request/response formats]
+
+---
+
+## Implementation Approach
+
+[Extract from PRD - Implementation sections]
+[How components fit together]
+[Integration points]
+
+---
+
+## Quality Standards
+
+[Extract from PRD - Quality Standards section]
+
+**Test Coverage:** [target]  
+**Performance:** [targets]  
+**Security:** [requirements]
+
+---
+
+## Dependencies
+
+### Internal Dependencies
+[Extract from PRD - dependencies on other projects]
+
+### External Dependencies
+[Extract from PRD - third-party services]
+
+---
+
+**This plan is synchronized with Flight Plan PRD.**
+**When project-prd.md changes, run `flight-plan prd refresh apply` to regenerate this file.**
 ```
 
 ---
@@ -480,6 +556,7 @@ When creating specs, address these questions or note dependencies.
   "speckit_enabled": true,
   "speckit_prompted": true,
   "speckit_configured_date": "[current date YYYY-MM-DD HH:MM UTC]",
+  "speckit_files_generated": true,
   "current_phase": [existing],
   "last_updated": "[current date]"
 }
@@ -492,20 +569,22 @@ When creating specs, address these questions or note dependencies.
 ```
 ✅ SpecKit configured successfully!
 
-Updated files:
-✓ .specify/memory/constitution.md (generated from Flight Plan context)
+Generated files from your PRD:
+✓ .specify/memory/constitution.md (principles & guidelines)
+✓ docs/project-spec.md (feature specifications from PRD)
+✓ docs/project-plan.md (implementation plan from PRD)
 ✓ .flight-plan/config.json (tracking updated)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🚀 NEXT STEPS:
 
-Use SpecKit commands for feature development:
+Point SpecKit at your Flight Plan files:
 
-  /speckit.specify       - Create feature specification
-  /speckit.plan          - Create implementation plan
-  /speckit.tasks         - Break down into tasks
-  /speckit.implement     - Execute implementation
+  /speckit.specify from docs/project-spec.md
+  /speckit.plan from docs/project-plan.md
+  /speckit.tasks
+  /speckit.implement
 
 Optional enhancement commands:
   /speckit.clarify       - Ask clarifying questions (before /speckit.plan)
@@ -514,11 +593,26 @@ Optional enhancement commands:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-SpecKit now has full context from your Flight Plan:
-✓ Current phase and standards
-✓ Tech stack and constraints
-✓ Quality requirements
-✓ Open questions and blockers
+SpecKit now reads from your Flight Plan:
+✓ docs/project-spec.md - All requirements from PRD
+✓ docs/project-plan.md - Tech stack, architecture, approach
+✓ .specify/memory/constitution.md - Principles & workflow
+
+No need to re-type requirements - everything is already there!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  FOR AI: STOP HERE
+
+DO NOT offer to:
+- "kick off a first feature spec"
+- "start with a feature"
+- "create a spec for X"
+- "run /speckit.specify for you"
+- ANY proactive suggestions
+
+The user will use SpecKit commands when THEY decide to.
+Your job is DONE after showing the success message above.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -530,15 +624,23 @@ SpecKit now has full context from your Flight Plan:
 **After updating `docs/project-prd.md`:**
 
 ```bash
-# Update tracking and constitution
+# Update tracking and regenerate SpecKit files
 flight-plan prd refresh
 flight-plan prd refresh apply
 ```
 
 This will:
 1. Update `.flight-plan/current.md`
-2. Update `.specify/memory/constitution.md` (if tech stack changed)
-3. Keep SpecKit synchronized with Flight Plan
+2. Regenerate `docs/project-spec.md` (if requirements changed)
+3. Regenerate `docs/project-plan.md` (if tech stack/architecture changed)
+4. Update `.specify/memory/constitution.md` (if principles/guidelines changed)
+5. Keep SpecKit synchronized with Flight Plan
+
+**Then tell SpecKit to re-read the updated files:**
+```bash
+/speckit.specify from docs/project-spec.md
+/speckit.plan from docs/project-plan.md
+```
 
 ---
 
@@ -551,13 +653,16 @@ This will:
 ```
 ⚠️  SpecKit already configured
 
-.specify/memory/constitution.md already exists and is configured.
+SpecKit files already exist:
+- .specify/memory/constitution.md
+- docs/project-spec.md
+- docs/project-plan.md
 
 To reconfigure:
-1. Remove .specify/memory/constitution.md
-2. Run "flight-plan setup-speckit" again
+1. Delete the files you want to regenerate
+2. Re-enable SpecKit via "flight-plan status"
 
-Or edit .specify/memory/constitution.md directly.
+Or edit the files directly if you need manual changes.
 ```
 
 ### If User Hasn't Installed SpecKit
@@ -580,14 +685,16 @@ Then run "flight-plan setup-speckit" again.
 **DO:**
 - ✅ Run this from PROJECT directory (has docs/project-prd.md)
 - ✅ Check for `.specify/` directory (not `memory/` at root)
-- ✅ Generate constitution.md from project files
+- ✅ Generate THREE files: constitution.md, project-spec.md, project-plan.md
+- ✅ Extract from PRD (don't duplicate, transform)
 - ✅ Use standalone project files (no ../../flight-plan-solution/ references)
 - ✅ Read `.flight-plan/FLIGHT-PLAN-PHASES.md` (local copy in project)
 
 **DON'T:**
 - ❌ Run this from solution directory
 - ❌ Look for `memory/` or `specs/` at root level (wrong structure)
-- ❌ Manually edit constitution.md (generate it)
+- ❌ Put requirements/tech stack in constitution.md (put in spec/plan files)
+- ❌ Create SpecKit's internal files (specs/[feature]/) - let SpecKit do that
 - ❌ Reference files outside project directory
 - ❌ Use examples/ folder for content
 
@@ -595,16 +702,26 @@ Then run "flight-plan setup-speckit" again.
 
 ## Summary
 
-**The flow is:**
-1. User runs `flight-plan status` in project
-2. AI asks about SpecKit (if not prompted before)
-3. User installs SpecKit: `specify init . --ai cursor-agent --here`
-4. User runs: `flight-plan setup-speckit`
-5. AI reads project context (PRD, current phase, rules)
-6. AI generates `.specify/memory/constitution.md` with full context
-7. SpecKit is now integrated with Flight Plan!
+**The complete flow is:**
+1. User runs `flight-plan status` in project (first time)
+2. AI shows status, then asks about SpecKit
+3. User answers "yes"
+4. AI guides: User runs `specify init . --ai cursor-agent --here`
+5. AI automatically generates THREE files from PRD:
+   - `.specify/memory/constitution.md` (principles & guidelines)
+   - `docs/project-spec.md` (requirements from PRD)
+   - `docs/project-plan.md` (tech stack & architecture from PRD)
+6. User points SpecKit at Flight Plan files:
+   - `/speckit.specify from docs/project-spec.md`
+   - `/speckit.plan from docs/project-plan.md`
+   - `/speckit.tasks`
+   - `/speckit.implement`
 
-**Key principle:** AUTOMATE EVERYTHING. No manual editing.
+**Key principles:**
+- ✅ AUTOMATE extraction from PRD to SpecKit files
+- ✅ NO duplication - transform PRD into SpecKit format
+- ✅ User never re-types requirements
+- ✅ SpecKit reads from Flight Plan files, creates its own internal structure
 
 ---
 
